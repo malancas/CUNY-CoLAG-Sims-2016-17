@@ -1,19 +1,10 @@
-##
-#make global constant for maximum sentence count = 1000
-#change time variable to sentenceCount
-##
-
-import time
-import random
-import pickle
-
 ###Load surface equivalence dictionary###
 #SEfile = open('/home/malancas/Programming/Hunter/sakas_research/SEpickled.txt','rU')
 #SEdict = pickle.load(SEfile)
 #SEfile.close()
 
-
 #index returns the index of a value in a list; returns -1 if value not in list
+
 def index(listP, value):
     try:
         i = list.index(listP, value)
@@ -26,7 +17,6 @@ def first_substring(listP, value):
     return next((i for i, string in enumerate(listP) if value in string),-1)
 
 get_bin = lambda x, n: x >= 0 and str(bin(x))[2:].zfill(n) or "-" + str(bin(x))[3:].zfill(n)
-
     
 #######################################################
 ################# Child Class #########################
@@ -45,7 +35,7 @@ class Child(object):
         self.grammarLearned = False
         
         #in time sits the number of sentences (discrete time units) the echild has been exposed to at the current time
-        self.time = 0
+        self.sentenceCount = 0
 
         self.grammar = "0 0 0 0 0 0 1 0 0 0 1 0 1".split()
     
@@ -57,7 +47,7 @@ class Child(object):
         self.infoList =  info.rsplit("\t",3)
         self.sentence = self.infoList[2].split()
         self.expectedGrammar = " ".join(get_bin(int(self.infoList[0]),13)).split()
-        self.time += 1
+        self.sentenceCount += 1
         
         
     def isQuestion(self):

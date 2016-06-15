@@ -1,6 +1,12 @@
-import Child
+import time
+import random
+import pickle
+from Child import Child
+
 
 def main():
+    MAX_SENTENCE_COUNT = 1000
+
     infoFile = open('/home/malancas/Programming/Hunter/research/EngFrJapGerm.txt','rU') # 0001001100011
     sentenceInfo = infoFile.readlines()
     infoFile.close()
@@ -18,11 +24,11 @@ def main():
         count+=1
     print eChild.grammar
     print eChild.expectedGrammar
-    print eChild.time
+    print eChild.sentenceCount
     
     
     errFile = open('/home/malancas/Programming/Hunter/research/error.txt','w')
-    errFile.write("Japanese: " + str(eChild.time))
+    errFile.write("Japanese: " + str(eChild.sentenceCount))
     errFile.close()
     
 
