@@ -1,14 +1,9 @@
-##
-#make global constant for maximum sentence count = 1000
-#change time variable to sentenceCount
-##
-
 import time
 import random
 import pickle
 
 ###Load surface equivalence dictionary###
-#SEfile = open('/home/malancas/Programming/Hunter/sakas_research/SEpickled.txt','rU')
+#SEfile = open('/Users/JohnnyXD1/Desktop/RESEARCH/SEpickled.txt','rU')
 #SEdict = pickle.load(SEfile)
 #SEfile.close()
 
@@ -32,11 +27,6 @@ get_bin = lambda x, n: x >= 0 and str(bin(x))[2:].zfill(n) or "-" + str(bin(x))[
 ################# Child Class #########################
 #######################################################
 
-#Infolist
-#[0] contains target grammar
-#[1] contains illoc
-#[2] actual sentence
-
 class Child(object):
     
     def __init__(self):
@@ -50,8 +40,7 @@ class Child(object):
         self.grammar = "0 0 0 0 0 0 1 0 0 0 1 0 1".split()
     
     #This function will set the current information about the sentence and the sentence itself for the child
-    #Runs everytime eChild is processing a new input sentence
-    def consumeSentence(self, info):
+    def consumeSent(self, info):
         info = info.replace('\n','')
         info = info.replace('\"','')
         self.infoList =  info.rsplit("\t",3)
@@ -86,7 +75,6 @@ class Child(object):
             return True
         return False
     
-    #out of obliqueness order
     def outOblique(self):
         i = first_substring(self.sentence,"O1")
         j = first_substring(self.sentence,"O2") 
@@ -140,21 +128,19 @@ class Child(object):
             return True
         return False
     
-    
-    #Running current sentence through regex filters and other stuff
+    # Running the current sentence through the regex filters and some other stuff
     def setParameters(self):
-        #grammar[0] == 2 by default
         if self.grammar[0] == '0':
-            self.setSubjPos();     #Parameter 1
-        
+            self.setSubjPos()    #Parameter 1
         if self.grammar[1] == '0':
             self.setHead()       #Parameter 2
-
         if self.grammar[2] == '0':
-            self.setHeadCP()    #Parameter 3
+            self.setHeadCP()     #Parameter 3
             
+        #Problem parameter
         if not (self.grammar[3] == '0' and self.grammar[5] == '1'):
             self.setObligTopic() #Parameter 4 - Obligatory Topic : Problem parameter
+
         if self.grammar[4] == '0':
             self.setNullSubj()   #Parameter 5
         if self.grammar[5] == '0':
@@ -167,6 +153,7 @@ class Child(object):
             self.setTopicMark()  #Parameter 9
         if self.grammar[9] == '0':
             self.vToI()          #Parameter 10
+            
         #Parameter 11 - I to C movement : Problem parameter
         if self.grammar[10] == '1':
             self.iToC()
@@ -186,8 +173,6 @@ class Child(object):
             if first > 0 and first < first_substring(self.sentence,"S"): # Make sure O1 is non-sentence-initial and before S
                 self.grammar[0] = '1'
                 
-    #set to 0 if the regex is met
-    #try to set subject position to 0
     def noSubjPos(self):
         if "O1" in self.infoList[2] and "S" in self.infoList[2]: #Check if O1 and S are in the sentence
             first = first_substring(self.sentence,"S") #Find index of O1
@@ -312,3 +297,42 @@ class Child(object):
 #######################################################
 ################# End of Child Class ##################
 #######################################################
+
+
+#######################################################
+######################## MAIN #########################
+#######################################################
+def main():
+    infoFile = open('EngFrJapGerm.txt','rU') # 0001001100011
+    sentenceInfo = infoFile.readlines()
+    infoFile.close()
+    #print ''.join('v{}: {}'.format(v, i) for v, i in enumerate(sentenceInfo))
+    eChild = Child()
+    
+    count = 0
+    
+    while eChild.grammarLearned == False :
+        eChild.consumeSent(random.choice(sentenceInfo))
+       # print eChild.infoList
+        eChild.setParameters()
+        if count == 1000:
+            eChild.grammarLearned = True
+        count+=1
+    print eChild.grammar
+    print eChild.expectedGrammar
+    print eChild.time
+    
+    
+    #errFile = open('/Users/JohnnyXD1/Desktop/RESEARCH/Statistics/error.txt','w')
+    #errFile.write("Japanese: " + str(eChild.time))
+    #errFile.close()
+    
+###########################################################
+######################## End MAIN #########################
+###########################################################
+
+if __name__ == '__main__':
+    start = time.time() 
+    main()
+    end = time.time() - start
+    print "Time to complete:", end

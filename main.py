@@ -1,7 +1,7 @@
-import eChild
+import Child
 
 def main():
-    infoFile = open('/Users/JohnnyXD1/Desktop/RESEARCH/french.txt','rU') # 0001001100011
+    infoFile = open('/home/malancas/Programming/Hunter/research/EngFrJapGerm.txt','rU') # 0001001100011
     sentenceInfo = infoFile.readlines()
     infoFile.close()
     #print ''.join('v{}: {}'.format(v, i) for v, i in enumerate(sentenceInfo))
@@ -21,7 +21,7 @@ def main():
     print eChild.time
     
     
-    errFile = open('/Users/JohnnyXD1/Desktop/RESEARCH/Statistics/error.txt','w')
+    errFile = open('/home/malancas/Programming/Hunter/research/error.txt','w')
     errFile.write("Japanese: " + str(eChild.time))
     errFile.close()
     
