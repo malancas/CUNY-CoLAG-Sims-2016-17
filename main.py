@@ -13,15 +13,16 @@ def main():
     #print ''.join('v{}: {}'.format(v, i) for v, i in enumerate(sentenceInfo))
     eChild = Child()
     
-    count = 0
+    #count = 0
     
     while eChild.grammarLearned == False :
         eChild.consumeSentence(random.choice(sentenceInfo))
        # print eChild.infoList
         eChild.setParameters()
-        if count == 1000:
+        #if count == 1000
+        if eChild.sentenceCount == MAX_SENTENCE_COUNT:
             eChild.grammarLearned = True
-        count+=1
+        #count+=1
     print eChild.grammar
     print eChild.expectedGrammar
     print eChild.sentenceCount
