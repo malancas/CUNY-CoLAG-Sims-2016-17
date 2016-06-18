@@ -19,10 +19,8 @@ def main():
         eChild.consumeSentence(random.choice(sentenceInfo))
        # print eChild.infoList
         eChild.setParameters()
-        #if count == 1000
         if eChild.sentenceCount == MAX_SENTENCE_COUNT:
             eChild.grammarLearned = True
-        #count+=1
     print eChild.grammar
     print eChild.expectedGrammar
     print eChild.sentenceCount
