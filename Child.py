@@ -51,19 +51,13 @@ class Child(object):
         
         
     def isQuestion(self):
-        if self.infoList[1] == "Q":
-            return True
-        return False
+        return self.infoList[1] == "Q"
     
     def isImperative(self):
-        if self.infoList[1] == "IMP":
-            return True
-        return False
+        return self.infoList[1] == "IMP"
     
     def isDeclarative(self):
-        if self.infoList[1] == "DEC":
-            return True
-        return False
+        return self.infoList[1] == "DEC"
     
     def containsTopicalizable(self):
         i = first_substring(self.sentence,"S")
@@ -72,9 +66,7 @@ class Child(object):
         l= first_substring(self.sentence,"O3")
         m = first_substring(self.sentence,"Adv")
         
-        if i == 0 or j == 0 or k == 0 or l == 0 or m == 0 :
-            return True
-        return False
+        return i == 0 or j == 0 or k == 0 or l == 0 or m == 0
     
     #out of obliqueness order
     def outOblique(self):
@@ -94,41 +86,29 @@ class Child(object):
     def S_Aux(self):
         if self.isDeclarative():
             i = first_substring(self.sentence, "S")
-            if i > 0 and first_substring(self.sentence, "Aux") == i + 1:
-                return True
+            return i > 0 and first_substring(self.sentence, "Aux") == i + 1
         return False
             
     def Aux_S(self):
         if self.isDeclarative():
             i = first_substring(self.sentence, "Aux")
-            if i > 0 and first_substring(self.sentence, "S") == i + 1:
-                return True
+            return i > 0 and first_substring(self.sentence, "S") == i + 1
         return False
-    
+
     def Aux_Verb(self):
-        if self.isDeclarative() and (first_substring(self.sentence, "Aux") == first_substring(self.sentence, "Verb") - 1):
-            return True
-        return False
+        return self.isDeclarative() and (first_substring(self.sentence, "Aux") == first_substring(self.sentence, "Verb") - 1)
     
     def Verb_Aux(self):
-        if self.isDeclarative() and (first_substring(self.sentence, "Verb") == first_substring(self.sentence, "Aux") - 1):
-            return True
-        return False
+        return self.isDeclarative() and (first_substring(self.sentence, "Verb") == first_substring(self.sentence, "Aux") - 1)
     
     def Never_Verb(self):
-        if self.isDeclarative() and (first_substring(self.sentence, "Never") == first_substring(self.sentence, "Verb") - 1) and "Aux" not in self.sentence:
-            return True
-        return False
+        return self.isDeclarative() and (first_substring(self.sentence, "Never") == first_substring(self.sentence, "Verb") - 1) and "Aux" not in self.sentence
     
     def Verb_Never(self):
-        if self.isDeclarative() and (first_substring(self.sentence, "Verb") == first_substring(self.sentence, "Never") - 1) and "Aux" not in self.sentence:
-            return True
-        return False
+        return self.isDeclarative() and (first_substring(self.sentence, "Verb") == first_substring(self.sentence, "Never") - 1) and "Aux" not in self.sentence
     
     def hasKa(self):
-        if "ka" in self.sentence:
-            return True
-        return False
+        return "ka" in self.sentence
     
     
     #Running current sentence through regex filters and other stuff
@@ -296,9 +276,3 @@ class Child(object):
     def questionInver(self):
         if "ka" in self.infoList[2]:
             self.grammar[12] = '0'
-    
-
-                
-#######################################################
-################# End of Child Class ##################
-#######################################################
