@@ -38,6 +38,10 @@ class Child(object):
         self.sentenceCount = 0
 
         self.grammar = "0 0 0 0 0 0 1 0 0 0 1 0 1".split()
+
+        #Used to determine if a new grammar is being read in.
+        #If so, expectedGrammar and currentGrammarID are updated accordingly
+        self.currentGrammarID = 0
     
     #This function will set the current information about the sentence and the sentence itself for the child
     #Runs everytime eChild is processing a new input sentence
@@ -46,7 +50,9 @@ class Child(object):
         info = info.replace('\"','')
         self.infoList =  info.rsplit("\t",3)
         self.sentence = self.infoList[2].split()
-        self.expectedGrammar = " ".join(get_bin(int(self.infoList[0]),13)).split()
+        if self.currentGrammarID != self.infoList[0]:
+            self.expectedGrammar = " ".join(get_bin(int(self.infoList[0]),13)).split()
+            self.currentGrammarID = self.infoList[0]
         self.sentenceCount += 1
         
         
