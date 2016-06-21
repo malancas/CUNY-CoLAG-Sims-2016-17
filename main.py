@@ -31,13 +31,18 @@ def main():
     infoFile = open('EngFrJapGerm.txt','rU') # 0001001100011
     sentenceInfo = infoFile.readlines()
     infoFile.close()
+    
+    englishSentences = []
+    for i in range(0, len(sentenceInfo)):
+        if sentenceInfo[i][:3] == "611":
+            englishSentences.append(i)
 
     totalSentenceCount = 0
     totalConvergedChildren = 0
     childList = []
 
     for i in range(0,99):
-        childList.append(doesChildLearnGrammar(Child(), sentenceInfo, totalSentenceCount, totalConvergedChildren))
+        childList.append(doesChildLearnGrammar(Child(), englishSentences, totalSentenceCount, totalConvergedChildren))
 
     printResults(childList, totalConvergedChildren, totalSentenceCount)    
 
