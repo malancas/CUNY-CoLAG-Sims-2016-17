@@ -3,45 +3,46 @@ import random
 import pickle
 from Child import Child
 
-def doesChildLearnGrammar(eChild):
+MAX_SENTENCE_COUNT = 1000000
+
+def doesChildLearnGrammar(eChild, sentenceInfo, totalSentenceCount, totalConvergedChildren):
     start = time.time()
-    while eChild.grammarLearned == False and eChild.count < MAX_SENTENCE_COUNT :
+    while not eChild.grammarLearned and eChild.sentenceCount < MAX_SENTENCE_COUNT:
         eChild.consumeSentence(random.choice(sentenceInfo))
         eChild.setParameters()
-
-        #if eChild.sentenceCount == MAX_SENTENCE_COUNT:
-        #    eChild.grammarLearned = True
+        eChild.sentenceCount += 1
 
     eChild.totalTime = time.time() - start
+    
+    if eChild.grammarLearned:
+        totalSentenceCount += eChild.sentenceCount
+        totalConvergedChildren += 1
+
     return eChild
 
-def printResults(childList):
-    totalConvergedChildren = 0
-    totalSentenceCount = 0
-    for ec in childList:
-        if ec.grammarLearned:
-            totalConvergence += 1
-            totalSentenceCount = ec.sentenceCount
+def printResults(childList, totalConvergedChildren, totalSentenceCount):
     print "Percentage of converged children: ", totalConvergedChildren / 100, "%"
     print "Average sentence count of converged children: ", (totalSentenceCount / totalConvergedChildren)
 
 
 def main():
-    MAX_SENTENCE_COUNT = 1000000
 
-    infoFile = open('/home/malancas/Programming/Hunter/research/EngFrJapGerm.txt','rU') # 0001001100011
+    infoFile = open('EngFrJapGerm.txt','rU') # 0001001100011
     sentenceInfo = infoFile.readlines()
     infoFile.close()
     #print ''.join('v{}: {}'.format(v, i) for v, i in enumerate(sentenceInfo))
-    childList = []
+    eChild = Child()
     
-    for in in range(0,99):
-        childList.append(doesChildLearnGrammar(Child()))
+    eChild.sentenceCount = 0
     
-    
-    errFile = open('/home/malancas/Programming/Hunter/research/error.txt','w')
-    errFile.write("Japanese: " + str(eChild.sentenceCount))
-    errFile.close()
+    while eChild.grammarLearned == False and eChild.sentenceCount < 100000:
+        eChild.consumeSentence(random.choice(sentenceInfo))
+        eChild.setParameters()
+        eChild.sentenceCount += 1
+
+    print eChild.grammar
+    print eChild.expectedGrammar
+    print eChild.sentenceCount
     
 
 if __name__ == '__main__':
