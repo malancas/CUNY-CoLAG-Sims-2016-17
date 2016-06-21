@@ -3,7 +3,7 @@ import random
 import pickle
 from Child import Child
 
-def doesChildLearnGrammar(eChild, sentenceInfo, totalSentenceCount, totalConvergedChildren):
+def doesChildLearnGrammar(count, eChild, sentenceInfo, totalSentenceCount, totalConvergedChildren):
     start = time.time()
 
     while eChild.grammarLearned == False and eChild.sentenceCount < 100000:
@@ -17,6 +17,14 @@ def doesChildLearnGrammar(eChild, sentenceInfo, totalSentenceCount, totalConverg
     if eChild.grammarLearned:
         totalSentenceCount += eChild.sentenceCount
         totalConvergedChildren += 1
+        
+        timeFile = open('/home/malancas/Programming/Hunter/research/timeResults.txt','w')
+        timeFile.write('eChild #' + count + " " + eChild.totalTime)
+        timeFile.close()
+    else:
+        nonConvergedFile = open('/home/malancas/Programming/Hunter/research/nonConverged.txt','w')
+        nonConvergedFile.write('eChild#' + count + ' ' + eChild.grammar)
+        nonConvergedFile.close()
 
     return eChild
 
@@ -24,7 +32,6 @@ def doesChildLearnGrammar(eChild, sentenceInfo, totalSentenceCount, totalConverg
 def printResults(childList, totalConvergedChildren, totalSentenceCount):
     print "Percentage of converged children: ", totalConvergedChildren / 100, "%"
     print "Average sentence count of converged children: ", (totalSentenceCount / totalConvergedChildren)
-
 
 def main():
 
@@ -42,7 +49,8 @@ def main():
     childList = []
 
     for i in range(0,99):
-        childList.append(doesChildLearnGrammar(Child(), englishSentences, totalSentenceCount, totalConvergedChildren))
+        count = i
+        childList.append(count, doesChildLearnGrammar(Child(), englishSentences, totalSentenceCount, totalConvergedChildren))
 
     printResults(childList, totalConvergedChildren, totalSentenceCount)    
 
