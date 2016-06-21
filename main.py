@@ -3,14 +3,14 @@ import random
 import pickle
 from Child import Child
 
-MAX_SENTENCE_COUNT = 1000000
-
 def doesChildLearnGrammar(eChild, sentenceInfo, totalSentenceCount, totalConvergedChildren):
     start = time.time()
-    while not eChild.grammarLearned and eChild.sentenceCount < MAX_SENTENCE_COUNT:
+
+    while eChild.grammarLearned == False and eChild.sentenceCount < 100000:
         eChild.consumeSentence(random.choice(sentenceInfo))
         eChild.setParameters()
         eChild.sentenceCount += 1
+
 
     eChild.totalTime = time.time() - start
     
@@ -18,7 +18,6 @@ def doesChildLearnGrammar(eChild, sentenceInfo, totalSentenceCount, totalConverg
         totalSentenceCount += eChild.sentenceCount
         totalConvergedChildren += 1
 
-    return eChild
 
 def printResults(childList, totalConvergedChildren, totalSentenceCount):
     print "Percentage of converged children: ", totalConvergedChildren / 100, "%"
@@ -30,15 +29,11 @@ def main():
     infoFile = open('EngFrJapGerm.txt','rU') # 0001001100011
     sentenceInfo = infoFile.readlines()
     infoFile.close()
-    #print ''.join('v{}: {}'.format(v, i) for v, i in enumerate(sentenceInfo))
     eChild = Child()
-    
-    eChild.sentenceCount = 0
-    
-    while eChild.grammarLearned == False and eChild.sentenceCount < 100000:
-        eChild.consumeSentence(random.choice(sentenceInfo))
-        eChild.setParameters()
-        eChild.sentenceCount += 1
+    totalSentenceCount = 0
+    totalConvergedChildren = 0
+
+    doesChildLearnGrammar(eChild, sentenceInfo, totalSentenceCount, totalConvergedChildren)
 
     print eChild.grammar
     print eChild.expectedGrammar
