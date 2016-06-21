@@ -18,6 +18,8 @@ def doesChildLearnGrammar(eChild, sentenceInfo, totalSentenceCount, totalConverg
         totalSentenceCount += eChild.sentenceCount
         totalConvergedChildren += 1
 
+    return eChild
+
 
 def printResults(childList, totalConvergedChildren, totalSentenceCount):
     print "Percentage of converged children: ", totalConvergedChildren / 100, "%"
@@ -29,16 +31,15 @@ def main():
     infoFile = open('EngFrJapGerm.txt','rU') # 0001001100011
     sentenceInfo = infoFile.readlines()
     infoFile.close()
-    eChild = Child()
+
     totalSentenceCount = 0
     totalConvergedChildren = 0
+    childList = []
 
-    doesChildLearnGrammar(eChild, sentenceInfo, totalSentenceCount, totalConvergedChildren)
+    for i in range(0,99):
+        childList.append(doesChildLearnGrammar(Child(), sentenceInfo, totalSentenceCount, totalConvergedChildren))
 
-    print eChild.grammar
-    print eChild.expectedGrammar
-    print eChild.sentenceCount
-    
+    printResults(childList, totalConvergedChildren, totalSentenceCount)    
 
 if __name__ == '__main__':
     start = time.time() 
