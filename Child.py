@@ -47,7 +47,7 @@ class Child(object):
         #If so, expectedGrammar and currentGrammarID are updated accordingly
         self.currentGrammarID = 0
 
-        self.totalTime = 0
+        self.totalTime = '0'
     
     #This function will set the current information about the sentence and the sentence itself for the child
     #Runs everytime eChild is processing a new input sentence

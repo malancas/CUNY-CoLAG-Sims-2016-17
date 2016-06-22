@@ -39,11 +39,11 @@ class runChildren(object):
 			self.totalConvergentChildren += 1
 
 			timeFile = open('/home/malancas/Programming/Hunter/research/timeResults.txt', 'a')
-			timeFile.write('eChild#{0} {1}'.format(count, eChild.totalTime))
+			timeFile.write('eChild#{0} {1} \n'.format(count, eChild.totalTime))
 			timeFile.close()
 		else:
 			nonConvergedFile = open('/home/malancas/Programming/Hunter/research/nonConverged.txt', 'a')
-			nonConvergedFile.write('eChild#{0} {1}'.format(count, eChild.grammar))
+			nonConvergedFile.write('eChild#{0} {1} \n'.format(count, eChild.grammar))
 			nonConvergedFile.close()
 
 		return eChild
