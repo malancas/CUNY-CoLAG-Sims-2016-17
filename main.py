@@ -2,7 +2,7 @@ import time
 import random
 import pickle
 from Child import Child
-from runChildren import runChildren
+from runSimulation import runSimulation
 
 
 def main():

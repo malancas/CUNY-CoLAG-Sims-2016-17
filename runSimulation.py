@@ -1,7 +1,7 @@
 from Child import Child
 import time
 import random
-import pickle
+import csv
 
 class runChildren(object):
 	def __init__(self):
@@ -11,6 +11,7 @@ class runChildren(object):
 		self.selectedSentences = []
 		self.childList = []
 
+	#print to csv, print both decimal and binary grammar
 	def printResults(self):
 		print 'Percentage of converged children: ', self.totalConvergentChildren / 100, '%'
 		try:
