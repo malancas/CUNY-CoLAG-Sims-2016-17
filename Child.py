@@ -1,3 +1,7 @@
+import time
+import random
+import pickle
+
 ###Load surface equivalence dictionary###
 #SEfile = open('/home/malancas/Programming/Hunter/sakas_research/SEpickled.txt','rU')
 #SEdict = pickle.load(SEfile)
