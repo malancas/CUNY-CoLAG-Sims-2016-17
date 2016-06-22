@@ -1,6 +1,4 @@
 import time
-import random
-import pickle
 from Child import Child
 from runSimulation import runSimulation
 
