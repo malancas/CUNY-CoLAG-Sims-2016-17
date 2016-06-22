@@ -50,5 +50,6 @@ class runChildren(object):
 
 	def runSimulation(self, num):
 		for i in range(0,num):
+			print i
 			self.childList.append(self.doesChildLearnGrammar(i, Child()))
-			print "Finish"
+			print "Finished #{}".format(i)
