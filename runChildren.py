@@ -38,11 +38,11 @@ class runChildren(object):
 			self.totalSentenceCount += eChild.sentenceCount
 			self.totalConvergentChildren += 1
 
-			timeFile = open('/home/malancas/Programming/Hunter/research/timeResults.txt', 'w')
+			timeFile = open('/home/malancas/Programming/Hunter/research/timeResults.txt', 'a')
 			timeFile.write('eChild#{0} {1}'.format(count, eChild.totalTime))
 			timeFile.close()
 		else:
-			nonConvergedFile = open('/home/malancas/Programming/Hunter/research/nonConverged.txt', 'w')
+			nonConvergedFile = open('/home/malancas/Programming/Hunter/research/nonConverged.txt', 'a')
 			nonConvergedFile.write('eChild#{0} {1}'.format(count, eChild.grammar))
 			nonConvergedFile.close()
 
