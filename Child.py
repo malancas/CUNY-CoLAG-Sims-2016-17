@@ -71,6 +71,11 @@ class Child(object):
     def isDeclarative(self):
         return self.infoList[1] == "DEC"
     
+
+    def Verb_tensed(self):
+        return self.isDeclarative() or self.isQuestion() and "Aux" not in self.sentence
+
+
     def containsTopicalizable(self):
         i = first_substring(self.sentence,"S")
         j = first_substring(self.sentence,"O1")
@@ -277,12 +282,14 @@ class Child(object):
         if self.grammar[0] == '0' and self.grammar[1] == '1' and self.grammar[2] == '1' and (self.Verb_Never() or self.hasKa()):
             self.grammar[10] = '0'
     
-    #12th parameter
+
+  #12th parameter                                                                                                             
     def affixHop(self):
-        if "Never Verb[+FIN] O1" in self.infoList[2]:
+        if self.Verb_tensed() and "Never Verb O1" in self.infoList[2]:
             self.grammar[11] = '1'
-        if first_substring(self.sentence, "O1") > 0 and "O1 Verb[+FIN] Never" in self.infoList[2]:
+        if self.Verb_tensed() and first_substring(self.sentence, "O1") > 0 and "O1 Verb Never" in self.infoList[2]:
             self.grammar[11] = '1'
+
     
     #13th parameter
     def questionInver(self):

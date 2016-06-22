@@ -3,7 +3,7 @@ import time
 import random
 import csv
 
-class runChildren(object):
+class runSimulation(object):
 	def __init__(self):
 		self.totalSentenceCount = 0
 		self.totalConvergentChildren = 0
@@ -11,9 +11,9 @@ class runChildren(object):
 		self.selectedSentences = []
 		self.childList = []
 
-	#print to csv, print both decimal and binary grammar
-	def printResults(self):
-		print 'Percentage of converged children: ', self.totalConvergentChildren / 100, '%'
+
+	def printResults(self, maxChildren):
+		print 'Percentage of converged children: ', (self.totalConvergentChildren / maxChildren) * 100, '%'
 		try:
 			print 'Average sentence count of converged children: ', (self.totalSentenceCount / self.totalConvergentChildren)
 		except ZeroDivisionError:
@@ -60,6 +60,7 @@ class runChildren(object):
 
 		eChild.totalTime = time.time() - start
 
+		#write to file: 1st column = yes/no converged, 2nd column = grammar id, 3rd column = binary grammar
 		if eChild.grammarLearned:
 			self.totalSentenceCount += eChild.sentenceCount
 			self.totalConvergentChildren += 1
