@@ -15,7 +15,9 @@ def main():
     #611 is the English id
     runChildren1.makeSelectedSentenceList('611')
 
-    runChildren1.runSimulation(99)
+    runChildren1.doesChildLearnGrammar2(2, Child())
+    #runChildren1.runSimulation(99)
+    print "Finished \n"
 
     runChildren1.printResults()    
 

@@ -48,6 +48,32 @@ class runChildren(object):
 
 		return eChild
 
+
+	def doesChildLearnGrammar2(self, count, eChild):
+		start = time.time()
+
+		while not eChild.grammarLearned:
+			eChild.consumeSentence(random.choice(self.selectedSentences))
+			eChild.setParameters()
+			eChild.sentenceCount += 1
+
+		eChild.totalTime = time.time() - start
+
+		if eChild.grammarLearned:
+			self.totalSentenceCount += eChild.sentenceCount
+			self.totalConvergentChildren += 1
+
+			timeFile = open('/home/malancas/Programming/Hunter/research/timeResults.txt', 'a')
+			timeFile.write('eChild#{0} {1} \n'.format(count, eChild.totalTime))
+			timeFile.close()
+		else:
+			nonConvergedFile = open('/home/malancas/Programming/Hunter/research/nonConverged.txt', 'a')
+			nonConvergedFile.write('eChild#{0} {1} \n'.format(count, eChild.grammar))
+			nonConvergedFile.close()
+
+		return eChild
+
+
 	def runSimulation(self, num):
 		for i in range(0,num):
 			print i
