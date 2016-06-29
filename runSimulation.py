@@ -26,7 +26,12 @@ class runSimulation(object):
 
 
 	def writeResults(self, eChild, count):
-		data = [eChild.grammarLearned, eChild.grammar, eChild.expectedGrammar, eChild.totalTime]
+		#The child's time course vector is resorted
+		#based on the sentence that the parameter was
+		#permanently set at
+		tuple(sorted(eChild.timeCourseVector))
+
+		data = [eChild.grammarLearned, eChild.grammar, eChild.totalTime]
 		f = open('German_results_100000_2.csv', 'a')
 		w = csv.writer(f, delimiter = ',')
 		if count == 0:
