@@ -52,15 +52,14 @@ class Child(object):
         self.oldGrammar = [''] * 13
     
 
-    #Checks if the child's newly learned grammar
-    #is different from its previously learned grammar.
-    #If so, the permGrammarCount variable, which represents
-    #the sentence number at which the child's grammar
-    #stopped changing, is updated to count's value.
-    #If the newly learned grammar isn't different from
-    #the child's oldGrammar, permGrammarCount's value
-    #remains the same.
-    def hasGrammarChanged(self, count):
+    #Checks whether an eChild's parameter values
+    #have changed since the new sentence was processed.
+    #If any have changed, they are updated in old grammar
+    #and the timeCourseVector list's tuple corresponding
+    #to the parameter is updated with 'count' to reflect
+    #how many sentences have passed when the parameter
+    #was changed
+    def haveParametersChanged(self, count):
         for i in range (0,12):
             if self.oldGrammar[i] != self.grammar[i]:
                 self.timeCourseVector[i][0] = count
@@ -182,7 +181,7 @@ class Child(object):
         if(self.grammar == self.expectedGrammar):
             self.grammarLearned = True
 
-        self.hasGrammarChanged(count)
+        self.haveParametersChanged(count)
                
     #1st parameter
     def setSubjPos(self):
