@@ -10,13 +10,14 @@ def main():
     runSim1.sentenceInfo = infoFile.readlines()
     infoFile.close()
 
-    #611 is the English id
-    runSim1.makeSelectedSentenceList('611')
+    #French=584, English=611, German=2253, Japanese=3856
+    runSim1.makeSelectedSentenceList('3856')
+    #print "selected sentences: ", len(runSim1.selectedSentences)
 
-    runSim1.runSimulation(1)
+    runSim1.runSimulation(100)
     print "Finished \n"
 
-    runSim1.printResults(1)    
+    runSim1.printResults(100)    
 
 if __name__ == '__main__':
     start = time.time() 

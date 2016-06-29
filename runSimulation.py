@@ -21,14 +21,24 @@ class runSimulation(object):
 
 	def makeSelectedSentenceList(self, grammarID):
 		for i in range(0, len(self.sentenceInfo)):
-			if self.sentenceInfo[i][:3] == grammarID:
+			if self.sentenceInfo[i][:3] == grammarID or self.sentenceInfo[i][:4] == grammarID:
 				self.selectedSentences.append(self.sentenceInfo[i])
+
+
+	def writeResults(self, eChild, count):
+		data = [eChild.grammarLearned, eChild.grammar, eChild.expectedGrammar, eChild.totalTime]
+		f = open('Japanese_results.csv', 'a')
+		w = csv.writer(f, delimiter = ',')
+		if count == 0:
+			w.writerow(["Grammar Learned?", "Learned Grammar", "Expected Grammar", "Total Time"])
+		w.writerow(data)
+		f.close()
 
 
 	def doesChildLearnGrammar(self, count, eChild):
 		start = time.time()
 
-		while not eChild.grammarLearned and eChild.sentenceCount < 10000:
+		while not eChild.grammarLearned and eChild.sentenceCount < 1000:
 			eChild.consumeSentence(random.choice(self.selectedSentences))
 			eChild.setParameters(count)
 			eChild.sentenceCount += 1
@@ -37,6 +47,9 @@ class runSimulation(object):
 
 		#write to file: 1st column = yes/no converged, 2nd column = target grammar id, 3rd column = final grammar id, 
 		#4th column = binary grammar as string, 13 additional columns for each number in the binary final grammar
+		self.writeResults(eChild, count)
+
+		'''
 		if eChild.grammarLearned:
 			self.totalSentenceCount += eChild.sentenceCount
 			self.totalConvergentChildren += 1
@@ -48,12 +61,12 @@ class runSimulation(object):
 			nonConvergedFile = open('/home/malancas/Programming/Hunter/research_python/nonConverged.txt', 'a')
 			nonConvergedFile.write('eChild#{0} {1} \n'.format(count, eChild.grammar))
 			nonConvergedFile.close()
+		'''
 
 		return eChild
 
 
 	def runSimulation(self, num):
 		for i in range(0,num):
-			print i
 			self.childList.append(self.doesChildLearnGrammar(i, Child()))
 			print "Finished #{}".format(i)
