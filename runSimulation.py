@@ -28,9 +28,9 @@ class runSimulation(object):
 	def doesChildLearnGrammar(self, count, eChild):
 		start = time.time()
 
-		while not eChild.grammarLearned and eChild.sentenceCount < 100000:
+		while not eChild.grammarLearned and eChild.sentenceCount < 10000:
 			eChild.consumeSentence(random.choice(self.selectedSentences))
-			eChild.setParameters()
+			eChild.setParameters(count)
 			eChild.sentenceCount += 1
 
 		eChild.totalTime = time.time() - start
@@ -41,11 +41,11 @@ class runSimulation(object):
 			self.totalSentenceCount += eChild.sentenceCount
 			self.totalConvergentChildren += 1
 
-			timeFile = open('/home/malancas/Programming/Hunter/research/timeResults.txt', 'a')
+			timeFile = open('/home/malancas/Programming/Hunter/research_python/timeResults.txt', 'a')
 			timeFile.write('eChild#{0} {1} \n'.format(count, eChild.totalTime))
 			timeFile.close()
 		else:
-			nonConvergedFile = open('/home/malancas/Programming/Hunter/research/nonConverged.txt', 'a')
+			nonConvergedFile = open('/home/malancas/Programming/Hunter/research_python/nonConverged.txt', 'a')
 			nonConvergedFile.write('eChild#{0} {1} \n'.format(count, eChild.grammar))
 			nonConvergedFile.close()
 

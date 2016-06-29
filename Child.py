@@ -48,7 +48,26 @@ class Child(object):
         self.currentGrammarID = '0'
 
         self.totalTime = 0
+
+        self.oldGrammar = ''
+
+        self.permGrammarCount = 0
     
+
+    #Checks if the child's newly learned grammar
+    #is different from its previously learned grammar.
+    #If so, the permGrammarCount variable, which represents
+    #the sentence number at which the child's grammar
+    #stopped changing, is updated to count's value.
+    #If the newly learned grammar isn't different from
+    #the child's oldGrammar, permGrammarCount's value
+    #remains the same.
+    def hasGrammarChanged(self, count):
+        if self.oldGrammar != self.grammar:
+            permGrammarCount = count
+        self.oldGrammar = self.grammar
+
+
     #This function will set the current information about the sentence and the sentence itself for the child
     #Runs everytime eChild is processing a new input sentence
     def consumeSentence(self, info):
@@ -59,8 +78,6 @@ class Child(object):
         if self.currentGrammarID != self.infoList[0]:
             self.expectedGrammar = " ".join(get_bin(int(self.infoList[0]),13)).split()
             self.currentGrammarID = self.infoList[0]
-        self.sentenceCount += 1
-        
         
     def isQuestion(self):
         return self.infoList[1] == "Q"
@@ -129,7 +146,7 @@ class Child(object):
     
     
     #Running current sentence through regex filters and other stuff
-    def setParameters(self):
+    def setParameters(self, count):
         #grammar[0] == 2 by default
         if self.grammar[0] == '0':
             self.setSubjPos();     #Parameter 1
@@ -165,6 +182,8 @@ class Child(object):
         
         if(self.grammar == self.expectedGrammar):
             self.grammarLearned = True
+
+        self.hasGrammarChanged(count)
                
     #1st parameter
     def setSubjPos(self):

@@ -13,10 +13,10 @@ def main():
     #611 is the English id
     runSim1.makeSelectedSentenceList('611')
 
-    runSim1.runSimulation(100)
+    runSim1.runSimulation(1)
     print "Finished \n"
 
-    runSim1.printResults(100)    
+    runSim1.printResults(1)    
 
 if __name__ == '__main__':
     start = time.time() 
