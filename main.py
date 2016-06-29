@@ -11,13 +11,13 @@ def main():
     infoFile.close()
 
     #French=584, English=611, German=2253, Japanese=3856
-    runSim1.makeSelectedSentenceList('584')
+    runSim1.makeSelectedSentenceList('2253')
     #print "selected sentences: ", len(runSim1.selectedSentences)
 
-    runSim1.runSimulation(100)
+    runSim1.runSimulation(100000)
     print "Finished \n"
 
-    runSim1.printResults(100)    
+    runSim1.printResults(100000)    
 
 if __name__ == '__main__':
     start = time.time() 

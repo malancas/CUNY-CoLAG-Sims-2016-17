@@ -27,7 +27,7 @@ class runSimulation(object):
 
 	def writeResults(self, eChild, count):
 		data = [eChild.grammarLearned, eChild.grammar, eChild.expectedGrammar, eChild.totalTime]
-		f = open('French_results.csv', 'a')
+		f = open('German_results_100000_2.csv', 'a')
 		w = csv.writer(f, delimiter = ',')
 		if count == 0:
 			w.writerow(["Grammar Learned?", "Learned Grammar", "Expected Grammar", "Total Time"])
@@ -36,33 +36,18 @@ class runSimulation(object):
 
 
 	def doesChildLearnGrammar(self, count, eChild):
-		start = time.time()
+		start = time.clock()
 
 		while not eChild.grammarLearned and eChild.sentenceCount < 1000:
 			eChild.consumeSentence(random.choice(self.selectedSentences))
 			eChild.setParameters(count)
 			eChild.sentenceCount += 1
 
-		eChild.totalTime = time.time() - start
+		eChild.totalTime = time.clock() - start
 
 		#write to file: 1st column = yes/no converged, 2nd column = target grammar id, 3rd column = final grammar id, 
 		#4th column = binary grammar as string, 13 additional columns for each number in the binary final grammar
 		self.writeResults(eChild, count)
-
-		'''
-		if eChild.grammarLearned:
-			self.totalSentenceCount += eChild.sentenceCount
-			self.totalConvergentChildren += 1
-
-			timeFile = open('/home/malancas/Programming/Hunter/research_python/timeResults.txt', 'a')
-			timeFile.write('eChild#{0} {1} \n'.format(count, eChild.totalTime))
-			timeFile.close()
-		else:
-			nonConvergedFile = open('/home/malancas/Programming/Hunter/research_python/nonConverged.txt', 'a')
-			nonConvergedFile.write('eChild#{0} {1} \n'.format(count, eChild.grammar))
-			nonConvergedFile.close()
-		'''
-
 		return eChild
 
 
