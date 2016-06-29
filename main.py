@@ -11,7 +11,7 @@ def main():
     infoFile.close()
 
     #French=584, English=611, German=2253, Japanese=3856
-    runSim1.makeSelectedSentenceList('3856')
+    runSim1.makeSelectedSentenceList('584')
     #print "selected sentences: ", len(runSim1.selectedSentences)
 
     runSim1.runSimulation(100)

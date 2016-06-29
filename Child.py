@@ -90,7 +90,7 @@ class Child(object):
     
 
     def Verb_tensed(self):
-        return self.isDeclarative() or self.isQuestion() and "Aux" not in self.sentence
+        return (self.isDeclarative() or self.isQuestion()) and "Aux" not in self.sentence
 
 
     def containsTopicalizable(self):
@@ -308,7 +308,6 @@ class Child(object):
             self.grammar[11] = '1'
         if self.Verb_tensed() and first_substring(self.sentence, "O1") > 0 and "O1 Verb Never" in self.infoList[2]:
             self.grammar[11] = '1'
-
     
     #13th parameter
     def questionInver(self):

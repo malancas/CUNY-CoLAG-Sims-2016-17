@@ -27,7 +27,7 @@ class runSimulation(object):
 
 	def writeResults(self, eChild, count):
 		data = [eChild.grammarLearned, eChild.grammar, eChild.expectedGrammar, eChild.totalTime]
-		f = open('Japanese_results.csv', 'a')
+		f = open('French_results.csv', 'a')
 		w = csv.writer(f, delimiter = ',')
 		if count == 0:
 			w.writerow(["Grammar Learned?", "Learned Grammar", "Expected Grammar", "Total Time"])
