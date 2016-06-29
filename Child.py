@@ -49,9 +49,7 @@ class Child(object):
 
         self.totalTime = 0
 
-        self.oldGrammar = ''
-
-        self.permGrammarCount = 0
+        self.oldGrammar = [''] * 13
     
 
     #Checks if the child's newly learned grammar
@@ -63,9 +61,10 @@ class Child(object):
     #the child's oldGrammar, permGrammarCount's value
     #remains the same.
     def hasGrammarChanged(self, count):
-        if self.oldGrammar != self.grammar:
-            permGrammarCount = count
-        self.oldGrammar = self.grammar
+        for i in range (0,12):
+            if self.oldGrammar[i] != self.grammar[i]:
+                self.timeCourseVector[i][0] = count
+                self.oldGrammar[i] = self.grammar[i]
 
 
     #This function will set the current information about the sentence and the sentence itself for the child

@@ -36,6 +36,10 @@ class runSimulation(object):
 
 
 	def doesChildLearnGrammar(self, count, eChild):
+		eChild.timeCourseVector = [[-1, 0]] * 13
+		for i in range(0,13):
+			eChild.timeCourseVector[i][1] = i+1
+
 		start = time.clock()
 
 		while not eChild.grammarLearned and eChild.sentenceCount < 1000:
