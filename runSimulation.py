@@ -26,17 +26,18 @@ class runSimulation(object):
 
 
 	def writeResults(self, eChild, count):
-		#The child's time course vector is resorted
-		#based on the sentence that the parameter was
-		#permanently set at
 		tuple(sorted(eChild.timeCourseVector))
+		joinedGrammar = ",".join(map(str, eChild.grammar))
+		joinedTcv = []
+		for i in range(0,13):
+			joinedTcv.append(eChild.timeCourseVector[i][0])
+		joinedTcv = ",".join(map(str, joinedTcv))
 
-		data = [eChild.grammarLearned, eChild.grammar, eChild.totalTime]
-		f = open('German_results_100000_2.csv', 'a')
+		f = open('German_results_100_2.csv', 'a')
 		w = csv.writer(f, delimiter = ',')
 		if count == 0:
-			w.writerow(["Grammar Learned?", "Learned Grammar", "Expected Grammar", "Total Time"])
-		w.writerow(data)
+			w.writerow(["Grammar", "Time Course Vector", "Grammar Learned?", "Total Time"])
+		w.writerow([f.write(joinedGrammar), f.write(joinedTcv), eChild.grammarLearned, eChild.totalTime])
 		f.close()
 
 

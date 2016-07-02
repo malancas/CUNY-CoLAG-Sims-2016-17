@@ -4,6 +4,7 @@ from runSimulation import runSimulation
 
 
 def main():
+    open('German_results_100_2.csv', 'w').close()
     runSim1 = runSimulation()
 
     infoFile = open('EngFrJapGerm.txt','rU') # 0001001100011
@@ -14,10 +15,10 @@ def main():
     runSim1.makeSelectedSentenceList('2253')
     #print "selected sentences: ", len(runSim1.selectedSentences)
 
-    runSim1.runSimulation(100000)
+    runSim1.runSimulation(100)
     print "Finished \n"
 
-    runSim1.printResults(100000)    
+    runSim1.printResults(100)    
 
 if __name__ == '__main__':
     start = time.time() 
