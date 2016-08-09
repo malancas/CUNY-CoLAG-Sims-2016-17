@@ -3,7 +3,7 @@ About
 
 This program was written by Jonathon Galsurkar and Meredith Lancaster under the supervision of Prof. William Sakas
 at Hunter College, Computer Science and the Graduate Center, Linguistics and Computer Science of the City University 
-of New York. 
+of New York. It is written in Python 2.7.12.
 
 sakas@hunter.cuny.edu
 

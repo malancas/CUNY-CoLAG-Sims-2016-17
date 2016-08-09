@@ -28,13 +28,59 @@ are currently available on Github in the results folder
 '''
 
 import time
-import sys
+import sys, getopt
 from Child import Child
 from runSimulation import runSimulation
 
 
-def main():
-    open('French_results_100000_tcv.csv', 'w').close()
+def main(argv):
+    numberOfEchildren = 0
+    numberOfSentences = 0
+    languageCode = 0
+    outputFile = ''
+
+    try:
+        opts, args = getopt.getopt(argv,"he:s:l:o:",["outputFile="])
+
+    except getopt.GetoptError:
+        print 'An incorrect number of arguments were entered.'
+        sys.exit(2)
+
+    for opt, arg in opts:
+        if opt == '-h':
+            print 'Enter four command line arguments:'
+            print '(1) The number of eChildren to run the simulation on'
+            print '(2) The number of sentences for each eChild to process'
+            print '(3) The desired language code (French=584, English=611, German=2253, Japanese=3856)'
+            print '(4) The name of the output file'
+            sys.exit()
+
+        elif opt in ("-e", "--eChildren"):
+            try:
+                numberOfEchildren = int(arg)
+            except ValueError:
+                print 'The argument entered is not a valid integer'
+                sys.exit(2)
+
+        elif opt in ("-s", "--sentences"):
+            try:
+                numberOfSentences = int(arg)
+            except ValueError:
+                print 'The argument entered is not a valid integer'
+                sys.exit(2)
+
+        elif opt in ("-l", "--languageCode"):
+            try:
+                numberOfSentences = int(arg)
+            except ValueError:
+                print 'The argument entered is not a valid integer'
+                sys.exit(2)
+
+        elif opt in ("-o", "--outFile"):
+            outputFile = arg
+
+    #This will erase the contents of the chosen output file
+    open(outputFile, 'w').close()
     runSim1 = runSimulation()
 
     infoFile = open('EngFrJapGerm.txt','rU') # 0001001100011
@@ -43,7 +89,6 @@ def main():
 
     #French=584, English=611, German=2253, Japanese=3856
     runSim1.makeSelectedSentenceList('584')
-    #print "selected sentences: ", len(runSim1.selectedSentences)
 
     runSim1.runSimulation(100000)
     print "Finished \n"
@@ -52,6 +97,6 @@ def main():
 
 if __name__ == '__main__':
     start = time.time() 
-    main()
+    main(sys.argv[1:])
     end = time.time() - start
     print "Time to complete:", end
