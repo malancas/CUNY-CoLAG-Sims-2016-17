@@ -2,11 +2,6 @@ import time
 import random
 import pickle
 
-###Load surface equivalence dictionary###
-#SEfile = open('/home/malancas/Programming/Hunter/sakas_research/SEpickled.txt','rU')
-#SEdict = pickle.load(SEfile)
-#SEfile.close()
-
 #index returns the index of a value in a list; returns -1 if value not in list
 
 def index(listP, value):
@@ -35,7 +30,6 @@ class Child(object):
     
     def __init__(self):
         #This boolean is False unless the function checkIfLearned sets it to True (which happens when the grammar is acquired). The main program will while-loop until
-        #grammarLearned == True
         self.grammarLearned = False
         
         #in time sits the number of sentences (discrete time units) the echild has been exposed to at the current time
@@ -50,6 +44,8 @@ class Child(object):
         self.totalTime = 0
 
         self.oldGrammar = [''] * 13
+
+        self.timeCourseVector = [[-1,1],[-1,2],[-1,3],[-1,4],[-1,5],[-1,6],[-1,7],[-1,8],[-1,9],[-1,10],[-1,11],[-1,12],[-1,13]]
     
 
     #Checks whether an eChild's parameter values
@@ -60,7 +56,7 @@ class Child(object):
     #how many sentences have passed when the parameter
     #was changed
     def haveParametersChanged(self, count):
-        for i in range (0,12):
+        for i in range (0,13):
             if self.oldGrammar[i] != self.grammar[i]:
                 self.timeCourseVector[i][0] = count
                 self.oldGrammar[i] = self.grammar[i]
@@ -145,7 +141,7 @@ class Child(object):
     
     #Running current sentence through regex filters and other stuff
     def setParameters(self, count):
-        #grammar[0] == 2 by default
+        
         if self.grammar[0] == '0':
             self.setSubjPos();     #Parameter 1
         

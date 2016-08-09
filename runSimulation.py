@@ -26,31 +26,30 @@ class runSimulation(object):
 
 
 	def writeResults(self, eChild, count):
-		tuple(sorted(eChild.timeCourseVector))
-		joinedGrammar = ",".join(map(str, eChild.grammar))
-		joinedTcv = []
+		joinedTcv = ['eChild #{}'.format(count+1)]
 		for i in range(0,13):
 			joinedTcv.append(eChild.timeCourseVector[i][0])
-		joinedTcv = ",".join(map(str, joinedTcv))
+			#joinedTcv.append(eChild.timeCourseVector[i][1])
+		joinedTcv.append(' ')
+		joinedTcv = ','.join(map(str, joinedTcv))
 
-		f = open('German_results_100_2.csv', 'a')
+		f = open('French_results_100000_tcv.csv', 'a')
 		w = csv.writer(f, delimiter = ',')
 		if count == 0:
-			w.writerow(["Grammar", "Time Course Vector", "Grammar Learned?", "Total Time"])
-		w.writerow([f.write(joinedGrammar), f.write(joinedTcv), eChild.grammarLearned, eChild.totalTime])
+			w.writerow([' ', 'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p10', 'p11', 'p12', 'p13'])
+			#w.writerow(["Grammar", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "Time Course Vector", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "Grammar Learned?", "Total Time"])
+		#w.writerow([f.write(joinedGrammar), f.write(','), f.write(joinedTcv), eChild.grammarLearned, eChild.totalTime])
+		#w.writerow([f.write(joinedTcv), eChild.grammarLearned, eChild.totalTime])
+		w.writerow([f.write(joinedTcv)])
 		f.close()
 
 
 	def doesChildLearnGrammar(self, count, eChild):
-		eChild.timeCourseVector = [[-1, 0]] * 13
-		for i in range(0,13):
-			eChild.timeCourseVector[i][1] = i+1
-
 		start = time.clock()
 
 		while not eChild.grammarLearned and eChild.sentenceCount < 1000:
 			eChild.consumeSentence(random.choice(self.selectedSentences))
-			eChild.setParameters(count)
+			eChild.setParameters(eChild.sentenceCount)
 			eChild.sentenceCount += 1
 
 		eChild.totalTime = time.clock() - start
