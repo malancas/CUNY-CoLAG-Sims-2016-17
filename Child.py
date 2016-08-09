@@ -72,13 +72,16 @@ class Child(object):
         if self.currentGrammarID != self.infoList[0]:
             self.expectedGrammar = " ".join(get_bin(int(self.infoList[0]),13)).split()
             self.currentGrammarID = self.infoList[0]
-        
+    
+
     def isQuestion(self):
         return self.infoList[1] == "Q"
     
+
     def isImperative(self):
         return self.infoList[1] == "IMP"
     
+
     def isDeclarative(self):
         return self.infoList[1] == "DEC"
     
@@ -96,6 +99,7 @@ class Child(object):
         
         return i == 0 or j == 0 or k == 0 or l == 0 or m == 0
     
+
     #out of obliqueness order
     def outOblique(self):
         i = first_substring(self.sentence,"O1")
@@ -116,24 +120,30 @@ class Child(object):
             i = first_substring(self.sentence, "S")
             return i > 0 and first_substring(self.sentence, "Aux") == i + 1
         return False
-            
+           
+
     def Aux_S(self):
         if self.isDeclarative():
             i = first_substring(self.sentence, "Aux")
             return i > 0 and first_substring(self.sentence, "S") == i + 1
         return False
 
+
     def Aux_Verb(self):
         return self.isDeclarative() and (first_substring(self.sentence, "Aux") == first_substring(self.sentence, "Verb") - 1)
+
     
     def Verb_Aux(self):
         return self.isDeclarative() and (first_substring(self.sentence, "Verb") == first_substring(self.sentence, "Aux") - 1)
+
     
     def Never_Verb(self):
         return self.isDeclarative() and (first_substring(self.sentence, "Never") == first_substring(self.sentence, "Verb") - 1) and "Aux" not in self.sentence
+
     
     def Verb_Never(self):
         return self.isDeclarative() and (first_substring(self.sentence, "Verb") == first_substring(self.sentence, "Never") - 1) and "Aux" not in self.sentence
+
     
     def hasKa(self):
         return "ka" in self.sentence
@@ -153,23 +163,32 @@ class Child(object):
             
         if not (self.grammar[3] == '0' and self.grammar[5] == '1'):
             self.setObligTopic() #Parameter 4 - Obligatory Topic : Problem parameter
+
         if self.grammar[4] == '0':
             self.setNullSubj()   #Parameter 5
+
         if self.grammar[5] == '0':
             self.setNullTopic()  #Parameter 6
+
         if self.grammar[6] == '1':
             self.setWHMovement() #Parameter 7
+
         if self.grammar[7] == '0':
             self.setPrepStrand() #Parameter 8
+
         if self.grammar[8] == '0':
             self.setTopicMark()  #Parameter 9
+
         if self.grammar[9] == '0':
             self.vToI()          #Parameter 10
         #Parameter 11 - I to C movement : Problem parameter
+
         if self.grammar[10] == '1':
             self.iToC()
+
         if self.grammar[11] == '0':
             self.affixHop()      #Parameter 12
+
         #Parameter 13 - Question Inversion : Problem parameter
         if self.grammar[12] == '1':
             self.questionInver()
@@ -178,6 +197,7 @@ class Child(object):
             self.grammarLearned = True
 
         self.haveParametersChanged(count)
+
                
     #1st parameter
     def setSubjPos(self):
@@ -185,6 +205,7 @@ class Child(object):
             first = first_substring(self.sentence,"O1") #Find index of O1
             if first > 0 and first < first_substring(self.sentence,"S"): # Make sure O1 is non-sentence-initial and before S
                 self.grammar[0] = '1'
+
                 
     #set to 0 if the regex is met
     #try to set subject position to 0
@@ -193,6 +214,7 @@ class Child(object):
             first = first_substring(self.sentence,"S") #Find index of O1
             if first >= 0 and first < first_substring(self.sentence,"O1"): # Make sure O1 is non-sentence-initial and before S
                 self.grammar[0] = '0'
+
     
     #2nd parameter
     def setHead(self):
@@ -204,6 +226,7 @@ class Child(object):
         if self.isImperative() and "O1" in self.infoList[2] and "Verb" in self.infoList[2]:
             if first_substring(self.sentence, "O1") == first_substring(self.sentence, "Verb") - 1:
                 self.grammar[1] = '1'
+
     
     def noHead(self):
         if "O3" in self.infoList[2] and "P" in self.infoList[2]:
@@ -214,17 +237,20 @@ class Child(object):
         if self.isImperative() and "O1" in self.infoList[2] and "Verb" in self.infoList[2]:
             if first_substring(self.sentence, "Verb") == first_substring(self.sentence, "O1") - 1:
                 self.grammar[1] = '0'    
+
                 
     #3rd parameter 
     def setHeadCP(self):
         if(self.isQuestion()):
             if index(self.sentence, "ka") == len(self.sentence)-1 or ("ka" not in self.sentence and index(self.sentence, "Aux") == len(self.sentence)-1):
                 self.grammar[2] = '1'
+
     
     def noHeadCP(self):
         if(self.isQuestion()):
             if index(self.sentence, "ka") == 0 or ("ka" not in self.sentence and index(self.sentence, "Aux") == 0):
                 self.grammar[2] = '0'
+
                 
     #4th parameter
     def setObligTopic(self):
@@ -236,6 +262,7 @@ class Child(object):
             else:
                 if(self.containsTopicalizable()) :
                     self.grammar[3] = '1'
+
                 
     #5th parameter
     #Only works for full, not necessarily with CHILDES distribution
@@ -244,15 +271,18 @@ class Child(object):
             self.grammar[4] = '1'
             print self.grammar[4]
 
+
     #6th parameter   
     def setNullTopic(self):
         if "O2" in self.infoList[2] and "O1" not in self.infoList[2] :
             self.grammar[5] = '1'
+
     
     #7th parameter
     def setWHMovement(self):
         if first_substring(self.sentence, "+WH") > 0 and "O3[+WH]" not in self.infoList[2]:
             self.grammar[6] = '0'
+
                 
     #8th parameter
     def setPrepStrand(self):
@@ -267,6 +297,7 @@ class Child(object):
     def setTopicMark(self):
         if "WA" in self.infoList[2] :
             self.grammar[8] = '1' 
+
     
     #10th parameter
     def vToI(self):
@@ -275,6 +306,7 @@ class Child(object):
             j = first_substring(self.sentence,"Verb")
             if i > 0 and j != -1 and abs(i - j) != 1 :
                 self.grammar[9] = '1' 
+
                
     #11th parameter
     def iToC(self):
@@ -296,12 +328,13 @@ class Child(object):
             self.grammar[10] = '0'
     
 
-  #12th parameter                                                                                                             
+    #12th parameter                                                                                                             
     def affixHop(self):
         if self.Verb_tensed() and "Never Verb O1" in self.infoList[2]:
             self.grammar[11] = '1'
         if self.Verb_tensed() and first_substring(self.sentence, "O1") > 0 and "O1 Verb Never" in self.infoList[2]:
             self.grammar[11] = '1'
+
     
     #13th parameter
     def questionInver(self):

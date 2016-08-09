@@ -34,8 +34,8 @@ from runSimulation import runSimulation
 
 
 def main(argv):
-    numberOfEchildren = 0
-    numberOfSentences = 0
+    maxEchildren = 0
+    maxSentences = 0
     languageCode = ''
     outputFile = ''
 
@@ -57,14 +57,14 @@ def main(argv):
 
         elif opt in ("-e", "--eChildren"):
             try:
-                numberOfEchildren = int(arg)
+                maxEchildren = int(arg)
             except ValueError:
                 print 'The argument entered is not a valid integer'
                 sys.exit(2)
 
         elif opt in ("-s", "--sentences"):
             try:
-                numberOfSentences = int(arg)
+                maxSentences = int(arg)
             except ValueError:
                 print 'The argument entered is not a valid integer'
                 sys.exit(2)
@@ -83,12 +83,12 @@ def main(argv):
     runSim1 = runSimulation(infoFile.readlines())
     infoFile.close()
 
-    # Choose sentences corresponding to one of the four
+    # Choose sentences corresponding to one of the four languages
     # available: French=584, English=611, German=2253, Japanese=3856
     runSim1.makeSelectedSentenceList(languageCode)
 
-    # Runs a simulation over numberOfEchildren eChildren
-    runSim1.runSimulation(numberOfEchildren, numberOfSentences, outputFile)
+    # Runs a simulation over maxEchildren eChildren
+    runSim1.runSimulation(maxEchildren, maxSentences, outputFile)
 
 if __name__ == '__main__':
     start = time.time() 
