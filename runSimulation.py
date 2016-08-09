@@ -4,14 +4,8 @@ import random
 import csv
 
 class runSimulation(object):
-	def __init__(self):
-		self.totalSentenceCount = 0
-		self.totalConvergentChildren = 0
-		self.sentenceInfo = []
-		self.selectedSentences = []
-		self.childList = []
 
-	def __inti__(self, si):
+	def __init__(self, si):
 		self.totalSentenceCount = 0
 		self.totalConvergentChildren = 0
 		self.sentenceInfo = si
@@ -30,6 +24,7 @@ class runSimulation(object):
 		except ZeroDivisionError:
 			print "Average sentence count of converged children: 0"
 
+
 	def makeSelectedSentenceList(self, grammarID):
 		for i in range(0, len(self.sentenceInfo)):
 			if self.sentenceInfo[i][:3] == grammarID or self.sentenceInfo[i][:4] == grammarID:
@@ -40,7 +35,6 @@ class runSimulation(object):
 		joinedTcv = ['eChild #{}'.format(count+1)]
 		for i in range(0,13):
 			joinedTcv.append(eChild.timeCourseVector[i][0])
-			#joinedTcv.append(eChild.timeCourseVector[i][1])
 		joinedTcv.append(' ')
 		joinedTcv = ','.join(map(str, joinedTcv))
 
@@ -52,23 +46,21 @@ class runSimulation(object):
 		f.close()
 
 
-	def doesChildLearnGrammar(self, count, eChild, outputFile):
+	def doesChildLearnGrammar(self, count, eChild, numberOfSentences, outputFile):
 		start = time.clock()
 
-		while not eChild.grammarLearned and eChild.sentenceCount < 1000:
+		while not eChild.grammarLearned and eChild.sentenceCount < numberOfSentences:
 			eChild.consumeSentence(random.choice(self.selectedSentences))
 			eChild.setParameters(eChild.sentenceCount)
 			eChild.sentenceCount += 1
 
 		eChild.totalTime = time.clock() - start
 
-		#write to file: 1st column = yes/no converged, 2nd column = target grammar id, 3rd column = final grammar id, 
-		#4th column = binary grammar as string, 13 additional columns for each number in the binary final grammar
 		self.writeResults(eChild, count, outputFile)
 		return eChild
 
 
-	def runSimulation(self, num, outputFile):
+	def runSimulation(self, num, numberOfSentences, outputFile):
 		for i in range(0,num):
-			self.childList.append(self.doesChildLearnGrammar(i, Child(), outputFile))
+			self.childList.append(self.doesChildLearnGrammar(i, Child(), numberOfSentences, outputFile))
 			print "Finished #{}".format(i)

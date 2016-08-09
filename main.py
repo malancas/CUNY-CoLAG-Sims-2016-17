@@ -36,7 +36,7 @@ from runSimulation import runSimulation
 def main(argv):
     numberOfEchildren = 0
     numberOfSentences = 0
-    languageCode = 0
+    languageCode = ''
     outputFile = ''
 
     try:
@@ -70,31 +70,25 @@ def main(argv):
                 sys.exit(2)
 
         elif opt in ("-l", "--languageCode"):
-            try:
-                numberOfSentences = int(arg)
-            except ValueError:
-                print 'The argument entered is not a valid integer'
-                sys.exit(2)
+            languageCode = arg
 
         elif opt in ("-o", "--outFile"):
             outputFile = arg
-            print "READ THIS", arg
 
-    #This will erase the contents of the chosen output file
+    # This will erase the contents of the chosen output file
+    # to make room for the new results
     open(outputFile, 'w').close()
-    runSim1 = runSimulation()
 
     infoFile = open('EngFrJapGerm.txt','rU') # 0001001100011
-    runSim1.sentenceInfo = infoFile.readlines()
+    runSim1 = runSimulation(infoFile.readlines())
     infoFile.close()
 
-    #French=584, English=611, German=2253, Japanese=3856
-    runSim1.makeSelectedSentenceList('584')
+    # Choose sentences corresponding to one of the four
+    # available: French=584, English=611, German=2253, Japanese=3856
+    runSim1.makeSelectedSentenceList(languageCode)
 
-    runSim1.runSimulation(numberOfEchildren, outputFile)
-    print "Finished \n"
-
-    runSim1.printResults(numberOfEchildren)    
+    # Runs a simulation over numberOfEchildren eChildren
+    runSim1.runSimulation(numberOfEchildren, numberOfSentences, outputFile)
 
 if __name__ == '__main__':
     start = time.time() 
