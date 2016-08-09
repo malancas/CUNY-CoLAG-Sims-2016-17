@@ -40,14 +40,14 @@ def main(argv):
     outputFile = ''
 
     try:
-        opts, args = getopt.getopt(argv,"he:s:l:o:",["outputFile="])
+        opts, args = getopt.getopt(argv,"he:s:l:o:",["eChildren=", "sentences=", "languageCode=", "outFile="])
 
     except getopt.GetoptError:
         print 'An incorrect number of arguments were entered.'
         sys.exit(2)
 
     for opt, arg in opts:
-        if opt == '-h':
+        if opt in ("-h", "--help"):
             print 'Enter four command line arguments:'
             print '(1) The number of eChildren to run the simulation on'
             print '(2) The number of sentences for each eChild to process'
@@ -78,6 +78,7 @@ def main(argv):
 
         elif opt in ("-o", "--outFile"):
             outputFile = arg
+            print "READ THIS", arg
 
     #This will erase the contents of the chosen output file
     open(outputFile, 'w').close()
@@ -90,10 +91,10 @@ def main(argv):
     #French=584, English=611, German=2253, Japanese=3856
     runSim1.makeSelectedSentenceList('584')
 
-    runSim1.runSimulation(100000)
+    runSim1.runSimulation(numberOfEchildren, outputFile)
     print "Finished \n"
 
-    runSim1.printResults(100000)    
+    runSim1.printResults(numberOfEchildren)    
 
 if __name__ == '__main__':
     start = time.time() 
