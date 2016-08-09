@@ -36,10 +36,7 @@ class runSimulation(object):
 		f = open('French_results_100000_tcv.csv', 'a')
 		w = csv.writer(f, delimiter = ',')
 		if count == 0:
-			w.writerow([' ', 'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p10', 'p11', 'p12', 'p13'])
-			#w.writerow(["Grammar", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "Time Course Vector", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "Grammar Learned?", "Total Time"])
-		#w.writerow([f.write(joinedGrammar), f.write(','), f.write(joinedTcv), eChild.grammarLearned, eChild.totalTime])
-		#w.writerow([f.write(joinedTcv), eChild.grammarLearned, eChild.totalTime])
+			w.writerow(['observation', 'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p10', 'p11', 'p12', 'p13'])
 		w.writerow([f.write(joinedTcv)])
 		f.close()
 
