@@ -1,4 +1,5 @@
 from Child import Child
+import plot
 import time
 import random
 import csv
@@ -72,6 +73,8 @@ class runSimulation(object):
 	# Each learner runs the doesChildLearnGrammar function and processes
 	# sentences with the chosen constraints
 	def runSimulation(self, maxLearners, maxSentences, outputFile):
+		childList = []
 		for i in range(0, maxLearners):
-			self.doesChildLearnGrammar(i, Child(), maxSentences, outputFile)
+			childList.append(self.doesChildLearnGrammar(i, Child(), maxSentences, outputFile))
 			print "Finished #{}".format(i)
+		plot.findProbabilities(childList, maxLearners)
