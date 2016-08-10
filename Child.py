@@ -1,6 +1,5 @@
 import time
 import random
-import pickle
 
 #index returns the index of a value in a list; returns -1 if value not in list
 
