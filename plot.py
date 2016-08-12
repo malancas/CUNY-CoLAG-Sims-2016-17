@@ -46,6 +46,7 @@ def findTrioConvergencePatterns(trioDict, quartetDict, sortedTCV, i, j):
 def findConvergencePatterns(childList, maxLearners):
 	# The dictionary will store the stats describing
 	# order of parameter convergence
+	# Replace with defaultdict?
 	parameterConvergencePairs = {}
 	parameterConvergenceTrios = {}
 	parameterConvergenceQuartets = {}

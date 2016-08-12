@@ -37,18 +37,19 @@ class runSimulation(object):
 
 	# Writes the time (particular sentence) that each parameter of each eChild converged on
 	def writeResults(self, eChild, count, outputFile):
-		joinedTcv = ['eChild #{}'.format(count+1)]
-		for i in range(0,13):
-			joinedTcv.append(eChild.timeCourseVector[i][0])
-		joinedTcv.append(' ')
-		joinedTcv = ','.join(map(str, joinedTcv))
-
 		f = open(outputFile, 'a')
-		w = csv.writer(f, delimiter = ',')
-		if not count:
-			w.writerow(['observation', 'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p10', 'p11', 'p12', 'p13'])
-		w.writerow([f.write(joinedTcv)])
-		f.close()
+		try:
+			writer = csv.writer(f)
+			if not count:
+				writer.writerow( ('p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p10', 'p11', 'p12', 'p13') )
+			# Replace with line comprehension?
+			writer.writerow( (eChild.timeCourseVector[0][0], eChild.timeCourseVector[1][0], eChild.timeCourseVector[2][0], 
+				eChild.timeCourseVector[3][0], eChild.timeCourseVector[4][0], eChild.timeCourseVector[5][0], 
+				eChild.timeCourseVector[6][0], eChild.timeCourseVector[7][0], eChild.timeCourseVector[8][0], 
+				eChild.timeCourseVector[9][0], eChild.timeCourseVector[10][0], eChild.timeCourseVector[11][0], 
+				eChild.timeCourseVector[12][0]) )
+		finally:
+			f.close()
 
 
 	# The child, or learner, processes sentences belonging to the chosen language

@@ -5,3 +5,7 @@ tasks.txt
 *.pyc
 plot_notes.txt
 Sakas_Fodor_Disambiguating_prepub.pdf
+total-sales.png
+sample-sales.csv
+sample-plots.py
+*.ipynb
