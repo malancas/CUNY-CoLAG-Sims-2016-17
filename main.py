@@ -40,13 +40,13 @@ def main(argv):
     outputFile = ''
 
     try:
-        opts, args = getopt.getopt(argv,"he:s:l:o:",["eChildren=", "sentences=", "languageCode=", "outFile="])
+        opts, args = getopt.getopt(argv,"h")
 
     except getopt.GetoptError:
-        print 'An incorrect number of arguments were entered.'
         sys.exit(2)
 
-    for opt, arg in opts:
+    # If the help option appears in the command line
+    for opt in opts:
         if opt in ("-h", "--help"):
             print 'Enter four command line arguments:'
             print '(1) The number of eChildren to run the simulation on'
@@ -55,25 +55,42 @@ def main(argv):
             print '(4) The name of the output file'
             sys.exit()
 
-        elif opt in ("-e", "--eChildren"):
-            try:
-                maxEchildren = int(arg)
-            except ValueError:
-                print 'The argument entered is not a valid integer'
-                sys.exit(2)
+    if len(sys.argv) < 5:
+        print 'An incorrect number of arguments were entered'
+        sys.exit(2)
 
-        elif opt in ("-s", "--sentences"):
-            try:
-                maxSentences = int(arg)
-            except ValueError:
-                print 'The argument entered is not a valid integer'
-                sys.exit(2)
+    # Test each argument for correct format and valid type conversion
+    try:
+        maxEchildren = int(sys.argv[1])
+        if maxEchildren < 0:
+            print 'Argument must be a positive integer'
+            sys.exit(2)
+    except ValueError:
+        print 'The argument entered is not a valid integer'
+        sys.exit(2)
 
-        elif opt in ("-l", "--languageCode"):
-            languageCode = arg
+    try:
+        maxSentences = int(sys.argv[2])
+        if maxSentences < 0:
+            print 'Argument must be a positive integer'
+            sys.exit(2)
+    except ValueError:
+        print 'The argument entered is not a valid integer'
+        sys.exit(2)   
 
-        elif opt in ("-o", "--outFile"):
-            outputFile = arg
+    try:
+        int(sys.argv[3])
+        languageCode = sys.argv[3]
+    except ValueError:
+        print 'The argument entered is not a valid integer'
+        sys.exit(2)
+
+    if not sys.argv[3].endswith('csv'):
+        outputFile = sys.argv[4]
+    else:
+        print 'The name of the output file must end with the .csv extension'
+        sys.exit(2)
+
 
     # This will erase the contents of the chosen output file
     # to make room for the new results
