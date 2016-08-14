@@ -132,7 +132,7 @@ class Child(object):
         if(self.grammar == self.expectedGrammar):
             self.grammarLearned = True
 
-        self.haveParametersChanged(count)
+        self.haveParametersChanged(count+1)
 
                
     #1st parameter
