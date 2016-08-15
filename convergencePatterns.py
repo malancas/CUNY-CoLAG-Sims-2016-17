@@ -1,5 +1,4 @@
 from Child import Child
-import sys
 
 # Calculates the percentage that part
 # represents of whole
@@ -7,19 +6,37 @@ def percentage(num, total):
   return 100 * float(num)/float(total)
 
 
+# Will check for different sentence convergence foursome
+# combinations exist. Different combinations are added to quarterDict
+# if they don't appear, otherwise the count within their corresponding
+# dictionary entry is incremented
 def findQuartetConvergencePatterns(quartetDict, sortedTCV, i, j, m):
+	# Check the remaining elements of sortedTCV for different combinations
 	for x in range(m + 1, 13):
 		firstParm = sortedTCV[i][1]
 		secondParm = sortedTCV[j][1]
 		thirdParm = sortedTCV[m][1]
 		fourthParm = sortedTCV[x][1]
 
-		if not fourthParm in quartetDict[firstParm][secondParm][thirdParm]:
+		# A new entry is added to the quarterDict dictionary if it doesn't
+		# exist and a count is started. Otherwise, the count is incremented
+		if not firstParm in quartetDict:
+			quartetDict[firstParm] = {}
+		if not secondParm in quartetDict[firstParm]:
+			quartetDict[firstParm][secondParm] = {}
+		if not thirdParm in quartetDict[firstParm][secondParm]:
+			quartetDict[firstParm][secondParm][thirdParm] = {}
+		
+		if not fourthParm in quartetDict[firstParm][secondParm][thirdParm]:			
 			quartetDict[firstParm][secondParm][thirdParm][fourthParm] = 1
 		else:
 			quartetDict[firstParm][secondParm][thirdParm][fourthParm] += 1
 
 
+# Will check for different sentence convergence threesome
+# combinations exist. Different combinations are added to trioDict
+# if they don't appear, otherwise the count within their corresponding
+# dictionary entry is incremented
 def findTrioConvergencePatterns(trioDict, quartetDict, sortedTCV, i, j):
 	for m in range(j + 1, 13):
 		firstParm = sortedTCV[i][1]
@@ -42,12 +59,13 @@ def findTrioConvergencePatterns(trioDict, quartetDict, sortedTCV, i, j):
 			
 		findQuartetConvergencePatterns(quartetDict, sortedTCV, i, j, m)
 
-
-def findConvergencePatterns(childList, maxLearners):
+# Will track the different convergence patterns (the order in which each parameter converges)
+# that appear in a learner's time course vector.
+# Currently, it will track pairs, triplets, and quartets of parameter combinations
+def findConvergencePatterns(childList, convergencePairs):
 	# The dictionary will store the stats describing
 	# order of parameter convergence
 	# Replace with defaultdict?
-	parameterConvergencePairs = {}
 	parameterConvergenceTrios = {}
 	parameterConvergenceQuartets = {}
 
@@ -66,20 +84,18 @@ def findConvergencePatterns(childList, maxLearners):
 				firstParm = sortedTCV[i][1]
 				secondParm = sortedTCV[j][1]
 
-				if not firstParm in parameterConvergencePairs:
-					parameterConvergencePairs[firstParm] = {secondParm : 1}
-				elif not secondParm in parameterConvergencePairs.get(firstParm):
-					parameterConvergencePairs.get(firstParm)[secondParm] = 1
+				if not firstParm in convergencePairs:
+					convergencePairs[firstParm] = {secondParm : 1}
+				elif not secondParm in convergencePairs.get(firstParm):
+					convergencePairs.get(firstParm)[secondParm] = 1
 				else:
-					parameterConvergencePairs[firstParm][secondParm] += 1
+					convergencePairs[firstParm][secondParm] += 1
 
-				
+				'''
 				if (not firstParm in parameterConvergenceTrios) or (not secondParm in parameterConvergenceTrios.get(firstParm)):
 					parameterConvergenceTrios[firstParm] = {secondParm : {}}
 
 				findTrioConvergencePatterns(parameterConvergenceTrios, parameterConvergenceQuartets, sortedTCV, i, j)
-
-	#sys.exit(0)
 
 	for m in range(0, 13):
 		for n in range(0, 13):
@@ -90,3 +106,4 @@ def findConvergencePatterns(childList, maxLearners):
 					print '\n'
 				except KeyError:
 					print "."
+	'''
