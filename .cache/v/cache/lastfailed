@@ -1,1 +1,4 @@
-{}
+{
+  "tests/test_convergencePatterns.py::test_convergenceQuartetsDictEntries": true, 
+  "tests/test_convergencePatterns.py::test_convergenceTriosDictEntries": true
+}

@@ -6,26 +6,39 @@ def percentage(num, total):
   return 100 * float(num)/float(total)
 
 
+def printConvergencePairs(pairDict):
+	for m in range(0, 13):
+		for n in range(0, 13):
+			if (m != n):
+				try:
+					print "P({0} < {1})".format(m, n)
+					print parameterConvergencePairs[m][n]
+					print '\n'
+				except KeyError:
+					print "."
+
+
 # Will check for different sentence convergence foursome
 # combinations exist. Different combinations are added to quarterDict
 # if they don't appear, otherwise the count within their corresponding
 # dictionary entry is incremented
 def findQuartetConvergencePatterns(quartetDict, sortedTCV, i, j, m):
+	firstParm = sortedTCV[i][1]
+	secondParm = sortedTCV[j][1]
+	thirdParm = sortedTCV[m][1]
+
+	if not firstParm in quartetDict:
+		quartetDict[firstParm] = {secondParm : {thirdParm : {}}}
+
+	elif not secondParm in quartetDict[firstParm]:
+		quartetDict[firstParm][secondParm] = {thirdParm : {}}
+	
+	elif not thirdParm in quartetDict[firstParm][secondParm]:
+		quartetDict[firstParm][secondParm][thirdParm] = {}
+
 	# Check the remaining elements of sortedTCV for different combinations
 	for x in range(m + 1, 13):
-		firstParm = sortedTCV[i][1]
-		secondParm = sortedTCV[j][1]
-		thirdParm = sortedTCV[m][1]
 		fourthParm = sortedTCV[x][1]
-
-		# A new entry is added to the quarterDict dictionary if it doesn't
-		# exist and a count is started. Otherwise, the count is incremented
-		if not firstParm in quartetDict:
-			quartetDict[firstParm] = {}
-		if not secondParm in quartetDict[firstParm]:
-			quartetDict[firstParm][secondParm] = {}
-		if not thirdParm in quartetDict[firstParm][secondParm]:
-			quartetDict[firstParm][secondParm][thirdParm] = {}
 		
 		if not fourthParm in quartetDict[firstParm][secondParm][thirdParm]:			
 			quartetDict[firstParm][secondParm][thirdParm][fourthParm] = 1
@@ -38,25 +51,22 @@ def findQuartetConvergencePatterns(quartetDict, sortedTCV, i, j, m):
 # if they don't appear, otherwise the count within their corresponding
 # dictionary entry is incremented
 def findTrioConvergencePatterns(trioDict, quartetDict, sortedTCV, i, j):
+	firstParm = sortedTCV[i][1]
+	secondParm = sortedTCV[j][1]
+
+	if not firstParm in trioDict:
+		trioDict[firstParm] = {secondParm : {}}
+	elif not secondParm in trioDict[firstParm]:
+		trioDict[firstParm][secondParm] = {}
+
 	for m in range(j + 1, 13):
-		firstParm = sortedTCV[i][1]
-		secondParm = sortedTCV[j][1]
 		thirdParm = sortedTCV[m][1]
 
 		if not thirdParm in trioDict[firstParm][secondParm]:
 			trioDict[firstParm][secondParm][thirdParm] = 1
 		else:
 			trioDict[firstParm][secondParm][thirdParm] += 1
-
-		if not firstParm in quartetDict:
-			quartetDict[firstParm] = {}
-
-		if not secondParm in quartetDict[firstParm]:
-			quartetDict[firstParm] = {secondParm : {}}
-
-		if not thirdParm in quartetDict[firstParm][secondParm]:
-			quartetDict[firstParm][secondParm] = {thirdParm : {}}
-			
+		
 		findQuartetConvergencePatterns(quartetDict, sortedTCV, i, j, m)
 
 # Will track the different convergence patterns (the order in which each parameter converges)
@@ -91,19 +101,4 @@ def findConvergencePatterns(childList, convergencePairs):
 				else:
 					convergencePairs[firstParm][secondParm] += 1
 
-				'''
-				if (not firstParm in parameterConvergenceTrios) or (not secondParm in parameterConvergenceTrios.get(firstParm)):
-					parameterConvergenceTrios[firstParm] = {secondParm : {}}
-
 				findTrioConvergencePatterns(parameterConvergenceTrios, parameterConvergenceQuartets, sortedTCV, i, j)
-
-	for m in range(0, 13):
-		for n in range(0, 13):
-			if (m != n):
-				try:
-					print "P({0} < {1})".format(m, n)
-					print parameterConvergencePairs[m][n]
-					print '\n'
-				except KeyError:
-					print "."
-	'''
