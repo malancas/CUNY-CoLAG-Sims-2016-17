@@ -13,13 +13,13 @@ class convergencePatterns(object):
   		return 100 * float(num)/float(total)
 
 
-	def printConvergencePairs(self, pairDict):
+	def printConvergencePairs(self):
 		for m in range(0, 13):
 			for n in range(0, 13):
 				if (m != n):
 					try:
 						print "P({0} < {1})".format(m, n)
-						print parameterConvergencePairs[m][n]
+						print self.pairDict[m][n]
 						print '\n'
 					except KeyError:
 						print "."
@@ -38,7 +38,7 @@ class convergencePatterns(object):
 		for x in range(m + 1, 13):
 			fourthParm = sortedTCV[x][1]
 		
-			quartetDict[firstParm][secondParm][thirdParm][fourthParm] += 1
+			self.quartetDict[firstParm][secondParm][thirdParm][fourthParm] += 1
 
 
 	# Will check for different sentence convergence threesome
@@ -52,9 +52,9 @@ class convergencePatterns(object):
 		for m in range(j + 1, 13):
 			thirdParm = sortedTCV[m][1]
 
-			trioDict[firstParm][secondParm][thirdParm] += 1
+			self.trioDict[firstParm][secondParm][thirdParm] += 1
 
-			findQuartetConvergencePatterns(sortedTCV, i, j, m)
+			self.findQuartetConvergencePatterns(sortedTCV, i, j, m)
 
 
 	# Checks if key value pairs exist for each possible pairing in the current
@@ -67,9 +67,9 @@ class convergencePatterns(object):
 				firstParm = sortedTCV[i][1]
 				secondParm = sortedTCV[j][1]
 
-				pairDict[firstParm][secondParm] += 1
+				self.pairDict[firstParm][secondParm] += 1
 
-				findTrioConvergencePatterns(sortedTCV, i, j)	
+				self.findTrioConvergencePatterns(sortedTCV, i, j)	
 
 
 	# Will track the different convergence patterns (the order in which each parameter converges)
@@ -86,4 +86,4 @@ class convergencePatterns(object):
 			sortedTCV = sorted(child.timeCourseVector, key=lambda parameter: parameter[0])
 			assert(len(sortedTCV) == 13)
 
-			findConvergencePairs(sortedTCV)
+			self.findConvergencePairs(sortedTCV)

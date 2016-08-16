@@ -1,8 +1,8 @@
 from .. import convergencePatterns
-import unittest
-import random
 from .. import Child
+import random
 import pytest
+from collections import defaultdict
 
 
 '''
@@ -11,44 +11,56 @@ within all possible dictionary key pairs.
 The function will check for pairings with currKey and
 any paired key must appear after it in timeCourseVector
 '''
-def checkForKeyPairs(currKey, currKeyIndex, timeCourseVector, dict):
+def checkForKeyPairs(currKeyIndex, timeCourseVector, dict):
+	currKey = timeCourseVector[currKeyIndex][1]
+
 	for i in range(1, 13):
 		secondKey = timeCourseVector[i][1]
 		if i > currKeyIndex:
 			assert dict[currKey][secondKey] > 0
 		else:
-			with pytest.raises(KeyError):
-				dict[currKey][secondKey] > 0
+			assert not secondKey in dict[currKey]
+			#with pytest.raises(KeyError):
+			#	dict[currKey][secondKey] > 0
 
 
 '''
 Checks that valid triple key groups are present in dict and that
 the value is greater than zero
 '''
-def checkForKeyTrios(currKey, currKeyIndex, secondKey, secondKeyIndex, timeCourseVector, dict):
+def checkForKeyTrios(currKeyIndex, secondKeyIndex, timeCourseVector, dict):
 	assert currKeyIndex < secondKeyIndex
+	currKey = timeCourseVector[currKeyIndex][1]
+	secondKey = timeCourseVector[secondKeyIndex][1]
+
 	for i in range(1, 13):
 		thirdKey = timeCourseVector[i][1]
 		if i > secondKeyIndex:
 			assert dict[currKey][secondKey][thirdKey] > 0
 		else:
-			with pytest.raises(KeyError):
-				dict[currKey][secondKey][thirdKey] > 0
+			assert not thirdKey in dict[currKey][secondKey]
+			#with pytest.raises(KeyError):
+			#	dict[currKey][secondKey][thirdKey] > 0
 
 
 '''
 Checks that valid triple key groups are present in dict and that
 the value is greater than zero
 '''
-def checkForKeyQuartets(currKey, currKeyIndex, secondKey, secondKeyIndex, thirdKey, thirdKeyIndex, timeCourseVector, dict):
+def checkForKeyQuartets(currKeyIndex, secondKeyIndex, thirdKeyIndex, timeCourseVector, dict):
 	assert currKeyIndex < secondKeyIndex < thirdKeyIndex
+	currKey = timeCourseVector[currKeyIndex][1]
+	secondKey = timeCourseVector[secondKeyIndex][1]
+	thirdKey = timeCourseVector[thirdKeyIndex][1]
+
 	for i in range(1, 13):
 		fourthKey = timeCourseVector[i][1]
 		if i > thirdKeyIndex:
 			assert dict[currKey][secondKey][thirdKey][fourthKey] > 0
 		else:
-			with pytest.raises(KeyError):
-				dict[currKey][secondKey][thirdKey][fourthKey] > 0
+			assert not fourthKey in dict[currKey][secondKey][thirdKey]
+			#with pytest.raises(KeyError):
+			#	dict[currKey][secondKey][thirdKey][fourthKey] > 0
 
 
 '''
@@ -61,11 +73,9 @@ def test_convergencePairDictEntries():
 	c1 = Child.Child()
 	c1.timeCourseVector = [[3, 5], [4, 1], [10, 12], [11, 11], [14, 2], [14, 8], [24, 3], [26, 6], [30, 4], [31, 9], [56, 7], [60, 13], [61, 10]]
 	sampleChildList = [c1]
-	pairDict = defaultdict(lambda: 0)
-	trioDict = defaultdict(lambda: 0)
-	quartetDict = defaultdict(lambda: 0)
+	patterns = convergencePatterns.convergencePatterns()
 
-	convergencePatterns.findConvergencePairs(pairDict, sampleTCV, trioDict, quartetDict)
+	patterns.findConvergencePairs(c1.timeCourseVector)
 	
 	''' 
 	After running findConvergencePatterns, sampleDict should contain a number of key
@@ -74,7 +84,7 @@ def test_convergencePairDictEntries():
 	Every parameter is checked in the for loop 
 	'''
 	for i in range(0, 13):
-		checkForKeyPairs(c1.timeCourseVector[i][1], i, c1.timeCourseVector, sampleDict)
+		checkForKeyPairs(i, c1.timeCourseVector, patterns.pairDict)
 
 
 '''
@@ -87,12 +97,12 @@ def test_convergenceTriosDictEntries():
 	# Make a sample dictionary, that will contain a number of dictionaries
 	# of varying levels, and a sample time course vector
 	sampleTCV = [[3, 5], [4, 1], [10, 12], [11, 11], [14, 2], [14, 8], [24, 3], [26, 6], [30, 4], [31, 9], [56, 7], [60, 13], [61, 10]]
-	sampleDict = {}
+	patterns = convergencePatterns.convergencePatterns()
 
-	convergencePatterns.findTrioConvergencePatterns(sampleDict, {}, sampleTCV, 0, 1)
+	patterns.findTrioConvergencePatterns(sampleTCV, 0, 1)
 	for i in range(0, 12):
 		for j in range(i+1, 13):
-			checkForKeyTrios(sampleTCV[i][1], i, sampleTCV[j][1], j, sampleTCV, sampleDict)
+			checkForKeyTrios(i, j, sampleTCV, patterns.trioDict)
 
 
 '''
@@ -105,13 +115,13 @@ def test_convergenceQuartetsDictEntries():
 	# Make a sample dictionary, that will contain a number of dictionaries
 	# of varying levels, and a sample time course vector
 	sampleTCV = [[3, 5], [4, 1], [10, 12], [11, 11], [14, 2], [14, 8], [24, 3], [26, 6], [30, 4], [31, 9], [56, 7], [60, 13], [61, 10]]
-	sampleDict = {}
+	patterns = convergencePatterns.convergencePatterns()
 
-	convergencePatterns.findQuartetConvergencePatterns(sampleDict, sampleTCV, 0, 1, 2)
+	patterns.findQuartetConvergencePatterns(sampleTCV, 0, 1, 2)
 	for i in range(0, 11):
 		for j in range(i+1, 12):
 			for k in range(j+1, 13):
-				checkForKeyQuartets(sampleTCV[i][1], i, sampleTCV[j][1], j, sampleTCV[k][1], k, sampleTCV, sampleDict)
+				checkForKeyQuartets(i, j, k, sampleTCV, patterns.quartetDict)
 
 
 def randomTesting():
