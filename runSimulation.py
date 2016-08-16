@@ -78,4 +78,4 @@ class runSimulation(object):
 		for i in range(0, maxLearners):
 			childList.append(self.doesChildLearnGrammar(i, Child(), maxSentences, outputFile))
 			print "Finished #{}".format(i)
-		plot.findConvergencePatterns(childList, maxLearners)
+		plot.findConvergencePatterns(childList)

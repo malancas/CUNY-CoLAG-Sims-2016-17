@@ -1,4 +1,5 @@
 from Child import Child
+from collections import defaultdict
 
 # Calculates the percentage that part
 # represents of whole
@@ -30,10 +31,10 @@ def findQuartetConvergencePatterns(quartetDict, sortedTCV, i, j, m):
 	if not firstParm in quartetDict:
 		quartetDict[firstParm] = {secondParm : {thirdParm : {}}}
 
-	elif not secondParm in quartetDict[firstParm]:
+	if not secondParm in quartetDict[firstParm]:
 		quartetDict[firstParm][secondParm] = {thirdParm : {}}
 	
-	elif not thirdParm in quartetDict[firstParm][secondParm]:
+	if not thirdParm in quartetDict[firstParm][secondParm]:
 		quartetDict[firstParm][secondParm][thirdParm] = {}
 
 	# Check the remaining elements of sortedTCV for different combinations
@@ -69,6 +70,27 @@ def findTrioConvergencePatterns(trioDict, quartetDict, sortedTCV, i, j):
 		
 		findQuartetConvergencePatterns(quartetDict, sortedTCV, i, j, m)
 
+
+# Checks if key value pairs exist for each possible pairing in the current
+# sorted time course vector. If not, a pair is made and a count recording
+# the number of times the ordering appears in every learner. If the pair
+# already exists, the count is incremented
+def findConvergencePairs(pairDict, sortedTCV, parameterConvergenceTrios, parameterConvergenceQuartets):
+	for i in range(0, 12):
+		for j in range(i+1, 13):
+			firstParm = sortedTCV[i][1]
+			secondParm = sortedTCV[j][1]
+
+			if not firstParm in convergencePairs:
+				convergencePairs[firstParm] = {secondParm : 1}
+			elif not secondParm in convergencePairs.get(firstParm):
+				convergencePairs.get(firstParm)[secondParm] = 1
+			else:
+				convergencePairs[firstParm][secondParm] += 1
+
+			findTrioConvergencePatterns(parameterConvergenceTrios, parameterConvergenceQuartets, sortedTCV, i, j)	
+
+
 # Will track the different convergence patterns (the order in which each parameter converges)
 # that appear in a learner's time course vector.
 # Currently, it will track pairs, triplets, and quartets of parameter combinations
@@ -76,8 +98,8 @@ def findConvergencePatterns(childList, convergencePairs):
 	# The dictionary will store the stats describing
 	# order of parameter convergence
 	# Replace with defaultdict?
-	parameterConvergenceTrios = {}
-	parameterConvergenceQuartets = {}
+	convergenceTrios = {}
+	convergenceQuartets = {}
 
 	for child in childList:
 		# Sort the learner's timeCourseVector based on the convergence
@@ -85,20 +107,4 @@ def findConvergencePatterns(childList, convergencePairs):
 		sortedTCV = sorted(child.timeCourseVector, key=lambda parameter: parameter[0])
 		assert(len(sortedTCV) == 13)
 
-		# Checks if key value pairs exist for each possible pairing in the current
-		# sorted time course vector. If not, a pair is made and a count recording
-		# the number of times the ordering appears in every learner. If the pair
-		# already exists, the count is incremented
-		for i in range(0, 12):
-			for j in range(i+1, 13):
-				firstParm = sortedTCV[i][1]
-				secondParm = sortedTCV[j][1]
-
-				if not firstParm in convergencePairs:
-					convergencePairs[firstParm] = {secondParm : 1}
-				elif not secondParm in convergencePairs.get(firstParm):
-					convergencePairs.get(firstParm)[secondParm] = 1
-				else:
-					convergencePairs[firstParm][secondParm] += 1
-
-				findTrioConvergencePatterns(parameterConvergenceTrios, parameterConvergenceQuartets, sortedTCV, i, j)
+		findConvergencePairs(pairDict, sortedTCV, convergenceTrios, convergenceQuartets)
