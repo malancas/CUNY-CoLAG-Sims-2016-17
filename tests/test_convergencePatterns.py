@@ -61,9 +61,11 @@ def test_convergencePairDictEntries():
 	c1 = Child.Child()
 	c1.timeCourseVector = [[3, 5], [4, 1], [10, 12], [11, 11], [14, 2], [14, 8], [24, 3], [26, 6], [30, 4], [31, 9], [56, 7], [60, 13], [61, 10]]
 	sampleChildList = [c1]
-	sampleDict = {}
+	pairDict = defaultdict(lambda: 0)
+	trioDict = defaultdict(lambda: 0)
+	quartetDict = defaultdict(lambda: 0)
 
-	convergencePatterns.findConvergencePatterns(sampleChildList, sampleDict)
+	convergencePatterns.findConvergencePairs(pairDict, sampleTCV, trioDict, quartetDict)
 	
 	''' 
 	After running findConvergencePatterns, sampleDict should contain a number of key

@@ -1,5 +1,5 @@
 from Child import Child
-import plot
+from convergencePatterns import convergencePatterns
 import time
 import random
 import csv
@@ -78,4 +78,5 @@ class runSimulation(object):
 		for i in range(0, maxLearners):
 			childList.append(self.doesChildLearnGrammar(i, Child(), maxSentences, outputFile))
 			print "Finished #{}".format(i)
-		plot.findConvergencePatterns(childList)
+		patterns = convergencePatterns()
+		patterns.findConvergencePatterns(childList)
