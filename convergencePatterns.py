@@ -29,32 +29,31 @@ class convergencePatterns(object):
 	# combinations exist. Different combinations are added to quarterDict
 	# if they don't appear, otherwise the count within their corresponding
 	# dictionary entry is incremented
-	def findQuartetConvergencePatterns(self, sortedTCV, i, j, m):
-		firstParm = sortedTCV[i][1]
-		secondParm = sortedTCV[j][1]
-		thirdParm = sortedTCV[m][1]
+	def findQuartetConvergencePatterns(self, sortedTCV):
+		for i in range(0, 13):
+			for j in range(i+1, 13):
+				for k in range(j+1, 13):
+					for l in range(k+1, 13):
+						firstParm = sortedTCV[i][1]
+						secondParm = sortedTCV[j][1]
+						thirdParm = sortedTCV[k][1]
+						fourthParm = sortedTCV[l][1]
 
-		# Check the remaining elements of sortedTCV for different combinations
-		for x in range(m + 1, 13):
-			fourthParm = sortedTCV[x][1]
-		
-			self.quartetDict[firstParm][secondParm][thirdParm][fourthParm] += 1
+						self.quartetDict[firstParm][secondParm][thirdParm][fourthParm] += 1
 
 
 	# Will check for different sentence convergence threesome
 	# combinations exist. Different combinations are added to trioDict
 	# if they don't appear, otherwise the count within their corresponding
 	# dictionary entry is incremented
-	def findTrioConvergencePatterns(self, sortedTCV, i, j):
-		firstParm = sortedTCV[i][1]
-		secondParm = sortedTCV[j][1]
-
-		for m in range(j + 1, 13):
-			thirdParm = sortedTCV[m][1]
-
-			self.trioDict[firstParm][secondParm][thirdParm] += 1
-
-			self.findQuartetConvergencePatterns(sortedTCV, i, j, m)
+	def findTrioConvergencePatterns(self, sortedTCV):
+		for i in range(0, 13):
+			for j in range(i+1, 13):
+				for k in range(j+1, 13):
+					firstParm = sortedTCV[i][1]
+					secondParm = sortedTCV[j][1]
+					thirdParm = sortedTCV[k][1]
+					self.trioDict[firstParm][secondParm][thirdParm] += 1
 
 
 	# Checks if key value pairs exist for each possible pairing in the current
@@ -69,7 +68,7 @@ class convergencePatterns(object):
 
 				self.pairDict[firstParm][secondParm] += 1
 
-				self.findTrioConvergencePatterns(sortedTCV, i, j)	
+				#self.findTrioConvergencePatterns(sortedTCV, i, j)	
 
 
 	# Will track the different convergence patterns (the order in which each parameter converges)
@@ -87,3 +86,5 @@ class convergencePatterns(object):
 			assert(len(sortedTCV) == 13)
 
 			self.findConvergencePairs(sortedTCV)
+			self.findTrioConvergencePatterns(sortedTCV)
+			self.findQuartetConvergencePatterns(sortedTCV)

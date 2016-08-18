@@ -20,8 +20,6 @@ def checkForKeyPairs(currKeyIndex, timeCourseVector, dict):
 			assert dict[currKey][secondKey] > 0
 		else:
 			assert not secondKey in dict[currKey]
-			#with pytest.raises(KeyError):
-			#	dict[currKey][secondKey] > 0
 
 
 '''
@@ -37,10 +35,9 @@ def checkForKeyTrios(currKeyIndex, secondKeyIndex, timeCourseVector, dict):
 		thirdKey = timeCourseVector[i][1]
 		if i > secondKeyIndex:
 			assert dict[currKey][secondKey][thirdKey] > 0
+			print "ck: {0}, sk: {1}, tk: {2}".format(currKey, secondKey, thirdKey)
 		else:
 			assert not thirdKey in dict[currKey][secondKey]
-			#with pytest.raises(KeyError):
-			#	dict[currKey][secondKey][thirdKey] > 0
 
 
 '''
@@ -57,10 +54,9 @@ def checkForKeyQuartets(currKeyIndex, secondKeyIndex, thirdKeyIndex, timeCourseV
 		fourthKey = timeCourseVector[i][1]
 		if i > thirdKeyIndex:
 			assert dict[currKey][secondKey][thirdKey][fourthKey] > 0
+			print "ck: {0}, sk: {1}, tk: {2}, fk: {3}".format(currKey, secondKey, thirdKey, fourthKey)
 		else:
 			assert not fourthKey in dict[currKey][secondKey][thirdKey]
-			#with pytest.raises(KeyError):
-			#	dict[currKey][secondKey][thirdKey][fourthKey] > 0
 
 
 '''
@@ -99,7 +95,7 @@ def test_convergenceTriosDictEntries():
 	sampleTCV = [[3, 5], [4, 1], [10, 12], [11, 11], [14, 2], [14, 8], [24, 3], [26, 6], [30, 4], [31, 9], [56, 7], [60, 13], [61, 10]]
 	patterns = convergencePatterns.convergencePatterns()
 
-	patterns.findTrioConvergencePatterns(sampleTCV, 0, 1)
+	patterns.findTrioConvergencePatterns(sampleTCV)
 	for i in range(0, 12):
 		for j in range(i+1, 13):
 			checkForKeyTrios(i, j, sampleTCV, patterns.trioDict)
@@ -117,7 +113,7 @@ def test_convergenceQuartetsDictEntries():
 	sampleTCV = [[3, 5], [4, 1], [10, 12], [11, 11], [14, 2], [14, 8], [24, 3], [26, 6], [30, 4], [31, 9], [56, 7], [60, 13], [61, 10]]
 	patterns = convergencePatterns.convergencePatterns()
 
-	patterns.findQuartetConvergencePatterns(sampleTCV, 0, 1, 2)
+	patterns.findQuartetConvergencePatterns(sampleTCV)
 	for i in range(0, 11):
 		for j in range(i+1, 12):
 			for k in range(j+1, 13):
@@ -140,3 +136,27 @@ def randomTesting():
 	#sampleDict = {randit(1, 5) : {}, randit(1, 5) : {randit(1, 5) : {randit(1, 5) : {}}}, randit(1, 5) : {randit(1, 5) : {}}}
 
 	#findQuartetConvergencePatterns(sampleDict, sampleTCV, 1, 11, 3)
+
+
+	'''
+Runs findConvergencePatterns with a sample dictionarie and time course vector.
+Afterwords, checkForKeyPairs will test the contents of sampleDict to see if 
+appropriate key pairs and values were added. py.test should be used to run these
+tests
+'''
+def test_inOrderTCV():
+	c1 = Child.Child()
+	c1.timeCourseVector = [[1, 1], [2, 2], [3, 3], [4, 4], [5, 5], [6, 6], [7, 7], [8, 8], [9, 9], [10, 10], [11, 11], [12, 12], [13, 13]]
+	sampleChildList = [c1]
+	patterns = convergencePatterns.convergencePatterns()
+
+	patterns.findConvergencePairs(c1.timeCourseVector)
+	
+	''' 
+	After running findConvergencePatterns, sampleDict should contain a number of key
+	and inner key pairs. The outer key should always appear before the inner key in the
+	sample time course vector
+	Every parameter is checked in the for loop 
+	'''
+	for i in range(0, 13):
+		checkForKeyPairs(i, c1.timeCourseVector, patterns.pairDict)
