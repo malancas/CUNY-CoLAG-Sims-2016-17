@@ -107,6 +107,8 @@ def main(argv):
     # Runs a simulation over maxEchildren eChildren
     runSim1.runSimulation(maxEchildren, maxSentences, outputFile)
 
+    # Use os.system("script.py" 1) to run script with arguments
+
 if __name__ == '__main__':
     start = time.time() 
     main(sys.argv[1:])
