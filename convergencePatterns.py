@@ -4,6 +4,8 @@ from collections import defaultdict
 
 class convergencePatterns(object):
 	def __init__(self):
+		# Each defaultdict is used to store every pair, trio, and quartet of parameter convergence orders
+		# found in the learners.
 		self.pairDict = defaultdict(lambda: defaultdict(lambda: 0))
 		self.trioDict = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: 0)))
 		self.quartetDict = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: 0))))
@@ -22,7 +24,7 @@ class convergencePatterns(object):
 						print self.pairDict[m][n]
 						print '\n'
 					except KeyError:
-						print "."
+						print ""
 
 
 	# Will check for different sentence convergence foursome
@@ -68,17 +70,11 @@ class convergencePatterns(object):
 
 				self.pairDict[firstParm][secondParm] += 1
 
-				#self.findTrioConvergencePatterns(sortedTCV, i, j)	
-
 
 	# Will track the different convergence patterns (the order in which each parameter converges)
 	# that appear in a learner's time course vector.
 	# Currently, it will track pairs, triplets, and quartets of parameter combinations
 	def findConvergencePatterns(self, childList):
-		# The dictionary will store the stats describing
-		# order of parameter convergence
-		# Replace with defaultdict?
-
 		for child in childList:
 			# Sort the learner's timeCourseVector based on the convergence
 			# time of each parameter

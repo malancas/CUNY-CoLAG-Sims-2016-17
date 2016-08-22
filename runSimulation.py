@@ -5,7 +5,6 @@ import random
 import csv
 
 class runSimulation(object):
-
 	def __init__(self, si):
 		self.totalSentenceCount = 0
 		self.totalConvergentChildren = 0
@@ -42,7 +41,7 @@ class runSimulation(object):
 			writer = csv.writer(f)
 			if not count:
 				writer.writerow( ('p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p10', 'p11', 'p12', 'p13') )
-			# Replace with line comprehension?
+
 			writer.writerow( (eChild.timeCourseVector[0][0], eChild.timeCourseVector[1][0], eChild.timeCourseVector[2][0], 
 				eChild.timeCourseVector[3][0], eChild.timeCourseVector[4][0], eChild.timeCourseVector[5][0], 
 				eChild.timeCourseVector[6][0], eChild.timeCourseVector[7][0], eChild.timeCourseVector[8][0], 
@@ -78,5 +77,7 @@ class runSimulation(object):
 		for i in range(0, maxLearners):
 			childList.append(self.doesChildLearnGrammar(i, Child(), maxSentences, outputFile))
 			print "Finished #{}".format(i)
+		
+		# Make a convergencePatterns instance and find resulting convergence patterns
 		patterns = convergencePatterns()
 		patterns.findConvergencePatterns(childList)
