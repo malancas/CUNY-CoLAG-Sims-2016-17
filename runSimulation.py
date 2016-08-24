@@ -1,5 +1,7 @@
 from Child import Child
 from convergencePatterns import convergencePatterns
+from multiprocessing import Pool, Process, Lock
+from multiprocessing.dummy import Pool as ThreadPool 
 import time
 import random
 import csv
@@ -10,6 +12,8 @@ class runSimulation(object):
 		self.totalConvergentChildren = 0
 		self.sentenceInfo = si
 		self.selectedSentences = []
+		self.firstWrite = True
+		self.lock = Lock()
 
 
 	# Prints the percentage of converged children
@@ -35,11 +39,13 @@ class runSimulation(object):
 
 
 	# Writes the time (particular sentence) that each parameter of each eChild converged on
-	def writeResults(self, eChild, count, outputFile):
+	def writeResults(self, eChild, outputFile):
+		self.lock.acquire()
+
 		f = open(outputFile, 'a')
 		try:
 			writer = csv.writer(f)
-			if not count:
+			if self.firstWrite:
 				writer.writerow( ('p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p10', 'p11', 'p12', 'p13') )
 
 			writer.writerow( (eChild.timeCourseVector[0][0], eChild.timeCourseVector[1][0], eChild.timeCourseVector[2][0], 
@@ -49,13 +55,14 @@ class runSimulation(object):
 				eChild.timeCourseVector[12][0]) )
 		finally:
 			f.close()
+		self.lock.release()
 
 
 	# The child, or learner, processes sentences belonging to the chosen language
 	# until its grammar is identical to the language's or it has processed the
 	# chosen number of sentences (maxSentences). The timeCourseVector data of the
 	# learner is then written to the output file
-	def doesChildLearnGrammar(self, count, eChild, maxSentences, outputFile):
+	def doesChildLearnGrammar(self, eChild, maxSentences, outputFile):
 		start = time.clock()
 
 		while not eChild.grammarLearned and eChild.sentenceCount < maxSentences:
@@ -65,7 +72,7 @@ class runSimulation(object):
 
 		eChild.totalTime = time.clock() - start
 
-		self.writeResults(eChild, count, outputFile)
+		self.writeResults(eChild, outputFile)
 		return eChild
 
 
@@ -74,9 +81,15 @@ class runSimulation(object):
 	# sentences with the chosen constraints
 	def runSimulation(self, maxLearners, maxSentences, outputFile):
 		childList = []
-		for i in range(0, maxLearners):
-			childList.append(self.doesChildLearnGrammar(i, Child(), maxSentences, outputFile))
-			print "Finished #{}".format(i)
+		pool = ThreadPool()
+
+		for i in range(maxLearners):
+			p = Process(target=self.doesChildLearnGrammar, args=(Child(), maxSentences, outputFile))
+			childList.append(p)
+			p.start()
+			if self.firstWrite:
+				self.firstWrite = False
+
 		
 		# Make a convergencePatterns instance and find resulting convergence patterns
 		patterns = convergencePatterns()
