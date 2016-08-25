@@ -1,3 +1,5 @@
+#!/opt/anaconda2/bin/python
+
 '''
 The following will produce a line graph representing
 the time at which each learner's parameters converged
@@ -6,13 +8,26 @@ the time at which each learner's parameters converged
 # Standard import for pandas, numpy and matplot
 import pandas as pd
 import numpy as np
+import sys
 import matplotlib.pyplot as plt
 
-%matplotlib inline
+
+if not len(sys.argv) != 2:
+    print "Only the output file name should be passed to the script as an argument"
+    sys.exit(2)
+
+# Used to store the output file whose contents will be analyzed
+outputFile = ''
+
+if sys.argv[1].endswith('csv'):
+        outputFile = sys.argv[1]
+else:
+    print 'The name of the output file must end with the .csv extension'
+    sys.exit(2)
 
 
-# Import and view data from out.csv
-df = pd.read_csv('out.csv')
+# Import and view data from outputFile
+df = pd.read_csv(outputFile)
 df.head()
 
 
@@ -102,4 +117,4 @@ plt.show()
 
 # Save the resulting graph as a pdf
 figure = plt.figure()
-figure.savefig('pset.pdf')
+figure.savefig('convergenceTime.pdf')

@@ -1,3 +1,5 @@
+#!/opt/anaconda2/bin/python
+
 '''
 The following will produce a line graph representing
 the order (represented by p-set) in which each learner's
@@ -9,12 +11,24 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import argparse
+import sys
 
-%matplotlib inline
 
+if len(sys.argv) != 2:
+    print "Only the output file name should be passed to the script as an argument"
+    sys.exit(2)
 
-# Import and view data from out.csv
-df = pd.read_csv('out.csv')
+# Used to store the output file whose contents will be analyzed
+outputFile = ''
+
+if sys.argv[1].endswith('csv'):
+        outputFile = sys.argv[1]
+else:
+    print 'The name of the output file must end with the .csv extension'
+    sys.exit(2)
+
+# Import and view data from outputFile
+df = pd.read_csv(outputFile)
 df.head()
 
 
