@@ -8,6 +8,7 @@ def test_makeSelectedSentences():
 	infoFile.close()
 
     # These four ids are present in EngFrJapGerm: French=584, English=611, German=2253, Japanese=3856
+	# Check that makeSelectedSentenceList returns the proper number of sentences for each id
 	runSim1.makeSelectedSentenceList('611')
 	assert runSim1.selectedSentences
 	assert len(runSim1.selectedSentences) == 540
@@ -24,6 +25,8 @@ def test_makeSelectedSentences():
 	runSim1.makeSelectedSentenceList('3856')
 	assert len(runSim1.selectedSentences) == 1092
 
+	# Check that makeSelectedSentencesList returns empty lists
+	# when given ids that don't exist in the orignal txt file
 	runSim1.selectedSentences = []
 	runSim1.makeSelectedSentenceList('612')
 	assert not runSim1.selectedSentences
