@@ -25,9 +25,11 @@ get_bin = lambda x, n: x >= 0 and str(bin(x))[2:].zfill(n) or "-" + str(bin(x))[
 #[1] contains illoc
 #[2] actual sentence
 
-class Child(object):
+class Child(Process):
     
-    def __init__(self):
+    def __init__(self, q):
+        Process.__init__(self)
+        
         #This boolean is False unless the function checkIfLearned sets it to True (which happens when the grammar is acquired). The main program will while-loop until
         self.grammarLearned = False
         
@@ -45,7 +47,49 @@ class Child(object):
         self.oldGrammar = [''] * 13
 
         self.timeCourseVector = [[-1,0],[-1,1],[-1,2],[-1,3],[-1,4],[-1,5],[-1,6],[-1,7],[-1,8],[-1,9],[-1,10],[-1,11],[-1,12]]
-    
+
+        self.queue = q
+
+    def run(self):
+        self.queue.put(self.doesChildLearnGrammar)
+
+    # Writes the time (particular sentence) that each parameter of each eChild converged on
+    def writeResults(self, outputFile, lock):
+        lock.acquire()
+
+        f = open(outputFile, 'a')
+        try:
+            writer = csv.writer(f)
+            if self.firstWrite:
+                writer.writerow( ('p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p10', 'p11', 'p12', 'p13') )
+
+            writer.writerow( (eChild.timeCourseVector[0][0], eChild.timeCourseVector[1][0], eChild.timeCourseVector[2][0], 
+                eChild.timeCourseVector[3][0], eChild.timeCourseVector[4][0], eChild.timeCourseVector[5][0], 
+                eChild.timeCourseVector[6][0], eChild.timeCourseVector[7][0], eChild.timeCourseVector[8][0], 
+                eChild.timeCourseVector[9][0], eChild.timeCourseVector[10][0], eChild.timeCourseVector[11][0], 
+                eChild.timeCourseVector[12][0]) )
+        finally:
+            f.close()
+        lock.release()
+
+
+    # The child, or learner, processes sentences belonging to the chosen language
+    # until its grammar is identical to the language's or it has processed the
+    # chosen number of sentences (maxSentences). The timeCourseVector data of the
+    # learner is then written to the output file
+    def doesChildLearnGrammar(self, maxSentences, outputFile, selectedSentences):
+        start = time.clock()
+
+        while not self.grammarLearned and self.sentenceCount < maxSentences:
+            self.consumeSentence(random.choice(selectedSentences))
+            self.setParameters(eChild.sentenceCount)
+            self.sentenceCount += 1
+
+        self.totalTime = time.clock() - start
+
+        self.writeResults(outputFile)
+        return self.timeCourseVector
+
 
     #Checks whether an eChild's parameter values
     #have changed since the new sentence was processed.
