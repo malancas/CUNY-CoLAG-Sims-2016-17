@@ -74,11 +74,11 @@ class convergencePatterns(object):
 	# Will track the different convergence patterns (the order in which each parameter converges)
 	# that appear in a learner's time course vector.
 	# Currently, it will track pairs, triplets, and quartets of parameter combinations
-	def findConvergencePatterns(self, childList):
-		for child in childList:
+	def findConvergencePatterns(self, tcvList):
+		for tcv in tcvList:
 			# Sort the learner's timeCourseVector based on the convergence
 			# time of each parameter
-			sortedTCV = sorted(child.timeCourseVector, key=lambda parameter: parameter[0])
+			sortedTCV = sorted(tcv, key=lambda parameter: parameter[0])
 			assert(len(sortedTCV) == 13)
 
 			self.findConvergencePairs(sortedTCV)

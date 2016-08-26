@@ -66,18 +66,22 @@ class runSimulation(object):
 		eChild.totalTime = time.clock() - start
 
 		self.writeResults(eChild, count, outputFile)
-		return eChild
+
+		# Return the time course vector so it can be used to find convergence patterns
+		return eChild.timeCourseVector
 
 
 	# Runs a simulation containing maxLearners number of learners
 	# Each learner runs the doesChildLearnGrammar function and processes
 	# sentences with the chosen constraints
-	def runSimulation(self, maxLearners, maxSentences, outputFile):
-		childList = []
+	def runSimulation(self, maxLearners, maxSentences, outputFile, convergencePatternsFlag):
+		# Stores the time course vectors of each learner after processing the specified number
+		# of sentences
+		tcvList = []
 		for i in range(0, maxLearners):
-			childList.append(self.doesChildLearnGrammar(i, Child(), maxSentences, outputFile))
+			tcvList.append(self.doesChildLearnGrammar(i, Child(), maxSentences, outputFile))
 			print "Finished #{}".format(i)
-		
+
 		# Make a convergencePatterns instance and find resulting convergence patterns
 		patterns = convergencePatterns()
-		patterns.findConvergencePatterns(childList)
+		patterns.findConvergencePatterns(tcvList)

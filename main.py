@@ -53,6 +53,7 @@ def main(argv):
             print '(4) The name of the output file'
             sys.exit()
 
+
     if len(sys.argv) < 5:
         print 'An incorrect number of arguments were entered'
         sys.exit(2)
@@ -107,7 +108,7 @@ def main(argv):
     runSim1.makeSelectedSentenceList(languageCode)
 
     # Runs a simulation over maxEchildren number of eChild learners
-    runSim1.runSimulation(maxEchildren, maxSentences, outputFile)
+    runSim1.runSimulation(maxEchildren, maxSentences, outputFile, convergencePatternsFlag)
 
 if __name__ == '__main__':
     start = time.time() 
