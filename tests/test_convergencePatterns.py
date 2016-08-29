@@ -120,25 +120,28 @@ def test_convergenceQuartetsDictEntries():
 				checkForKeyQuartets(i, j, k, sampleTCV, patterns.quartetDict)
 
 
+'''
+Create a tcv and dictionary containing random integers
+representing convergence times between one and five inclusive
+Use these structures with findQuartetConvergencePatterns
+to test whether the function can handle this
+'''
 def randomTesting():
 	# Create a time course vector for testing.
-	# The first element of each inner list represents the
-	# time at which the parameter converged. The second 
-	# element indicates the specific parameter by number
 	# The first element be random, inclusive number between one and five
 	sampleTCV = []
 	for i in range(1, 14):
-		print "hello"
-		#sampleTCV.append([randit(1, 5), i])
+		sampleTCV.append([randit(1, 5), i])
 
 	# Make a sample dictionary, that will contain a number of dictionaries
 	# of varying levels
-	#sampleDict = {randit(1, 5) : {}, randit(1, 5) : {randit(1, 5) : {randit(1, 5) : {}}}, randit(1, 5) : {randit(1, 5) : {}}}
+	sampleDict = {randit(1, 5) : {}, randit(1, 5) : {randit(1, 5) : {randit(1, 5) : {}}}, randit(1, 5) : {randit(1, 5) : {}}}
 
-	#findQuartetConvergencePatterns(sampleDict, sampleTCV, 1, 11, 3)
+	# Run the function to insure it can handle random entries in sampleTCV and sampleDict
+	findQuartetConvergencePatterns(sampleDict, sampleTCV, 1, 11, 3)
 
 
-	'''
+'''
 Runs findConvergencePatterns with a sample dictionarie and time course vector.
 Afterwords, checkForKeyPairs will test the contents of sampleDict to see if 
 appropriate key pairs and values were added. py.test should be used to run these
