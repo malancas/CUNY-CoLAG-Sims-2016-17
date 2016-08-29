@@ -101,12 +101,6 @@ def test_isDeclarative():
 	assert c.isDeclarative()
 
 
-'''
-    #6th parameter   
-    def setNullTopic(self):
-        if "O2" in self.infoList[2] and "O1" not in self.infoList[2] :
-            self.grammar[5] = '1'
-'''
 # If 02 is in infoList[2] while 01 isn't,
 # test that grammar[5] == '1'
 def test_setNullTopic():
