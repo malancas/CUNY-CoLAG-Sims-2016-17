@@ -6,8 +6,8 @@ import csv
 
 class runSimulation(object):
 	def __init__(self, si):
-		self.totalSentenceCount = 0
-		self.totalConvergentChildren = 0
+		self.totalSentenceCount = 0.0
+		self.totalConvergentChildren = 0.0
 		self.sentenceInfo = si
 		self.selectedSentences = []
 
@@ -74,7 +74,7 @@ class runSimulation(object):
 	# Runs a simulation containing maxLearners number of learners
 	# Each learner runs the doesChildLearnGrammar function and processes
 	# sentences with the chosen constraints
-	def runSimulation(self, maxLearners, maxSentences, outputFile):
+	def runLearners(self, maxLearners, maxSentences, outputFile):
 		# Stores the time course vectors of each learner after processing the specified number
 		# of sentences
 		tcvList = []

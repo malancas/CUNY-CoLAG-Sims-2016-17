@@ -2,12 +2,6 @@ import time
 
 get_bin = lambda x, n: x >= 0 and str(bin(x))[2:].zfill(n) or "-" + str(bin(x))[3:].zfill(n)
     
-#######################################################
-################# Child Class #########################
-#######################################################
-
-
-
 class Child(object):
     
     def __init__(self):
@@ -240,7 +234,7 @@ class Child(object):
 
     #6th parameter   
     def setNullTopic(self):
-        if "O2" in self.infoList[2] and "O1" not in self.infoList[2] :
+        if "O2" in self.infoList[2] and "O1" not in self.infoList[2]:
             self.grammar[5] = '1'
 
     

@@ -108,7 +108,7 @@ def main(argv):
     runSim1.makeSelectedSentenceList(languageCode)
 
     # Runs a simulation over maxEchildren number of eChild learners
-    runSim1.runSimulation(maxEchildren, maxSentences, outputFile)
+    runSim1.runLearners(maxEchildren, maxSentences, outputFile)
 
 if __name__ == '__main__':
     start = time.time() 
