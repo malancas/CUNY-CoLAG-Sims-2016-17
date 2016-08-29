@@ -1,18 +1,4 @@
 import time
-import random
-
-#index returns the index of a value in a list; returns -1 if value not in list
-
-def index(listP, value):
-    try:
-        i = list.index(listP, value)
-        return i
-    except ValueError:
-        return -1
-
-#Returns the index of value in the list, in this case it can find the value as a substring in the index of the list    
-def first_substring(listP, value):
-    return next((i for i, string in enumerate(listP) if value in string),-1)
 
 get_bin = lambda x, n: x >= 0 and str(bin(x))[2:].zfill(n) or "-" + str(bin(x))[3:].zfill(n)
     
@@ -20,10 +6,7 @@ get_bin = lambda x, n: x >= 0 and str(bin(x))[2:].zfill(n) or "-" + str(bin(x))[
 ################# Child Class #########################
 #######################################################
 
-#Infolist
-#[0] contains target grammar
-#[1] contains illoc
-#[2] actual sentence
+
 
 class Child(object):
     
@@ -44,16 +27,33 @@ class Child(object):
 
         self.oldGrammar = [''] * 13
 
-        self.timeCourseVector = [[-1,0],[-1,1],[-1,2],[-1,3],[-1,4],[-1,5],[-1,6],[-1,7],[-1,8],[-1,9],[-1,10],[-1,11],[-1,12]]
-    
+        self.timeCourseVector = [[-1,0],[-1,1],[-1,2],[-1,3],[-1,4],[-1,5],
+        [-1,6],[-1,7],[-1,8],[-1,9],[-1,10],[-1,11],[-1,12]]
 
-    #Checks whether an eChild's parameter values
-    #have changed since the new sentence was processed.
-    #If any have changed, they are updated in old grammar
-    #and the timeCourseVector list's tuple corresponding
-    #to the parameter is updated with 'count' to reflect
-    #how many sentences have passed when the parameter
-    #was changed
+
+    #index returns the index of a value in a list; returns -1 if value not in list
+    def findIndex(self, listP, value):
+        try:
+            i = list.index(listP, value)
+            return i
+        except ValueError:
+            return -1
+
+
+    #Returns the index of value in the list, in this case it can find the value as a substring in the index of the list    
+    def first_substring(self, listP, value):
+        return next((i for i, string in enumerate(listP) if value in string),-1)    
+
+
+    '''
+    Checks whether an eChild's parameter values
+    have changed since the new sentence was processed.
+    If any have changed, they are updated in old grammar
+    and the timeCourseVector list's tuple corresponding
+    to the parameter is updated with 'count' to reflect
+    how many sentences have passed when the parameter
+    was changed
+    '''
     def haveParametersChanged(self, count):
         for i in range (0,13):
             if self.oldGrammar[i] != self.grammar[i]:
@@ -61,8 +61,13 @@ class Child(object):
                 self.oldGrammar[i] = self.grammar[i]
 
 
-    #This function will set the current information about the sentence and the sentence itself for the child
-    #Runs everytime eChild is processing a new input sentence
+    '''
+    This function will set the current information about the sentence and the sentence itself for the child
+    Runs everytime eChild is processing a new input sentence
+    Infolist[0] contains target grammar
+    Infolist[1] contains illoc
+    Infolist[2] contains sentences
+    '''
     def consumeSentence(self, info):
         info = info.replace('\n','')
         info = info.replace('\"','')
@@ -138,8 +143,8 @@ class Child(object):
     #1st parameter
     def setSubjPos(self):
         if "O1" in self.infoList[2] and "S" in self.infoList[2]: #Check if O1 and S are in the sentence
-            first = first_substring(self.sentence,"O1") #Find index of O1
-            if first > 0 and first < first_substring(self.sentence,"S"): # Make sure O1 is non-sentence-initial and before S
+            first = self.first_substring(self.sentence,"O1") #Find index of O1
+            if first > 0 and first < self.first_substring(self.sentence,"S"): # Make sure O1 is non-sentence-initial and before S
                 self.grammar[0] = '1'
 
                 
@@ -147,53 +152,53 @@ class Child(object):
     #try to set subject position to 0
     def noSubjPos(self):
         if "O1" in self.infoList[2] and "S" in self.infoList[2]: #Check if O1 and S are in the sentence
-            first = first_substring(self.sentence,"S") #Find index of O1
-            if first >= 0 and first < first_substring(self.sentence,"O1"): # Make sure O1 is non-sentence-initial and before S
+            first = self.first_substring(self.sentence,"S") #Find index of O1
+            if first >= 0 and first < self.first_substring(self.sentence,"O1"): # Make sure O1 is non-sentence-initial and before S
                 self.grammar[0] = '0'
 
     
     #2nd parameter
     def setHead(self):
         if "O3" in self.infoList[2] and "P" in self.infoList[2]:
-            first = first_substring(self.sentence,"O3")
-            if first > 0 and first_substring(self.sentence,"P") == first + 1: #O3 followed by P
+            first = self.first_substring(self.sentence,"O3")
+            if first > 0 and self.first_substring(self.sentence,"P") == first + 1: #O3 followed by P
                 self.grammar[1] = '1'
         #If imperative, make sure Verb directly follows O1
         if self.isImperative() and "O1" in self.infoList[2] and "Verb" in self.infoList[2]:
-            if first_substring(self.sentence, "O1") == first_substring(self.sentence, "Verb") - 1:
+            if self.first_substring(self.sentence, "O1") == self.first_substring(self.sentence, "Verb") - 1:
                 self.grammar[1] = '1'
 
     
     def noHead(self):
         if "O3" in self.infoList[2] and "P" in self.infoList[2]:
-            first = first_substring(self.sentence,"P")
-            if first > 0 and first_substring(self.sentence,"O3") == first + 1: #O3 followed by P
+            first = self.first_substring(self.sentence,"P")
+            if first > 0 and self.first_substring(self.sentence,"O3") == first + 1: #O3 followed by P
                 self.grammar[1] = '0'
         #If imperative, make sure Verb directly follows O1
         if self.isImperative() and "O1" in self.infoList[2] and "Verb" in self.infoList[2]:
-            if first_substring(self.sentence, "Verb") == first_substring(self.sentence, "O1") - 1:
+            if self.first_substring(self.sentence, "Verb") == self.first_substring(self.sentence, "O1") - 1:
                 self.grammar[1] = '0'    
 
                 
     #3rd parameter 
     def setHeadCP(self):
         if(self.isQuestion()):
-            if index(self.sentence, "ka") == len(self.sentence)-1 or ("ka" not in self.sentence and index(self.sentence, "Aux") == len(self.sentence)-1):
+            if self.findIndex(self.sentence, "ka") == len(self.sentence)-1 or ("ka" not in self.sentence and self.findIndex(self.sentence, "Aux") == len(self.sentence)-1):
                 self.grammar[2] = '1'
 
     
     def noHeadCP(self):
         if(self.isQuestion()):
-            if index(self.sentence, "ka") == 0 or ("ka" not in self.sentence and index(self.sentence, "Aux") == 0):
+            if self.findIndex(self.sentence, "ka") == 0 or ("ka" not in self.sentence and self.findIndex(self.sentence, "Aux") == 0):
                 self.grammar[2] = '0'
 
     
     def containsTopicalizable(self):
-        i = first_substring(self.sentence,"S")
-        j = first_substring(self.sentence,"O1")
-        k = first_substring(self.sentence,"O2") 
-        l= first_substring(self.sentence,"O3")
-        m = first_substring(self.sentence,"Adv")
+        i = self.first_substring(self.sentence,"S")
+        j = self.first_substring(self.sentence,"O1")
+        k = self.first_substring(self.sentence,"O2") 
+        l= self.first_substring(self.sentence,"O3")
+        m = self.first_substring(self.sentence,"Adv")
         
         return i == 0 or j == 0 or k == 0 or l == 0 or m == 0
 
@@ -212,10 +217,10 @@ class Child(object):
 
     #out of obliqueness order
     def outOblique(self):
-        i = first_substring(self.sentence,"O1")
-        j = first_substring(self.sentence,"O2") 
-        k = first_substring(self.sentence,"P")
-        l = first_substring(self.sentence,"O3")
+        i = self.first_substring(self.sentence,"O1")
+        j = self.first_substring(self.sentence,"O2") 
+        k = self.first_substring(self.sentence,"P")
+        l = self.first_substring(self.sentence,"O3")
 
         if i != -1 and j != -1 and k != -1 and (i < j < k and l == k+1):  
             return False
@@ -241,15 +246,15 @@ class Child(object):
     
     #7th parameter
     def setWHMovement(self):
-        if first_substring(self.sentence, "+WH") > 0 and "O3[+WH]" not in self.infoList[2]:
+        if self.first_substring(self.sentence, "+WH") > 0 and "O3[+WH]" not in self.infoList[2]:
             self.grammar[6] = '0'
 
                 
     #8th parameter
     def setPrepStrand(self):
         if "P" in self.infoList[2] and "O3" in self.infoList[2] :
-            i = first_substring(self.sentence,"P") #Get index of P
-            j = first_substring(self.sentence,"O3")#Get index of O3
+            i = self.first_substring(self.sentence,"P") #Get index of P
+            j = self.first_substring(self.sentence,"O3")#Get index of O3
             if i != -1 and j != -1 and abs(i - j) != 1 : #If they exist, make sure they aren't adjacent
                 self.grammar[7] = '1'  
     
@@ -263,40 +268,40 @@ class Child(object):
     #10th parameter
     def vToI(self):
         if "O1" in self.infoList[2] and "Verb" in self.infoList[2] :
-            i = first_substring(self.sentence,"O1")
-            j = first_substring(self.sentence,"Verb")
+            i = self.first_substring(self.sentence,"O1")
+            j = self.first_substring(self.sentence,"Verb")
             if i > 0 and j != -1 and abs(i - j) != 1 :
                 self.grammar[9] = '1' 
 
                
     def S_Aux(self):
         if self.isDeclarative():
-            i = first_substring(self.sentence, "S")
-            return i > 0 and first_substring(self.sentence, "Aux") == i + 1
+            i = self.first_substring(self.sentence, "S")
+            return i > 0 and self.first_substring(self.sentence, "Aux") == i + 1
         return False
 
 
     def Aux_S(self):
         if self.isDeclarative():
-            i = first_substring(self.sentence, "Aux")
-            return i > 0 and first_substring(self.sentence, "S") == i + 1
+            i = self.first_substring(self.sentence, "Aux")
+            return i > 0 and self.first_substring(self.sentence, "S") == i + 1
         return False
 
 
     def Aux_Verb(self):
-        return self.isDeclarative() and (first_substring(self.sentence, "Aux") == first_substring(self.sentence, "Verb") - 1)
+        return self.isDeclarative() and (self.first_substring(self.sentence, "Aux") == self.first_substring(self.sentence, "Verb") - 1)
 
 
     def Verb_Aux(self):
-        return self.isDeclarative() and (first_substring(self.sentence, "Verb") == first_substring(self.sentence, "Aux") - 1)
+        return self.isDeclarative() and (self.first_substring(self.sentence, "Verb") == self.first_substring(self.sentence, "Aux") - 1)
 
 
     def Never_Verb(self):
-        return self.isDeclarative() and (first_substring(self.sentence, "Never") == first_substring(self.sentence, "Verb") - 1) and "Aux" not in self.sentence
+        return self.isDeclarative() and (self.first_substring(self.sentence, "Never") == self.first_substring(self.sentence, "Verb") - 1) and "Aux" not in self.sentence
 
     
     def Verb_Never(self):
-        return self.isDeclarative() and (first_substring(self.sentence, "Verb") == first_substring(self.sentence, "Never") - 1) and "Aux" not in self.sentence
+        return self.isDeclarative() and (self.first_substring(self.sentence, "Verb") == self.first_substring(self.sentence, "Never") - 1) and "Aux" not in self.sentence
 
 
     def hasKa(self):
@@ -331,7 +336,7 @@ class Child(object):
     def affixHop(self):
         if self.Verb_tensed() and "Never Verb O1" in self.infoList[2]:
             self.grammar[11] = '1'
-        if self.Verb_tensed() and first_substring(self.sentence, "O1") > 0 and "O1 Verb Never" in self.infoList[2]:
+        if self.Verb_tensed() and self.first_substring(self.sentence, "O1") > 0 and "O1 Verb Never" in self.infoList[2]:
             self.grammar[11] = '1'
 
     

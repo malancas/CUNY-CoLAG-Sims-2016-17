@@ -74,7 +74,7 @@ class runSimulation(object):
 	# Runs a simulation containing maxLearners number of learners
 	# Each learner runs the doesChildLearnGrammar function and processes
 	# sentences with the chosen constraints
-	def runSimulation(self, maxLearners, maxSentences, outputFile, convergencePatternsFlag):
+	def runSimulation(self, maxLearners, maxSentences, outputFile):
 		# Stores the time course vectors of each learner after processing the specified number
 		# of sentences
 		tcvList = []
