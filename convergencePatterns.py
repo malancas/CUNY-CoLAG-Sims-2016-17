@@ -1,5 +1,7 @@
 from Child import Child
 from collections import defaultdict
+import csv
+import datetime
 
 
 class convergencePatterns(object):
@@ -9,6 +11,33 @@ class convergencePatterns(object):
 		self.pairDict = defaultdict(lambda: defaultdict(lambda: 0))
 		self.trioDict = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: 0)))
 		self.quartetDict = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: 0))))
+
+
+	def writePairResults(outputFile):
+		f = open(outputFile, 'a')
+		try:
+			writer = csv.writer(f)
+			# Add the parameters that appear second in pairs to the top row
+			writer.writerow( ('p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p10', 'p11', 'p12', 'p13') )
+
+			# Add parameters that appear first in pairs to individual rows
+			# followed by related pair results
+			for i in range(1,14):
+				print "nothing2"
+				#writer.writerow( ('p'+i, self.pairDict[i][j] for j in range(1,14)) )
+		finally:
+			f.close()
+
+
+	def writeResults(outputFile = ''):
+		# If no ouput file names are given or the given filename doesn't end with csv, 
+		#the function will write to files using a default name format
+		if outputFile.endswith('csv'):
+			writePairResults(outputFile)
+		else:
+			print 'No chosen filename or filename doesn\'t end with .csv.'
+			print 'Writing to default filename'
+			writePairResults('pairConvergenceResults-' + datetime.datetime.now().isoformat() + '.csv')
 
 
 	def percentage(self, num, total):

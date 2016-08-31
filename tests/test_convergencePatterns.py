@@ -3,6 +3,7 @@ from .. import Child
 import random
 import pytest
 from collections import defaultdict
+import os.path
 
 
 '''
@@ -163,3 +164,13 @@ def test_inOrderTCV():
 	'''
 	for i in range(0, 13):
 		checkForKeyPairs(i, c1.timeCourseVector, patterns.pairDict)
+
+
+def test_writeResults():
+	c = convergencePatterns.convergencePatterns()
+	c.writeResults('test_output.csv')
+	assert os.path.isfile('test_output.csv')
+	os.remove('test_output.csv')
+	assert not os.path.isfile('test_output.csv')
+
+	c.writeResults()

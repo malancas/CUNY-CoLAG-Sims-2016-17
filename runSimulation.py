@@ -26,14 +26,6 @@ class runSimulation(object):
 			print "Average sentence count of converged children: 0"
 
 
-	# Fills runSimulation object's selectedSentences array with sentences who
-	# belong to the language that correspond to languageCode
-	def makeSelectedSentenceList(self, languageCode):
-		for i in range(0, len(self.sentenceInfo)):
-			if self.sentenceInfo[i][:3] == languageCode or self.sentenceInfo[i][:4] == languageCode:
-				self.selectedSentences.append(self.sentenceInfo[i])
-
-
 	# Writes the time (particular sentence) that each parameter of each eChild converged on
 	def writeResults(self, eChild, count, outputFile):
 		f = open(outputFile, 'a')
@@ -49,6 +41,14 @@ class runSimulation(object):
 				eChild.timeCourseVector[12][0]) )
 		finally:
 			f.close()
+
+
+	# Fills runSimulation object's selectedSentences array with sentences who
+	# belong to the language that correspond to languageCode
+	def makeSelectedSentenceList(self, languageCode):
+		for i in range(0, len(self.sentenceInfo)):
+			if self.sentenceInfo[i][:3] == languageCode or self.sentenceInfo[i][:4] == languageCode:
+				self.selectedSentences.append(self.sentenceInfo[i])
 
 
 	# The child, or learner, processes sentences belonging to the chosen language
