@@ -37,7 +37,7 @@ class convergencePatterns(object):
 		else:
 			print 'No chosen filename or filename doesn\'t end with .csv.'
 			print 'Writing to default filename'
-			writePairResults('pairConvergenceResults-' + datetime.datetime.now().isoformat() + '.csv')
+			writePairResults('pairConvergenceResults-' + datetime.datetime.now().isoformat().replace(':', '.') + '.csv')
 
 
 	def percentage(self, num, total):

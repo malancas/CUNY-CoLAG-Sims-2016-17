@@ -3,6 +3,7 @@ from convergencePatterns import convergencePatterns
 import time
 import random
 import csv
+import datetime
 
 class runSimulation(object):
 	def __init__(self, si):
@@ -10,6 +11,7 @@ class runSimulation(object):
 		self.totalConvergentChildren = 0.0
 		self.sentenceInfo = si
 		self.selectedSentences = []
+		self.outputFile = ''
 
 
 	# Prints the percentage of converged children
@@ -27,8 +29,9 @@ class runSimulation(object):
 
 
 	# Writes the time (particular sentence) that each parameter of each eChild converged on
-	def writeResults(self, eChild, count, outputFile):
-		f = open(outputFile, 'a')
+	def writeResults(self, eChild, count):
+		# Change outputfile format to include timestamp
+		f = open(self.outputFile, 'a')
 		try:
 			writer = csv.writer(f)
 			if not count:
@@ -51,11 +54,24 @@ class runSimulation(object):
 				self.selectedSentences.append(self.sentenceInfo[i])
 
 
+	# Returns the name of the language
+	# that languageCode corresponds to
+	def getLanguage(self, languageCode):
+		if languageCode == '611':
+			return 'English'
+		elif languageCode == '584':
+			return 'French'
+		elif languageCode == '2253':
+			return 'German'
+		elif languageCode == '3856':
+			return 'Japanese'
+
+
 	# The child, or learner, processes sentences belonging to the chosen language
 	# until its grammar is identical to the language's or it has processed the
 	# chosen number of sentences (maxSentences). The timeCourseVector data of the
 	# learner is then written to the output file
-	def doesChildLearnGrammar(self, count, eChild, maxSentences, outputFile):
+	def doesChildLearnGrammar(self, count, eChild, maxSentences):
 		start = time.clock()
 
 		while not eChild.grammarLearned and eChild.sentenceCount < maxSentences:
@@ -65,7 +81,7 @@ class runSimulation(object):
 
 		eChild.totalTime = time.clock() - start
 
-		self.writeResults(eChild, count, outputFile)
+		self.writeResults(eChild, count)
 
 		# Return the time course vector so it can be used to find convergence patterns
 		return eChild.timeCourseVector
@@ -74,12 +90,16 @@ class runSimulation(object):
 	# Runs a simulation containing maxLearners number of learners
 	# Each learner runs the doesChildLearnGrammar function and processes
 	# sentences with the chosen constraints
-	def runLearners(self, maxLearners, maxSentences, outputFile):
+	def runLearners(self, maxSentences, maxLearners, languageCode):
+		# Create the name of the output file
+		self.outputFile = self.getLanguage(languageCode) + '_' + str(maxLearners) + datetime.datetime.now().isoformat().replace(':','.') + '.csv'
+
 		# Stores the time course vectors of each learner after processing the specified number
 		# of sentences
 		tcvList = []
+
 		for i in range(0, maxLearners):
-			tcvList.append(self.doesChildLearnGrammar(i, Child(), maxSentences, outputFile))
+			tcvList.append(self.doesChildLearnGrammar(i, Child(), maxSentences))
 			print "Finished #{}".format(i)
 
 		# Make a convergencePatterns instance and find resulting convergence patterns

@@ -32,10 +32,9 @@ from Child import Child
 from runSimulation import runSimulation
 
 def main(argv):
-    maxEchildren = 0
+    maxLearners = 0
     maxSentences = 0
     languageCode = ''
-    outputFile = ''
 
     try:
         opts, args = getopt.getopt(argv,"h")
@@ -50,19 +49,18 @@ def main(argv):
             print '(1) The number of eChildren to run the simulation on'
             print '(2) The number of sentences for each eChild to process'
             print '(3) The desired language code (French=584, English=611, German=2253, Japanese=3856)'
-            print '(4) The name of the output file'
             sys.exit()
 
 
-    if len(sys.argv) < 5:
+    if len(sys.argv) < 4:
         print 'An incorrect number of arguments were entered'
         sys.exit(2)
 
     # Test whether certain command line arguments
     # can be converted to positive integers
     try:
-        maxEchildren = int(sys.argv[1])
-        if maxEchildren < 0:
+        maxLearners = int(sys.argv[1])
+        if maxLearners < 0:
             print 'Argument must be a positive integer'
             sys.exit(2)
     except ValueError:
@@ -85,16 +83,6 @@ def main(argv):
         print 'The argument entered is not a valid integer'
         sys.exit(2)
 
-    if sys.argv[4].endswith('csv'):
-        outputFile = sys.argv[4]
-    else:
-        print 'The name of the output file must end with the .csv extension'
-        sys.exit(2)
-
-
-    # This will erase the contents of the chosen output file
-    # to make room for the new results
-    open(outputFile, 'w').close()
 
     # Open the file containing sample sentences for 
     # English, French, German, and Japanese and read
@@ -107,8 +95,8 @@ def main(argv):
     # available: French=584, English=611, German=2253, Japanese=3856
     runSim1.makeSelectedSentenceList(languageCode)
 
-    # Runs a simulation over maxEchildren number of eChild learners
-    runSim1.runLearners(maxEchildren, maxSentences, outputFile)
+    # Runs a simulation over maxLearners number of eChild learners
+    runSim1.runLearners(maxSentences, maxLearners, languageCode)
 
 if __name__ == '__main__':
     start = time.time() 
