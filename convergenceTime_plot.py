@@ -2,33 +2,32 @@
 
 '''
 The following will produce a line graph representing
-the order (represented by p-set) in which each learner's
-parameters converged
+the time at which each learner's parameters converged
 '''
 
 # Standard import for pandas, numpy and matplot
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import argparse
 import sys
+import matplotlib.pyplot as plt
 
 
-if len(sys.argv) != 2:
-    print "Only the input file name should be passed to the script as an argument"
+if not len(sys.argv) != 2:
+    print "Only the output file name should be passed to the script as an argument"
     sys.exit(2)
 
-# Used to store the input file whose contents will be analyzed
-inputFile = ''
+# Used to store the output file whose contents will be analyzed
+outputFile = ''
 
 if sys.argv[1].endswith('csv'):
-        inputFile = sys.argv[1]
+        outputFile = sys.argv[1]
 else:
-    print 'The name of the input file must end with the .csv extension'
+    print 'The name of the output file must end with the .csv extension'
     sys.exit(2)
 
-# Import and view data from inputFile
-df = pd.read_csv(inputFile)
+
+# Import and view data from outputFile
+df = pd.read_csv(outputFile)
 df.head()
 
 
@@ -76,17 +75,14 @@ for i in range(0, numLearners):
     yData = []
     
     # The appropiate data is added,
-    # xData stores the p-set of each parameter
+    # xData stores the sentence number on which
+    # each parameter converged
     # yData stores the corresponding parameter number
-    psetCounter = 1
-    currentConvergenceTime = rowList[i][0][0]
     for j in range(0, 13):
-        if rowList[i][j][0] != currentConvergenceTime:
-            psetCounter += 1
-            currentConvergenceTime = rowList[i][j][0]
-        xData.append(psetCounter)
+        xData.append(rowList[i][j][0])
         yData.append(rowList[i][j][1])
     
+    # Every three elements of data will represent one line on the graph
     data.append(xData)
     data.append(yData)
     data.append(get_line_color(i))
@@ -96,8 +92,8 @@ for i in range(0, numLearners):
 plt.figure(figsize=(8, 6), dpi=80)
 
 # Add graph title and axis labels
-plt.title("P-sets of Parameters")
-plt.xlabel("P-set")
+plt.title("Convergence Time of Parameters")
+plt.xlabel("Time")
 plt.ylabel("Parameters")
 
 for i in range(0, numLearners, 3):
@@ -115,10 +111,6 @@ plt.ylim(1, 13)
 # Set y ticks
 plt.yticks(np.linspace(1, 13, 13, endpoint=True))
 
-# Display the graph
-plt.show()
-
-
 # Save the resulting graph as a pdf
 figure = plt.figure()
-figure.savefig('pset.pdf')
+figure.savefig(inputFile[:-4] + '_convergenceTime.pdf')
