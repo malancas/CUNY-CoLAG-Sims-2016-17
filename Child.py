@@ -234,7 +234,7 @@ class Child(object):
 
     #6th parameter   
     def setNullTopic(self):
-        if "O2" in self.infoList[2] and "O1" not in self.infoList[2]:
+        if 'O2' in self.infoList[2] and not 'O1' in self.infoList[2]:
             self.grammar[5] = '1'
 
     

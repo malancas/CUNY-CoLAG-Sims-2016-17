@@ -45,10 +45,11 @@ def main(argv):
     # If the help option appears in the command line
     for opt in opts:
         if opt in ("-h", "--help"):
-            print 'Enter four command line arguments:'
+            print 'Enter three command line arguments:'
             print '(1) The number of eChildren to run the simulation on'
             print '(2) The number of sentences for each eChild to process'
             print '(3) The desired language code (French=584, English=611, German=2253, Japanese=3856)'
+            print 'So, \'python2 main.py 5 5 611\' is valid'
             sys.exit()
 
 

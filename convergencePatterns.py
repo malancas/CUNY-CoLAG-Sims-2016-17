@@ -11,10 +11,12 @@ class convergencePatterns(object):
 		self.pairDict = defaultdict(lambda: defaultdict(lambda: 0))
 		self.trioDict = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: 0)))
 		self.quartetDict = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: 0))))
+		self.pairOutputFile = ''
 
 
-	def writePairResults(outputFile):
-		f = open(outputFile, 'a')
+	def writePairResults(self):
+		self.pairOutputFile = 'pairConvergenceResults-' + datetime.datetime.now().isoformat().replace(':', '.') + '.csv'
+		f = open(self.pairOutputFile, 'a')
 		try:
 			writer = csv.writer(f)
 			# Add the parameters that appear second in pairs to the top row
@@ -29,15 +31,11 @@ class convergencePatterns(object):
 			f.close()
 
 
-	def writeResults(outputFile = ''):
+	def writeResults(self):
 		# If no ouput file names are given or the given filename doesn't end with csv, 
 		#the function will write to files using a default name format
-		if outputFile.endswith('csv'):
-			writePairResults(outputFile)
-		else:
-			print 'No chosen filename or filename doesn\'t end with .csv.'
-			print 'Writing to default filename'
-			writePairResults('pairConvergenceResults-' + datetime.datetime.now().isoformat().replace(':', '.') + '.csv')
+		self.writePairResults()
+		print 'Pair results written to file'
 
 
 	def percentage(self, num, total):

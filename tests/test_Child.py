@@ -106,12 +106,27 @@ def test_isDeclarative():
 def test_setNullTopic():
 	c.infoList = [584, 'DEC', '02 S Aux Never Verb']
 	c.grammar = ['0'] * 13
+	assert c.grammar[5] == '0'
+	print c.infoList[2]
+	assert '02' in c.infoList[2]
+	assert not '01' in c.infoList[2]
 	c.setNullTopic()
 	assert '02' in c.infoList[2]
-	assert '01' not in c.infoList[2]
+	assert not '01' in c.infoList[2]
+	print c.infoList[2]
+	print c.grammar
 	#assert c.grammar[5] == '1'
 
 	c.infoList = [584, 'DEC', '02 01 S Aux Never Verb']
 	c.grammar[5] = '0'
 	c.setNullTopic()
 	#assert c.grammar[5] == '0'
+
+
+'''
+    #6th parameter   
+    def setNullTopic(self):
+        if "O2" in self.infoList[2] and "O1" not in self.infoList[2]:
+            self.grammar[5] = '1'
+
+'''
