@@ -15,7 +15,7 @@ class convergencePatterns(object):
 
 
 	def writePairResults(self):
-		self.pairOutputFile = 'pairConvergenceResults-' + datetime.datetime.now().isoformat().replace(':', '.') + '.csv'
+		self.pairOutputFile = 'pairConvergenceResults_' + datetime.datetime.now().isoformat().replace(':', '.') + '.csv'
 		f = open(self.pairOutputFile, 'a')
 		try:
 			writer = csv.writer(f)
