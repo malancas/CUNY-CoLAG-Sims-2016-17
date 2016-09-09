@@ -6,10 +6,11 @@ import csv
 import datetime
 
 class runSimulation(object):
-	def __init__(self, si):
+	def __init__(self, si, lc):
 		self.totalSentenceCount = 0.0
 		self.totalConvergentChildren = 0.0
 		self.sentenceInfo = si
+		self.languageCode = lc
 		self.selectedSentences = []
 		self.outputFile = ''
 
@@ -48,22 +49,24 @@ class runSimulation(object):
 
 	# Fills runSimulation object's selectedSentences array with sentences who
 	# belong to the language that correspond to languageCode
-	def makeSelectedSentenceList(self, languageCode):
+	def makeSelectedSentenceList(self):
+		lc = str(self.languageCode)
+
 		for i in range(0, len(self.sentenceInfo)):
-			if self.sentenceInfo[i][:3] == languageCode or self.sentenceInfo[i][:4] == languageCode:
+			if self.sentenceInfo[i][:3] == lc or self.sentenceInfo[i][:4] == lc:
 				self.selectedSentences.append(self.sentenceInfo[i])
 
 
 	# Returns the name of the language
 	# that languageCode corresponds to
-	def getLanguage(self, languageCode):
-		if languageCode == '611':
+	def getLanguage(self):
+		if self.languageCode == 611:
 			return 'English'
-		elif languageCode == '584':
+		elif self.languageCode == 584:
 			return 'French'
-		elif languageCode == '2253':
+		elif self.languageCode == 2253:
 			return 'German'
-		elif languageCode == '3856':
+		elif self.languageCode == 3856:
 			return 'Japanese'
 
 
@@ -90,9 +93,9 @@ class runSimulation(object):
 	# Runs a simulation containing maxLearners number of learners
 	# Each learner runs the doesChildLearnGrammar function and processes
 	# sentences with the chosen constraints
-	def runLearners(self, maxSentences, maxLearners, languageCode):
+	def runLearners(self, maxSentences, maxLearners, convergenceFlag, plotFlag):
 		# Create the name of the output file
-		self.outputFile = self.getLanguage(languageCode) + '_' + str(maxLearners) + datetime.datetime.now().isoformat().replace(':','.') + '.csv'
+		self.outputFile = self.getLanguage() + '_' + str(maxLearners) + datetime.datetime.now().isoformat().replace(':','.') + '.csv'
 
 		# Stores the time course vectors of each learner after processing the specified number
 		# of sentences
@@ -102,6 +105,12 @@ class runSimulation(object):
 			tcvList.append(self.doesChildLearnGrammar(i, Child(), maxSentences))
 			print "Finished #{}".format(i)
 
-		# Make a convergencePatterns instance and find resulting convergence patterns
-		patterns = convergencePatterns()
-		patterns.findConvergencePatterns(tcvList)
+		# If convergenceFlag is set to true, make a convergencePatterns instance 
+		# and find resulting convergence patterns
+		if convergenceFlag:
+			patterns = convergencePatterns()
+			patterns.findConvergencePatterns(tcvList)
+
+		if plotFlag:
+			os.system("pset_plot.py " + self.outputFile)
+			os.system("convergenceTime_plot.py " + self.outputFile)
