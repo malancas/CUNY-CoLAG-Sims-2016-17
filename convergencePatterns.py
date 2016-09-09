@@ -15,7 +15,6 @@ class convergencePatterns(object):
 
 
 	def writePairResults(self):
-		self.pairOutputFile = 'pairConvergenceResults_' + datetime.datetime.now().isoformat().replace(':', '.') + '.csv'
 		f = open(self.pairOutputFile, 'a')
 		try:
 			writer = csv.writer(f)
@@ -31,9 +30,12 @@ class convergencePatterns(object):
 			f.close()
 
 
-	def writeResults(self):
-		# If no ouput file names are given or the given filename doesn't end with csv, 
-		#the function will write to files using a default name format
+	def writeResults(self, outputFileName):
+		#The function will write to files using a default name format
+		self.pairOutputFile = outputFileName[:-4] + '_pairConvergenceResults.csv'
+		self.trioOutputFile = outputFileName[:-4] + '_TrioConvergenceResults.csv'
+		self.quartetOutputFile = outputFileName[:-4] + '_QuartetConvergenceResults.csv'
+
 		self.writePairResults()
 		print 'Pair results written to file'
 
@@ -101,7 +103,7 @@ class convergencePatterns(object):
 	# Will track the different convergence patterns (the order in which each parameter converges)
 	# that appear in a learner's time course vector.
 	# Currently, it will track pairs, triplets, and quartets of parameter combinations
-	def findConvergencePatterns(self, tcvList):
+	def findConvergencePatterns(self, tcvList, outputFileName):
 		for tcv in tcvList:
 			# Sort the learner's timeCourseVector based on the convergence
 			# time of each parameter

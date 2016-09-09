@@ -112,5 +112,5 @@ class runSimulation(object):
 			patterns.findConvergencePatterns(tcvList)
 
 		if plotFlag:
-			os.system("pset_plot.py " + self.outputFile)
-			os.system("convergenceTime_plot.py " + self.outputFile)
+			os.system("pset_plot.py {}".format(self.outputFile))
+			os.system("convergenceTime_plot.py {}".format(self.outputFile))
