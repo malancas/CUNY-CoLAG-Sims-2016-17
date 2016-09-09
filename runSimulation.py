@@ -54,7 +54,8 @@ class runSimulation(object):
 		lc = str(self.languageCode)
 
 		for i in range(0, len(self.sentenceInfo)):
-			if self.sentenceInfo[i][:3] == lc or self.sentenceInfo[i][:4] == lc:
+			# Get the code from the current sentence and compare it to lc
+			if self.sentenceInfo[i].split('\t',1)[0] == lc:
 				self.selectedSentences.append(self.sentenceInfo[i])
 
 
@@ -113,6 +114,7 @@ class runSimulation(object):
 			patterns = convergencePatterns()
 			patterns.findConvergencePatterns(tcvList)
 
+		# If plotFlag is set to true, corresponding plots are produced and saved
 		if plotFlag:
 			os.system("./pset_plot.py {}".format(self.outputFile))
 			os.system("./convergenceTime_plot.py {}".format(self.outputFile))
