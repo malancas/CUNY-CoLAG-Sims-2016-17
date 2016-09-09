@@ -4,6 +4,7 @@ import time
 import random
 import csv
 import datetime
+import os
 
 class runSimulation(object):
 	def __init__(self, si, lc):
@@ -94,8 +95,9 @@ class runSimulation(object):
 	# Each learner runs the doesChildLearnGrammar function and processes
 	# sentences with the chosen constraints
 	def runLearners(self, maxSentences, maxLearners, convergenceFlag, plotFlag):
-		# Create the name of the output file
-		self.outputFile = self.getLanguage() + '_' + str(maxLearners) + datetime.datetime.now().isoformat().replace(':','.') + '.csv'
+		# Create the name and path of the output file
+		tempFileName = self.getLanguage() + '_' + str(maxLearners) + datetime.datetime.now().isoformat().replace(':','.') + '.csv'
+		self.outputFile = os.path.join('./results/', tempFileName)
 
 		# Stores the time course vectors of each learner after processing the specified number
 		# of sentences
@@ -112,5 +114,5 @@ class runSimulation(object):
 			patterns.findConvergencePatterns(tcvList)
 
 		if plotFlag:
-			os.system("pset_plot.py {}".format(self.outputFile))
-			os.system("convergenceTime_plot.py {}".format(self.outputFile))
+			os.system("./pset_plot.py {}".format(self.outputFile))
+			os.system("./convergenceTime_plot.py {}".format(self.outputFile))

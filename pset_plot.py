@@ -14,10 +14,6 @@ import argparse
 import sys
 
 
-if len(sys.argv) != 2:
-    print "Only the input file name should be passed to the script as an argument"
-    sys.exit(2)
-
 # Used to store the input file whose contents will be analyzed
 inputFile = ''
 
@@ -114,10 +110,6 @@ plt.ylim(1, 13)
 
 # Set y ticks
 plt.yticks(np.linspace(1, 13, 13, endpoint=True))
-
-# Display the graph
-plt.show()
-
 
 # Save the resulting graph as a pdf
 figure = plt.figure()

@@ -12,22 +12,18 @@ import sys
 import matplotlib.pyplot as plt
 
 
-if not len(sys.argv) != 2:
-    print "Only the output file name should be passed to the script as an argument"
-    sys.exit(2)
-
-# Used to store the output file whose contents will be analyzed
-outputFile = ''
+# Used to store the input file whose contents will be analyzed
+inputFile = ''
 
 if sys.argv[1].endswith('csv'):
-        outputFile = sys.argv[1]
+        inputFile = sys.argv[1]
 else:
-    print 'The name of the output file must end with the .csv extension'
+    print 'The name of the input file must end with the .csv extension'
     sys.exit(2)
 
 
-# Import and view data from outputFile
-df = pd.read_csv(outputFile)
+# Import and view data from inputFile
+df = pd.read_csv(inputFile)
 df.head()
 
 
