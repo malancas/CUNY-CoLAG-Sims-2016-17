@@ -4,33 +4,38 @@ import pytest
 
 def test_makeSelectedSentences():
 	infoFile = open('EngFrJapGerm.txt','rU')
-	runSim1 = runSimulation.runSimulation(infoFile.readlines())
+	runSim1 = runSimulation.runSimulation(infoFile.readlines(), 611)
 	infoFile.close()
 
     # These four ids are present in EngFrJapGerm: French=584, English=611, German=2253, Japanese=3856
 	# Check that makeSelectedSentenceList returns the proper number of sentences for each id
-	runSim1.makeSelectedSentenceList('611')
+	runSim1.makeSelectedSentenceList()
 	assert runSim1.selectedSentences
 	assert len(runSim1.selectedSentences) == 540
 
+	runSim1.languageCode = 584
 	runSim1.selectedSentences = []
-	runSim1.makeSelectedSentenceList('584')
+	runSim1.makeSelectedSentenceList()
 	assert len(runSim1.selectedSentences) == 756
 
+	runSim1.languageCode = 2253
 	runSim1.selectedSentences = []
-	runSim1.makeSelectedSentenceList('2253')
+	runSim1.makeSelectedSentenceList()
 	assert len(runSim1.selectedSentences) == 1134
 
+	runSim1.languageCode = 3856
 	runSim1.selectedSentences = []
-	runSim1.makeSelectedSentenceList('3856')
+	runSim1.makeSelectedSentenceList()
 	assert len(runSim1.selectedSentences) == 1092
 
 	# Check that makeSelectedSentencesList returns empty lists
 	# when given ids that don't exist in the orignal txt file
+	runSim1.languageCode = 612
 	runSim1.selectedSentences = []
-	runSim1.makeSelectedSentenceList('612')
+	runSim1.makeSelectedSentenceList()
 	assert not runSim1.selectedSentences
 
+	runSim1.languageCode = None
 	runSim1.selectedSentences = []
-	runSim1.makeSelectedSentenceList('')
+	runSim1.makeSelectedSentenceList()
 	assert not runSim1.selectedSentences

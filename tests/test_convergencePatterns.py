@@ -168,7 +168,7 @@ def test_inOrderTCV():
 
 def test_writeResults():
 	c = convergencePatterns.convergencePatterns()
-	c.writeResults()
+	c.writeResults('test_output.csv')
 	assert os.path.isfile(c.pairOutputFile)
 	os.remove(c.pairOutputFile)
 	assert not os.path.isfile(c.pairOutputFile)
