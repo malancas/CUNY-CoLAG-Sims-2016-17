@@ -44,12 +44,14 @@ def test_haveParametersChanged():
 # Test various combinations of lists
 # and values to draw out border cases
 def test_findIndex():
-	sampleList = [0,0,0]
-	assert c.findIndex([0,0,0], 0) == 0
-	assert c.findIndex([0,0,0], 0.01) == -1
-	assert c.findIndex([0,0,434], 434) == 2
-	assert c.findIndex([0,0,434], 435) == -1
-	assert c.findIndex([0,0,434], 433) == -1
+	c.sentence = ['0','0','0']
+	assert c.findIndex('0') == 0
+	assert c.findIndex('0.01') == -1
+
+	c.sentence = ['0','0','434']
+	assert c.findIndex('434') == 2
+	assert c.findIndex('435') == -1
+	assert c.findIndex('433') == -1
 
 
 def test_isQuestion():
@@ -100,6 +102,8 @@ def test_isDeclarative():
 	assert c.isDeclarative()
 
 
+# c.grammar[0] will be set to '1' if O1 appears in any index
+# other than 0 and S appears after it in c.sentence 
 def test_setSubjPos():
 	# Since '01' and 'S' don't appear in the infoList.
 	# grammar[0] will remain '0'
@@ -164,11 +168,60 @@ def test_setSubjPos():
 	assert c.grammar[0] == '1'
 
 
+# c.grammar[0] will be set to '0'
+# if O1 appears before S in sentence
+# in any index
 def test_noSubjPos():
 	# grammar[0] won't change since 
 	# S appears after O1
-	c.infoList = [584, "DEC", 'Aux Never Verb O1 S']
-	c.sentence = c.infoList[2].split()
-	c.grammar[0] = '0'
+	c.sentence = 'Aux Never Verb O1 S'.split()
+	c.grammar[0] = '1'
+	c.noSubjPos()
+	assert c.grammar[0] == '1'
+
+	c.sentence = 'S Aux Never Verb O1'.split()
 	c.noSubjPos()
 	assert c.grammar[0] == '0'
+
+	c.grammar[0] = '1'
+	c.sentence = 'Aux Never Verb S O1'.split()
+	c.noSubjPos()
+	assert c.grammar[0] == '0'
+
+	c.grammar[0] = '1'
+	c.sentence = 'Aux Never Verb S'.split()
+	c.noSubjPos()
+	assert c.grammar[0] == '1'
+
+	c.sentence = 'Aux Never Verb O1'.split()
+	c.noSubjPos()
+	assert c.grammar[0] == '1'
+
+
+'''
+If O3 followed directly by P appears in c.sentence
+and O3 is in any index position other than 0, then
+c.grammar[1] is set to '1'
+
+If c.infoList[1] == 'IMP' and Verb followed directly
+by O1 appear in c.sentence, then c.grammar[1] is set to '1'
+'''
+def test_setHead():
+	c.infoList[2] = 'Aux Never Verb O3 P' 
+	c.sentence = 'Aux Never Verb O3 P'.split()
+	c.grammar[1] = '0'
+	c.setHead()
+	assert c.grammar[1] == '1'
+
+	c.sentence = 'Aux Never O3 Verb P'.split()
+	c.grammar[1] = '0'
+	c.setHead()
+	assert c.grammar[1] == '0'
+
+	c.sentence = 'O3 P Aux Never Verb'.split()
+	c.setHead()
+	assert c.grammar[1] == '0'
+
+	c.sentence = 'O3 Aux P Never Verb'.split()
+	c.setHead()
+	assert c.grammar[1] == '0'
