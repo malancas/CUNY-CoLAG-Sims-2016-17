@@ -26,7 +26,7 @@ class Child(object):
 
     #Returns the index of value in the list, in this case it can find the value as a substring in the index of the list    
     def findIndex(self, value):
-        return next((i for i, string in enumerate(self.sentence) if value in string),-1)    
+        return next((i for i, string in enumerate(self.infoList[2]) if value in string),-1)    
 
 
     '''
@@ -56,7 +56,7 @@ class Child(object):
         info = info.replace('\n','')
         info = info.replace('\"','')
         self.infoList =  info.rsplit("\t",3)
-        self.sentence = self.infoList[2].split()
+        self.infoList[2] = self.infoList[2].split()
         if self.currentGrammarID != self.infoList[0]:
             self.expectedGrammar = " ".join(get_bin(int(self.infoList[0]),13)).split()
             self.currentGrammarID = self.infoList[0]
@@ -167,13 +167,13 @@ class Child(object):
     #3rd parameter 
     def setHeadCP(self):
         if(self.isQuestion()):
-            if self.findIndex("ka") == len(self.sentence)-1 or ("ka" not in self.sentence and self.findIndex("Aux") == len(self.sentence)-1):
+            if self.findIndex("ka") == len(self.infoList[2])-1 or ("ka" not in self.infoList[2] and self.findIndex("Aux") == len(self.sentence)-1):
                 self.grammar[2] = '1'
 
     
     def noHeadCP(self):
         if(self.isQuestion()):
-            if self.findIndex("ka") == 0 or ("ka" not in self.sentence and self.findIndex("Aux") == 0):
+            if self.findIndex("ka") == 0 or ("ka" not in self.infoList[2] and self.findIndex("Aux") == 0):
                 self.grammar[2] = '0'
 
     
@@ -280,15 +280,15 @@ class Child(object):
 
 
     def Never_Verb(self):
-        return self.isDeclarative() and (self.findIndex("Never") == self.findIndex("Verb") - 1) and "Aux" not in self.sentence
+        return self.isDeclarative() and (self.findIndex("Never") == self.findIndex("Verb") - 1) and "Aux" not in self.infoList[2]
 
     
     def Verb_Never(self):
-        return self.isDeclarative() and (self.findIndex("Verb") == self.findIndex("Never") - 1) and "Aux" not in self.sentence
+        return self.isDeclarative() and (self.findIndex("Verb") == self.findIndex("Never") - 1) and "Aux" not in self.infoList[2]
 
 
     def hasKa(self):
-        return "ka" in self.sentence
+        return "ka" in self.infoList[2]
 
 
     #11th parameter
@@ -312,7 +312,7 @@ class Child(object):
     
 
     def Verb_tensed(self):
-        return (self.isDeclarative() or self.isQuestion()) and "Aux" not in self.sentence
+        return (self.isDeclarative() or self.isQuestion()) and "Aux" not in self.infoList[2]
 
 
     #12th parameter                                                                                                             
