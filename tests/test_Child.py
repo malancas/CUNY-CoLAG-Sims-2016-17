@@ -44,11 +44,11 @@ def test_haveParametersChanged():
 # Test various combinations of lists
 # and values to draw out border cases
 def test_findIndex():
-	c.sentence = ['0','0','0']
+        c.infoList = [611, 'IMP', ['0','0','0']]
 	assert c.findIndex('0') == 0
 	assert c.findIndex('0.01') == -1
 
-	c.sentence = ['0','0','434']
+	c.infoList[2] = ['0','0','434']
 	assert c.findIndex('434') == 2
 	assert c.findIndex('435') == -1
 	assert c.findIndex('433') == -1
@@ -127,7 +127,7 @@ def test_setSubjPos():
 	# and 01 isn't in the initial spot but appears
 	# before S
 	c.infoList = [584, "DEC", 'Aux O1 S Never Verb']
-	c.sentence = c.infoList[2].split()
+        c.infoList[2] = c.infoList[2].split()
 	assert c.grammar[0] == '0'
 	c.setSubjPos()
 	assert c.grammar[0] == '1'
@@ -136,33 +136,33 @@ def test_setSubjPos():
 	# grammar[0] won't change
 	c.grammar[0] = '0'
 	c.infoList = [584, "DEC", 'Aux S O1 Never Verb']
-	c.sentence = c.infoList[2].split()
+	c.infoList[2] = c.infoList[2].split()
 	assert c.grammar[0] == '0'
 	c.setSubjPos()
 	assert c.grammar[0] == '0'
 
 	# Neither S or 01 appear in infoList[2]
 	c.infoList = [584, "DEC", 'Aux Never Verb']
-	c.sentence = c.infoList[2].split()
+	c.infoList[2] = c.infoList[2].split()
 	assert c.grammar[0] == '0'
 	c.setSubjPos()
 	assert c.grammar[0] == '0'
 
 	# Only 01 appears in infoList[2]
 	c.infoList = [584, "DEC", 'Aux O1 Never Verb']
-	c.sentence = c.infoList[2].split()
+	c.infoList[2] = c.infoList[2].split()
 	assert c.grammar[0] == '0'
 	c.setSubjPos()
 	assert c.grammar[0] == '0'
 
 	c.infoList = [584, "DEC", 'Aux O1 Never S Verb']
-	c.sentence = c.infoList[2].split()
+	c.infoList[2] = c.infoList[2].split()
 	assert c.grammar[0] == '0'
 	c.setSubjPos()
 	assert c.grammar[0] == '1'
 
 	c.infoList = [584, "DEC", 'Aux Never Verb O1 S']
-	c.sentence = c.infoList[2].split()
+        c.infoList[2] = c.infoList[2].split()
 	c.grammar[0] = '0'
 	c.setSubjPos()
 	assert c.grammar[0] == '1'
@@ -174,26 +174,26 @@ def test_setSubjPos():
 def test_noSubjPos():
 	# grammar[0] won't change since 
 	# S appears after O1
-	c.sentence = 'Aux Never Verb O1 S'.split()
+	c.infoList[2] = 'Aux Never Verb O1 S'.split()
 	c.grammar[0] = '1'
 	c.noSubjPos()
 	assert c.grammar[0] == '1'
 
-	c.sentence = 'S Aux Never Verb O1'.split()
+	c.infoList[2] = 'S Aux Never Verb O1'.split()
 	c.noSubjPos()
 	assert c.grammar[0] == '0'
 
 	c.grammar[0] = '1'
-	c.sentence = 'Aux Never Verb S O1'.split()
+	c.infoList[2] = 'Aux Never Verb S O1'.split()
 	c.noSubjPos()
 	assert c.grammar[0] == '0'
 
 	c.grammar[0] = '1'
-	c.sentence = 'Aux Never Verb S'.split()
+	c.infoList[2] = 'Aux Never Verb S'.split()
 	c.noSubjPos()
 	assert c.grammar[0] == '1'
 
-	c.sentence = 'Aux Never Verb O1'.split()
+	c.infoList[2] = 'Aux Never Verb O1'.split()
 	c.noSubjPos()
 	assert c.grammar[0] == '1'
 
@@ -206,22 +206,21 @@ c.grammar[1] is set to '1'
 If c.infoList[1] == 'IMP' and Verb followed directly
 by O1 appear in c.sentence, then c.grammar[1] is set to '1'
 '''
-def test_setHead():
-	c.infoList[2] = 'Aux Never Verb O3 P' 
-	c.sentence = 'Aux Never Verb O3 P'.split()
+def test_setHead(): 
+	c.infoList[2] = 'Aux Never Verb O3 P'.split()
 	c.grammar[1] = '0'
 	c.setHead()
 	assert c.grammar[1] == '1'
 
-	c.sentence = 'Aux Never O3 Verb P'.split()
+	c.infoList[2] = 'Aux Never O3 Verb P'.split()
 	c.grammar[1] = '0'
 	c.setHead()
 	assert c.grammar[1] == '0'
 
-	c.sentence = 'O3 P Aux Never Verb'.split()
+	c.infoList[2] = 'O3 P Aux Never Verb'.split()
 	c.setHead()
 	assert c.grammar[1] == '0'
 
-	c.sentence = 'O3 Aux P Never Verb'.split()
+	c.infoList[2] = 'O3 Aux P Never Verb'.split()
 	c.setHead()
 	assert c.grammar[1] == '0'

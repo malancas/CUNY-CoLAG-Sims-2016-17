@@ -6,6 +6,8 @@ class Child(object):
     def __init__(self):
         #This boolean is False unless the function checkIfLearned sets it to True (which happens when the grammar is acquired). The main program will while-loop until
         self.grammarLearned = False
+
+        self.infoList = []
         
         #in time sits the number of sentences (discrete time units) the echild has been exposed to at the current time
         self.sentenceCount = 0
