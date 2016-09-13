@@ -224,3 +224,53 @@ def test_setHead():
 	c.infoList[2] = 'O3 Aux P Never Verb'.split()
 	c.setHead()
 	assert c.grammar[1] == '0'
+
+
+'''
+c.grammar[1] will be set to '0' if either scenario occurs
+(1) If O3 and P both appear in c.infoList[2] and the index
+of P is greater than zero and lower than O3's
+
+(2) The sentence type is imperative and both O1 and Verb
+appear in c.infoList[2]. Verb must directly follow O1.
+'''
+def test_noHead():
+        # Testing scenario 1
+        c.infoList[2] = 'Aux Never Verb O3 P'.split()
+	c.grammar[1] = '1'
+	c.noHead()
+	assert c.grammar[1] == '1'
+
+        c.infoList[2] = 'Aux Never Verb P O3'.split()
+	c.grammar[1] = '1'
+	c.noHead()
+	assert c.grammar[1] == '0'
+
+	c.infoList[2] = 'P O3 Aux Never Verb'.split()
+	c.grammar[1] = '1'
+	c.noHead()
+	assert c.grammar[1] == '1'
+
+	c.infoList[2] = 'Aux P Never Verb O3'.split()
+	c.noHead()
+	assert c.grammar[1] == '1'
+
+	c.infoList[2] = 'Aux P O3 Never Verb'.split()
+	c.noHead()
+	assert c.grammar[1] == '0'
+
+        # Test for scenario 2
+        c.infoList[1] = 'IMP'
+	c.infoList[2] = 'Verb Aux O1 P'.split()
+	c.noHead()
+	assert c.grammar[1] == '0'
+
+        c.infoList[1] = 'DEC'
+	c.infoList[2] = 'Aux Verb O1'.split()
+	c.noHead()
+	assert c.grammar[1] == '0'
+
+        c.infoList[1] = 'IMP'
+	c.infoList[2] = 'Aux Verb O1 P'.split()
+	c.noHead()
+	assert c.grammar[1] == '1'

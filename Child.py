@@ -158,9 +158,10 @@ class Child(object):
     def noHead(self):
         if "O3" in self.infoList[2] and "P" in self.infoList[2]:
             first = self.findIndex("P")
-            if first > 0 and self.findIndex("O3") == first + 1: #O3 followed by P
+            # If P followed by O3
+            if first > 0 and self.findIndex("O3") == first + 1:
                 self.grammar[1] = '0'
-        #If imperative, make sure Verb directly follows O1
+        # If imperative, make sure Verb is directly followed by O1
         if self.isImperative() and "O1" in self.infoList[2] and "Verb" in self.infoList[2]:
             if self.findIndex("Verb") == self.findIndex("O1") - 1:
                 self.grammar[1] = '0'    
