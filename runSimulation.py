@@ -97,8 +97,9 @@ class runSimulation(object):
 	# sentences with the chosen constraints
 	def runLearners(self, maxSentences, maxLearners, convergenceFlag, plotFlag):
 		# Create the name and path of the output file
-		tempFileName = self.getLanguage() + '_' + str(maxLearners) + datetime.datetime.now().isoformat().replace(':','.') + '.csv'
-		self.outputFile = os.path.join('./results/', tempFileName)
+		tempPathName = self.getLanguage() + '_' + str(maxLearners) + datetime.datetime.now().isoformat().replace(':','.')
+                os.makedirs('results/{}'.format(tempPathName))
+		self.outputFile = os.path.join('./results/{}'.format(tempPathName), tempPathName + '.csv')
 
 		# Stores the time course vectors of each learner after processing the specified number
 		# of sentences
