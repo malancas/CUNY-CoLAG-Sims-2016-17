@@ -15,6 +15,7 @@ class runSimulation(object):
 		self.selectedSentences = []
 		self.tcvOutputFile = ''
                 self.grammarOutputFile = ''
+                self.firstWrite = True
 
 
 	# Prints the percentage of converged children
@@ -33,7 +34,7 @@ class runSimulation(object):
 
 	# Writes the time (particular sentence) that each parameter of each eChild converged on in the TCV output file
         # Writes the final grammar of the learner to the grammar output file
-	def writeResults(self, eChild, count):
+	def writeResults(self, eChild):
 		# Change outputfile format to include timestamp
 		tcvFile = open(self.tcvOutputFile, 'a')
                 grammarFile = open(self.grammarOutputFile, 'a')
@@ -41,11 +42,12 @@ class runSimulation(object):
 		try:
 			tcvWriter = csv.writer(tcvFile)
                         grammarWriter = csv.writer(grammarFile)
-			if not count:
+			if self.firstWrite:
                                 header = ('p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p10', 'p11', 'p12', 'p13')
 				tcvWriter.writerow(header)
                                 grammarWriter.writerow(header)
-                                
+                                self.firstWrite = False
+
                         tcv = eChild.timeCourseVector
 			tcvWriter.writerow( (tcv[0][0], tcv[1][0], tcv[2][0], tcv[3][0], tcv[4][0], tcv[5][0], 
 				tcv[6][0], tcv[7][0], tcv[8][0], tcv[9][0], tcv[10][0], tcv[11][0], tcv[12][0]) )
@@ -85,7 +87,7 @@ class runSimulation(object):
 	# until its grammar is identical to the language's or it has processed the
 	# chosen number of sentences (maxSentences). The timeCourseVector data of the
 	# learner is then written to the output file
-	def doesChildLearnGrammar(self, count, eChild, maxSentences):
+	def doesChildLearnGrammar(self, eChild, maxSentences):
 		start = time.clock()
 
 		while not eChild.grammarLearned and eChild.sentenceCount < maxSentences:
@@ -95,7 +97,7 @@ class runSimulation(object):
 
 		eChild.totalTime = time.clock() - start
 
-		self.writeResults(eChild, count)
+		self.writeResults(eChild)
 
 		# Return the time course vector so it can be used to find convergence patterns
 		return eChild.timeCourseVector
@@ -116,7 +118,7 @@ class runSimulation(object):
 		tcvList = []
 
 		for i in range(0, maxLearners):
-			tcvList.append(self.doesChildLearnGrammar(i, Child(), maxSentences))
+			tcvList.append(self.doesChildLearnGrammar(Child(), maxSentences))
 			print "Finished #{}".format(i+1)
 
 		# If convergenceFlag is set to true, make a convergencePatterns instance 
