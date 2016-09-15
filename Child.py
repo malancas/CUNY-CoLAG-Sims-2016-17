@@ -170,7 +170,7 @@ class Child(object):
     #3rd parameter 
     def setHeadCP(self):
         if(self.isQuestion()):
-            if self.findIndex("ka") == len(self.infoList[2])-1 or ("ka" not in self.infoList[2] and self.findIndex("Aux") == len(self.sentence)-1):
+            if self.findIndex("ka") == len(self.infoList[2])-1 or ("ka" not in self.infoList[2] and self.findIndex("Aux") == len(self.infoList[2])-1):
                 self.grammar[2] = '1'
 
     
