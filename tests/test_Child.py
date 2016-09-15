@@ -199,14 +199,15 @@ def test_noSubjPos():
 
 
 '''
-If O3 followed directly by P appears in c.sentence
-and O3 is in any index position other than 0, then
-c.grammar[1] is set to '1'
+c.grammar[1] will be set to '1' if either scenario occurs:
+(1) If O3 followed directly by P appears in c.sentence
+and O3 is in any index position other than 0
 
-If c.infoList[1] == 'IMP' and Verb followed directly
-by O1 appear in c.sentence, then c.grammar[1] is set to '1'
+(2) If c.infoList[1] == 'IMP' and Verb followed directly
+by O1 appear in c.sentence
 '''
-def test_setHead(): 
+def test_setHead():
+        # Testing for scenario one
 	c.infoList[2] = 'Aux Never Verb O3 P'.split()
 	c.grammar[1] = '0'
 	c.setHead()
@@ -235,7 +236,7 @@ of P is greater than zero and lower than O3's
 appear in c.infoList[2]. Verb must directly follow O1.
 '''
 def test_noHead():
-        # Testing scenario 1
+        # Testing for scenario 1
         c.infoList[2] = 'Aux Never Verb O3 P'.split()
 	c.grammar[1] = '1'
 	c.noHead()
@@ -259,7 +260,7 @@ def test_noHead():
 	c.noHead()
 	assert c.grammar[1] == '0'
 
-        # Test for scenario 2
+        # Testing for scenario 2
         c.infoList[1] = 'IMP'
 	c.infoList[2] = 'Verb Aux O1 P'.split()
 	c.noHead()
