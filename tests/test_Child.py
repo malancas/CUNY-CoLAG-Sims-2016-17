@@ -261,17 +261,80 @@ def test_noHead():
 	assert c.grammar[1] == '0'
 
         # Testing for scenario 2
+        c.grammar[1] = '1'
         c.infoList[1] = 'IMP'
 	c.infoList[2] = 'Verb Aux O1 P'.split()
 	c.noHead()
-	assert c.grammar[1] == '0'
+	assert c.grammar[1] == '1'
 
         c.infoList[1] = 'DEC'
 	c.infoList[2] = 'Aux Verb O1'.split()
 	c.noHead()
-	assert c.grammar[1] == '0'
+	assert c.grammar[1] == '1'
 
         c.infoList[1] = 'IMP'
 	c.infoList[2] = 'Aux Verb O1 P'.split()
 	c.noHead()
-	assert c.grammar[1] == '1'
+	assert c.grammar[1] == '0'
+
+
+# Tests whether S, O1, O2, O3, or Adv appears
+# first in c.infoList[2]
+def test_containsTopicalizable():
+        c.infoList[2] = 'O1 Aux Verb P'.split()
+        assert c.containsTopicalizable()
+        
+        c.infoList[2] = 'O2 Aux Verb P'.split()
+        assert c.containsTopicalizable()
+
+        c.infoList[2] = 'O3 Aux Verb P'.split()
+        assert c.containsTopicalizable()
+
+        c.infoList[2] = 'S Aux Verb P'.split()
+        assert c.containsTopicalizable()
+
+        c.infoList[2] = 'Adv Aux Verb P'.split()
+        assert c.containsTopicalizable()
+
+        c.infoList[2] = 'P O1 O2 O3 S Adv'.split()
+        assert not c.containsTopicalizable()
+
+        c.infoList[2] = 'O1 Adv Aux Verb P'.split()
+        assert c.containsTopicalizable()
+
+
+'''
+If the sentence is a question check whether
+(1) 'ka' is in infoList[2]
+
+(2) 'ka' isn't in infoList[2] while 'Aux' is
+'''
+def test_setHeadCP():
+        c.grammar[2] = '0'
+        c.infoList[1] = 'Q'
+        c.infoList[2] = 'O1 Adv Aux Verb P ka'.split()
+        c.setHeadCP()
+        assert c.grammar[2] == '1'
+
+        c.grammar[2] = '0'
+        c.infoList[2] = 'O1 Adv ka Verb P Aux'.split()
+        c.setHeadCP()
+        assert c.grammar[2] == '0'
+
+        c.infoList[2] = 'O1 Adv ka Verb P'.split()
+        c.setHeadCP()
+        assert c.grammar[2] == '0'
+
+        c.infoList[2] = 'O1 Adv Verb P Aux'.split()
+        c.setHeadCP()
+        assert c.grammar[2] == '1'
+
+        c.grammar[2] = '0'
+        c.infoList[1] = 'IMP'
+        c.infoList[2] = 'O1 Adv Verb P ka'.split()
+        c.setHeadCP()
+        assert c.grammar[2] == '0'
+
+        c.infoList[2] = 'O1 Adv Verb P Aux'.split()
+        c.setHeadCP()
+        assert c.grammar[2] == '0'

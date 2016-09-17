@@ -169,17 +169,17 @@ class Child(object):
                 
     #3rd parameter 
     def setHeadCP(self):
-        if(self.isQuestion()):
-            if self.findIndex("ka") == len(self.infoList[2])-1 or ("ka" not in self.infoList[2] and self.findIndex("Aux") == len(self.infoList[2])-1):
+        if self.isQuestion():
+            if self.infoList[2][-1] == 'ka' or ("ka" not in self.infoList[2] and self.infoList[2][-1] == "Aux"):
                 self.grammar[2] = '1'
 
     
     def noHeadCP(self):
-        if(self.isQuestion()):
-            if self.findIndex("ka") == 0 or ("ka" not in self.infoList[2] and self.findIndex("Aux") == 0):
+        if self.isQuestion():
+            if self.infoList[2][0] == "ka" or ("ka" not in self.infoList[2] and self.infoList[2][0] == "Aux"):
                 self.grammar[2] = '0'
 
-    
+
     def containsTopicalizable(self):
         i = self.findIndex("S")
         j = self.findIndex("O1")
