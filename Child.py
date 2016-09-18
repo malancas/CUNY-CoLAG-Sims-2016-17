@@ -12,7 +12,7 @@ class Child(object):
         #in time sits the number of sentences (discrete time units) the echild has been exposed to at the current time
         self.sentenceCount = 0
 
-        self.grammar = "0 0 0 0 0 0 1 0 0 0 1 0 1".split()
+        self.grammar = [0,0,0,0,0,0,1,0,0,0,1,0,1]
 
         #Used to determine if a new grammar is being read in.
         #If so, expectedGrammar and currentGrammarID are updated accordingly
@@ -20,7 +20,7 @@ class Child(object):
 
         self.totalTime = 0
 
-        self.oldGrammar = [''] * 13
+        self.oldGrammar = [-1] * 13
         
         self.timeCourseVector = [[-1,i] for i in range(0,13)]
 
@@ -78,45 +78,45 @@ class Child(object):
     #Running current sentence through regex filters and other stuff
     def setParameters(self, count):
         
-        if self.grammar[0] == '0':
+        if self.grammar[0] == 0:
             self.setSubjPos();     #Parameter 1
         
-        if self.grammar[1] == '0':
+        if self.grammar[1] == 0:
             self.setHead()       #Parameter 2
 
-        if self.grammar[2] == '0':
+        if self.grammar[2] == 0:
             self.setHeadCP()    #Parameter 3
             
-        if not (self.grammar[3] == '0' and self.grammar[5] == '1'):
+        if not (self.grammar[3] == 0 and self.grammar[5] == 1):
             self.setObligTopic() #Parameter 4 - Obligatory Topic : Problem parameter
 
-        if self.grammar[4] == '0':
+        if self.grammar[4] == 0:
             self.setNullSubj()   #Parameter 5
 
-        if self.grammar[5] == '0':
+        if self.grammar[5] == 0:
             self.setNullTopic()  #Parameter 6
 
-        if self.grammar[6] == '1':
+        if self.grammar[6] == 1:
             self.setWHMovement() #Parameter 7
 
-        if self.grammar[7] == '0':
+        if self.grammar[7] == 0:
             self.setPrepStrand() #Parameter 8
 
-        if self.grammar[8] == '0':
+        if self.grammar[8] == 0:
             self.setTopicMark()  #Parameter 9
 
-        if self.grammar[9] == '0':
+        if self.grammar[9] == 0:
             self.vToI()          #Parameter 10
         #Parameter 11 - I to C movement : Problem parameter
 
-        if self.grammar[10] == '1':
+        if self.grammar[10] == 1:
             self.iToC()
 
-        if self.grammar[11] == '0':
+        if self.grammar[11] == 0:
             self.affixHop()      #Parameter 12
 
         #Parameter 13 - Question Inversion : Problem parameter
-        if self.grammar[12] == '1':
+        if self.grammar[12] == 1:
             self.questionInver()
         
         if(self.grammar == self.expectedGrammar):
@@ -151,7 +151,7 @@ class Child(object):
         #If imperative, make sure Verb directly follows O1
         if self.isImperative() and "O1" in self.infoList[2] and "Verb" in self.infoList[2]:
             if self.findIndex("O1") == self.findIndex("Verb") - 1:
-                self.grammar[1] = '1'
+                self.grammar[1] = 1
 
     
     def noHead(self):
@@ -159,24 +159,24 @@ class Child(object):
             first = self.findIndex("P")
             # If P followed by O3
             if first > 0 and self.findIndex("O3") == first + 1:
-                self.grammar[1] = '0'
+                self.grammar[1] = 0
         # If imperative, make sure Verb is directly followed by O1
         if self.isImperative() and "O1" in self.infoList[2] and "Verb" in self.infoList[2]:
             if self.findIndex("Verb") == self.findIndex("O1") - 1:
-                self.grammar[1] = '0'    
+                self.grammar[1] = 1    
 
                 
     #3rd parameter 
     def setHeadCP(self):
         if self.isQuestion():
             if self.infoList[2][-1] == 'ka' or ("ka" not in self.infoList[2] and self.infoList[2][-1] == "Aux"):
-                self.grammar[2] = '1'
+                self.grammar[2] = 1
 
     
     def noHeadCP(self):
         if self.isQuestion():
             if self.infoList[2][0] == "ka" or ("ka" not in self.infoList[2] and self.infoList[2][0] == "Aux"):
-                self.grammar[2] = '0'
+                self.grammar[2] = 0
 
 
     def containsTopicalizable(self):
@@ -193,12 +193,12 @@ class Child(object):
     def setObligTopic(self):
         if self.isDeclarative():
             if "O2" in self.infoList[2] and "O1" not in self.infoList[2] :
-                self.grammar[5] = '1'
-                if self.grammar[3] == '1':
-                    self.grammar[3] = '0'
+                self.grammar[5] = 1
+                if self.grammar[3] == 1:
+                    self.grammar[3] = 0
             else:
                 if(self.containsTopicalizable()) :
-                    self.grammar[3] = '1'
+                    self.grammar[3] = 1
 
 
     #out of obliqueness order
@@ -220,19 +220,19 @@ class Child(object):
     #Only works for full, not necessarily with CHILDES distribution
     def setNullSubj(self):
         if self.isDeclarative() and "S" not in self.infoList[2] and self.outOblique():
-            self.grammar[4] = '1'
+            self.grammar[4] = 1
 
 
     #6th parameter   
     def setNullTopic(self):
         if 'O2' in self.infoList[2] and not 'O1' in self.infoList[2]:
-            self.grammar[5] = '1'
+            self.grammar[5] = 1
 
     
     #7th parameter
     def setWHMovement(self):
         if self.findIndex("+WH") > 0 and "O3[+WH]" not in self.infoList[2]:
-            self.grammar[6] = '0'
+            self.grammar[6] = 0
 
                 
     #8th parameter
@@ -241,13 +241,13 @@ class Child(object):
             i = self.findIndex("P") #Get index of P
             j = self.findIndex("O3")#Get index of O3
             if i != -1 and j != -1 and abs(i - j) != 1 : #If they exist, make sure they aren't adjacent
-                self.grammar[7] = '1'  
+                self.grammar[7] = 1
     
     
     #9th parameter
     def setTopicMark(self):
         if "WA" in self.infoList[2] :
-            self.grammar[8] = '1' 
+            self.grammar[8] = 1
 
     
     #10th parameter
@@ -256,7 +256,7 @@ class Child(object):
             i = self.findIndex("O1")
             j = self.findIndex("Verb")
             if i > 0 and j != -1 and abs(i - j) != 1 :
-                self.grammar[9] = '1' 
+                self.grammar[9] = 1 
 
                
     def S_Aux(self):
@@ -295,37 +295,37 @@ class Child(object):
 
     #11th parameter
     def iToC(self):
-        if self.grammar[0] == '0' and self.grammar[1] == '0' and self.grammar[2] == '0' and self.S_Aux():
+        if self.grammar[0] == 0 and self.grammar[1] == 0 and self.grammar[2] == '0' and self.S_Aux():
             self.grammar[10] = '0'
-        if self.grammar[0] == '1' and self.grammar[1] == '1' and self.grammar[2] == '1' and self.Aux_S():
-            self.grammar[10] = '0'
-        if self.grammar[0] == '1' and self.grammar[1] == '0' and self.grammar[2] == '1' and self.Aux_Verb():
-            self.grammar[10] = '0'
-        if self.grammar[0] == '0' and self.grammar[1] == '1' and self.grammar[2] == '0' and self.Verb_Aux():
-            self.grammar[10] = '0'
-        if self.grammar[0] == '0' and self.grammar[1] == '0' and self.grammar[2] == '1' and self.S_Aux():
-            self.grammar[10] = '0'
-        if self.grammar[0] == '1' and self.grammar[1] == '1' and self.grammar[2] == '0' and self.Aux_S():
-            self.grammar[10] = '0'
-        if self.grammar[0] == '1' and self.grammar[1] == '0' and self.grammar[2] == '0' and (self.Never_Verb() or self.hasKa()):
-            self.grammar[10] = '0'
-        if self.grammar[0] == '0' and self.grammar[1] == '1' and self.grammar[2] == '1' and (self.Verb_Never() or self.hasKa()):
-            self.grammar[10] = '0'
+        if self.grammar[0] == 1 and self.grammar[1] == 1 and self.grammar[2] == '1' and self.Aux_S():
+            self.grammar[10] = 0
+        if self.grammar[0] == 1 and self.grammar[1] == 0 and self.grammar[2] == '1' and self.Aux_Verb():
+            self.grammar[10] = 0
+        if self.grammar[0] == 0 and self.grammar[1] == 1 and self.grammar[2] == 0 and self.Verb_Aux():
+            self.grammar[10] = 0
+        if self.grammar[0] == 0 and self.grammar[1] == 0 and self.grammar[2] == 1 and self.S_Aux():
+            self.grammar[10] = 0
+        if self.grammar[0] == 1 and self.grammar[1] == 1 and self.grammar[2] == 0 and self.Aux_S():
+            self.grammar[10] = 0
+        if self.grammar[0] == 1 and self.grammar[1] == 0 and self.grammar[2] == 0 and (self.Never_Verb() or self.hasKa()):
+            self.grammar[10] = 0
+        if self.grammar[0] == 0 and self.grammar[1] == 1 and self.grammar[2] == 1 and (self.Verb_Never() or self.hasKa()):
+            self.grammar[10] = 0
     
 
     def Verb_tensed(self):
         return (self.isDeclarative() or self.isQuestion()) and "Aux" not in self.infoList[2]
 
 
-    #12th parameter                                                                                                             
+    #12th parameter                                          
     def affixHop(self):
         if self.Verb_tensed() and "Never Verb O1" in self.infoList[2]:
-            self.grammar[11] = '1'
+            self.grammar[11] = 1
         if self.Verb_tensed() and self.findIndex("O1") > 0 and "O1 Verb Never" in self.infoList[2]:
-            self.grammar[11] = '1'
+            self.grammar[11] = 1
 
     
     #13th parameter
     def questionInver(self):
         if "ka" in self.infoList[2]:
-            self.grammar[12] = '0'
+            self.grammar[12] = 0
