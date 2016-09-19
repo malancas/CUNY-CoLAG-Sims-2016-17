@@ -2,37 +2,52 @@ from Child import Child
 from collections import defaultdict
 import csv
 import datetime
+from itertools import chain, permutations
 
 
 class convergencePatterns(object):
-	def __init__(self):
+	def __init__(self, op):
 		# Each defaultdict is used to store every pair, trio, and quartet of parameter convergence orders
 		# found in the learners.
+                self.outoutPath = op
 		self.pairDict = defaultdict(lambda: defaultdict(lambda: 0))
 		self.trioDict = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: 0)))
 		self.quartetDict = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: 0))))
-		self.pairOutputFile = ''
 
 
-	def writePairResults(self):
-		f = open(self.pairOutputFile, 'a')
+        def writePairResults(self):
+		f = open(self.outputPath[:-4] + '_pairConvergenceResults.csv', 'a')
 		try:
+                        # Make csv writer and lambda function to write the 
+                        # row headers and corresponding pairs to a new output file
 			writer = csv.writer(f)
-			# Add the parameters that appear second in pairs to the top row
-			writer.writerow( ('p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p10', 'p11', 'p12', 'p13') )
+                        f = lambda x,y: 'p{}<p{}'.format(x,y)
 
-			# Add parameters that appear first in pairs to individual rows
-			# followed by related pair results
-			for i in range(1,14):
-				print "nothing2"
-				#writer.writerow( ('p'+i, self.pairDict[i][j] for j in range(1,14)) )
+			print 'Hello'
 		finally:
 			f.close()
+
+        
+        def writeHeader(self, n):
+                columnHeader = 'p{}' + ' < p{}' * (n-1)
+                perms = (list(permutations(range(1,14), n)))
+                f = lambda permList: columnHeader.format(*permList)
+                return map(f, perms)
+
+
+        def writeQuartetResults(self):
+                f = open(self.outPath[:-4] + '_quartetConvergenceResults.csv', 'a')
+                try:
+                        writer = csv.writer(f)
+                        f = lambda perms: self.quartetList[perms[0]][perms[1]][perms[2]][perms[3]]
+                        writer.writerow(writeHeader(4))
+                        writer.writerow(map(f,permutations(range(1,14),4)))
+                finally:
+                        f.close()
 
 
 	def writeResults(self, outputFileName):
 		#The function will write to files using a default name format
-		self.pairOutputFile = outputFileName[:-4] + '_pairConvergenceResults.csv'
 		self.trioOutputFile = outputFileName[:-4] + '_TrioConvergenceResults.csv'
 		self.quartetOutputFile = outputFileName[:-4] + '_QuartetConvergenceResults.csv'
 
@@ -103,7 +118,7 @@ class convergencePatterns(object):
 	# Will track the different convergence patterns (the order in which each parameter converges)
 	# that appear in a learner's time course vector.
 	# Currently, it will track pairs, triplets, and quartets of parameter combinations
-	def findConvergencePatterns(self, tcvList, outputFileName):
+	def findConvergencePatterns(self, tcvList):
 		for tcv in tcvList:
 			# Sort the learner's timeCourseVector based on the convergence
 			# time of each parameter
