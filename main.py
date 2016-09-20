@@ -36,7 +36,7 @@ from runSimulation import runSimulation
 def main(argv):
     parser = argparse.ArgumentParser(prog='CUNY Sims', description='Set simulation parameters for learners')
     parser.add_argument('integers', metavar='N', type=int, nargs=3,
-                        help='(1) The number of learners (2) The number of sentences consumed (3) The language code')
+                        help='(1) The number of learners (2) The number of sentences consumed (3) The target grammar\'s code')
     parser.add_argument('-p', '--plots', dest='plotFlag', action='store_true',
                         help='Produce pset and convergence time plots for the results')
     parser.add_argument('-c', '--convergence', dest='convergenceFlag', action='store_true',
@@ -63,7 +63,7 @@ def main(argv):
     # Open the file containing sample sentences for 
     # English, French, German, and Japanese and read
     # them in a runSimulation class variable along with
-    # the chosen language code (represented by args.integers[2])
+    # the chosen target grammar (represented by args.integers[2])
     infoFile = open('EngFrJapGerm.txt','rU')
     runSim1 = runSimulation(infoFile.readlines(), args.integers[2])
     infoFile.close()

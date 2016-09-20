@@ -11,7 +11,7 @@ class runSimulation(object):
 		self.totalSentenceCount = 0.0
 		self.totalConvergentChildren = 0.0
 		self.sentenceInfo = si
-		self.languageCode = lc
+		self.targetGrammar = lc
 		self.selectedSentences = []
                 self.outputFile = ''
 
@@ -56,9 +56,9 @@ class runSimulation(object):
 
 
 	# Fills runSimulation object's selectedSentences array with sentences who
-	# belong to the language that correspond to languageCode
+	# belong to the language that correspond to targetGrammar
 	def makeSelectedSentenceList(self):
-		lc = str(self.languageCode)
+		lc = str(self.targetGrammar)
 
 		for i in range(0, len(self.sentenceInfo)):
 			# Get the code from the current sentence and compare it to lc
@@ -69,13 +69,13 @@ class runSimulation(object):
 	# Returns the name of the language
 	# that languageCode corresponds to
 	def getLanguage(self):
-		if self.languageCode == 611:
+		if self.targetGrammar == 611:
 			return 'English'
-		elif self.languageCode == 584:
+		elif self.targetGrammar == 584:
 			return 'French'
-		elif self.languageCode == 2253:
+		elif self.targetGrammar == 2253:
 			return 'German'
-		elif self.languageCode == 3856:
+		elif self.targetGrammar == 3856:
 			return 'Japanese'
 
 
