@@ -13,9 +13,7 @@ class runSimulation(object):
 		self.sentenceInfo = si
 		self.languageCode = lc
 		self.selectedSentences = []
-		self.tcvOutputFile = ''
-                self.grammarOutputFile = ''
-                self.firstWrite = True
+                self.outputFile = ''
 
 
 	# Prints the percentage of converged children
@@ -32,31 +30,29 @@ class runSimulation(object):
 			print "Average sentence count of converged children: 0"               
 
 
-	# Writes the time (particular sentence) that each parameter of each eChild converged on in the TCV output file
-        # Writes the final grammar of the learner to the grammar output file
+        # Write the header columns to the output file
+        def writeOutputHeader(self):
+		outFile = open(self.outputFile, 'a')
+                writer = csv.writer(outFile)
+                writer.writerow(('TCV', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'Grammar'))
+                writer.writerow(['p{}'.format(i) for i in range(1,14)] * 2)
+
+
+	# Writes the time (particular sentence) that each parameter of each eChild converged on
+        # as well as writing the final grammar of the learner to the output file
 	def writeResults(self, eChild):
-		# Change outputfile format to include timestamp
-		tcvFile = open(self.tcvOutputFile, 'a')
-                grammarFile = open(self.grammarOutputFile, 'a')
-                
+                outFile = open(self.outputFile, 'a')
 		try:
-			tcvWriter = csv.writer(tcvFile)
-                        grammarWriter = csv.writer(grammarFile)
-			if self.firstWrite:
-                                header = ('p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p10', 'p11', 'p12', 'p13')
-				tcvWriter.writerow(header)
-                                grammarWriter.writerow(header)
-                                self.firstWrite = False
+                        writer = csv.writer(outFile)
 
                         tcv = eChild.timeCourseVector
-			tcvWriter.writerow( (tcv[0][0], tcv[1][0], tcv[2][0], tcv[3][0], tcv[4][0], tcv[5][0], 
-				tcv[6][0], tcv[7][0], tcv[8][0], tcv[9][0], tcv[10][0], tcv[11][0], tcv[12][0]) )
                         grammar = eChild.grammar
-                        grammarWriter.writerow( (grammar[0], grammar[1], grammar[2], grammar[3], grammar[4], grammar[5], grammar[6],
-                        grammar[7], grammar[8], grammar[9], grammar[10], grammar[11], grammar[12]) )
+			writer.writerow( (tcv[0][0], tcv[1][0], tcv[2][0], tcv[3][0], tcv[4][0], tcv[5][0], 
+				tcv[6][0], tcv[7][0], tcv[8][0], tcv[9][0], tcv[10][0], tcv[11][0], tcv[12][0],
+                                grammar[0], grammar[1], grammar[2], grammar[3], grammar[4], grammar[5], grammar[6],
+                                grammar[7], grammar[8], grammar[9], grammar[10], grammar[11], grammar[12]) )
 		finally:
-			tcvFile.close()
-                        grammarFile.close()
+			outFile.close()
 
 
 	# Fills runSimulation object's selectedSentences array with sentences who
@@ -110,8 +106,8 @@ class runSimulation(object):
 		# Create the name and path of the output file
 		tempPathName = self.getLanguage() + '_' + str(maxLearners) + datetime.datetime.now().isoformat().replace(':','.')
                 os.makedirs('results/{}'.format(tempPathName))
-		self.tcvOutputFile = os.path.join('./results/{}'.format(tempPathName), tempPathName + '_TCV_.csv')
-		self.grammarOutputFile = os.path.join('./results/{}'.format(tempPathName), tempPathName + '_grammar_.csv')                
+		self.outputFile = os.path.join('./results/{}'.format(tempPathName), tempPathName + '_output_.csv')
+                self.writeOutputHeader()
 
 		# Stores the time course vectors of each learner after processing the specified number
 		# of sentences
