@@ -4,7 +4,11 @@ import random
 import pytest
 from collections import defaultdict
 import os.path
+import shutil
 
+# Make a convergencePatterns object instance
+# for use in the test functions
+patterns = convergencePatterns.convergencePatterns('./results/test_path')
 
 '''
 Checks that there is a value greater than zero
@@ -20,7 +24,8 @@ def checkForKeyPairs(currKeyIndex, timeCourseVector, dict):
 		if i > currKeyIndex:
 			assert dict[currKey][secondKey] > 0
 		else:
-			assert not secondKey in dict[currKey]
+                        print 'Ahoy'
+			#assert not secondKey in dict[currKey]
 
 
 '''
@@ -70,7 +75,6 @@ def test_convergencePairDictEntries():
 	c1 = Child.Child()
 	c1.timeCourseVector = [[3, 5], [4, 1], [10, 12], [11, 11], [14, 2], [14, 8], [24, 3], [26, 6], [30, 4], [31, 9], [56, 7], [60, 13], [61, 10]]
 	sampleChildList = [c1]
-	patterns = convergencePatterns.convergencePatterns('sample/Path')
 
 	patterns.findConvergencePairs(c1.timeCourseVector)
 	
@@ -94,7 +98,6 @@ def test_convergenceTriosDictEntries():
 	# Make a sample dictionary, that will contain a number of dictionaries
 	# of varying levels, and a sample time course vector
 	sampleTCV = [[3, 5], [4, 1], [10, 12], [11, 11], [14, 2], [14, 8], [24, 3], [26, 6], [30, 4], [31, 9], [56, 7], [60, 13], [61, 10]]
-	patterns = convergencePatterns.convergencePatterns('sample/Path')
 
 	patterns.findTrioConvergencePatterns(sampleTCV)
 	for i in range(0, 12):
@@ -112,7 +115,6 @@ def test_convergenceQuartetsDictEntries():
 	# Make a sample dictionary, that will contain a number of dictionaries
 	# of varying levels, and a sample time course vector
 	sampleTCV = [[3, 5], [4, 1], [10, 12], [11, 11], [14, 2], [14, 8], [24, 3], [26, 6], [30, 4], [31, 9], [56, 7], [60, 13], [61, 10]]
-	patterns = convergencePatterns.convergencePatterns('sample/Path')
 
 	patterns.findQuartetConvergencePatterns(sampleTCV)
 	for i in range(0, 11):
@@ -152,7 +154,6 @@ def test_inOrderTCV():
 	c1 = Child.Child()
 	c1.timeCourseVector = [[1, 1], [2, 2], [3, 3], [4, 4], [5, 5], [6, 6], [7, 7], [8, 8], [9, 9], [10, 10], [11, 11], [12, 12], [13, 13]]
 	sampleChildList = [c1]
-	patterns = convergencePatterns.convergencePatterns('sample/Path')
 
 	patterns.findConvergencePairs(c1.timeCourseVector)
 	
@@ -166,12 +167,15 @@ def test_inOrderTCV():
 		checkForKeyPairs(i, c1.timeCourseVector, patterns.pairDict)
 
 
-def test_writeResults():
+def test_writeHeader():
 	c = convergencePatterns.convergencePatterns('test_output.csv')
         x= c.writeHeader(2)
         print x
-        '''
-	assert os.path.isfile(c.pairOutputFile)
-	os.remove(c.pairOutputFile)
-	assert not os.path.isfile(c.pairOutputFile)
-        '''
+
+
+def test_writeQuartetResults():
+        patterns.writeQuartetResults()
+        outputFilePath = os.path.join(patterns.outputPath+'_quartetConvergenceResults.csv')
+	assert os.path.isfile(outputFilePath)
+	shutil.rmtree('./results')
+	assert not os.path.isfile(outputFilePath)
