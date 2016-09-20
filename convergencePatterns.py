@@ -3,13 +3,14 @@ from collections import defaultdict
 import csv
 import datetime
 from itertools import chain, permutations
+import os
 
 
 class convergencePatterns(object):
 	def __init__(self, op):
 		# Each defaultdict is used to store every pair, trio, and quartet of parameter convergence orders
 		# found in the learners.
-                self.outoutPath = op
+                self.outputPath = op
 		self.pairDict = defaultdict(lambda: defaultdict(lambda: 0))
 		self.trioDict = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: 0)))
 		self.quartetDict = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: 0))))
@@ -28,20 +29,26 @@ class convergencePatterns(object):
 			f.close()
 
         
+        # Creates column headers for each output file
+        # Will print every possible permutation for the
+        # chosen number of parameters for comparison
         def writeHeader(self, n):
                 columnHeader = 'p{}' + ' < p{}' * (n-1)
                 perms = (list(permutations(range(1,14), n)))
-                f = lambda permList: columnHeader.format(*permList)
+                f = lambda perms: columnHeader.format(*perms)
                 return map(f, perms)
 
 
         def writeQuartetResults(self):
-                f = open(self.outPath[:-4] + '_quartetConvergenceResults.csv', 'a')
+                os.makedirs(self.outputPath)
+                outFile = os.path.join(self.outputPath + '_quartetConvergenceResults.csv')
+                f = open(outFile, 'a')
+
                 try:
                         writer = csv.writer(f)
-                        f = lambda perms: self.quartetList[perms[0]][perms[1]][perms[2]][perms[3]]
-                        writer.writerow(writeHeader(4))
-                        writer.writerow(map(f,permutations(range(1,14),4)))
+                        k = lambda perms: self.quartetDict[perms[0]][perms[1]][perms[2]][perms[3]]
+                        writer.writerow(self.writeHeader(4))
+                        writer.writerow(map(k,permutations(range(1,14),4)))
                 finally:
                         f.close()
 
