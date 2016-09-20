@@ -38,6 +38,32 @@ class convergencePatterns(object):
                 f = lambda perms: columnHeader.format(*perms)
                 return map(f, perms)
 
+        # Use function templates
+        def writeDuoResults(self):
+                os.makedirs(self.outputPath)
+                outFile = os.path.join(self.outputPath + '_quartetConvergenceResults.csv')
+                f = open(outFile, 'a')
+
+                try:
+                        writer = csv.writer(f)
+                        # For each possible duo permutation, add the sum of the fourth dict elements and feed them into writerow with an auxiliary function
+                        writer.writerow(self.writeHeader(2))
+                finally:
+                        f.close()
+
+
+        def writeTrioResults(self):
+                os.makedirs(self.outputPath)
+                outFile = os.path.join(self.outputPath + '_quartetConvergenceResults.csv')
+                f = open(outFile, 'a')
+
+                try:
+                        writer = csv.writer(f)
+                        # For each possible trio permutation, add the sum of the fourth dict elements and feed them into writerow with an auxiliary function
+                        writer.writerow(self.writeHeader(3))
+                finally:
+                        f.close()
+
 
         def writeQuartetResults(self):
                 os.makedirs(self.outputPath)
