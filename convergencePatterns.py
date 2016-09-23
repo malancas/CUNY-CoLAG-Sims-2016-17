@@ -25,7 +25,7 @@ class convergencePatterns(object):
                 f = lambda perms: columnHeader.format(*perms)
                 return map(f, perms)
 
-        
+
         def parametersAreDifferent(self,p1,p2,p3,p4):
                 return  p3 != p1 and p3 != p2 and p4 != p1 and p4 != p2
 
@@ -40,8 +40,7 @@ class convergencePatterns(object):
                 return total
 
 
-        def writePairResults(self):
-                outFile = os.path.join(self.outputPath + '_pairConvergenceResults.csv')
+        def writePairResults(self,outFile):
                 f = open(outFile, 'a')
 
                 try:
@@ -63,8 +62,7 @@ class convergencePatterns(object):
                 return total
 
 
-        def writeTrioResults(self):
-                outFile = os.path.join(self.outputPath + '_trioConvergenceResults.csv')
+        def writeTrioResults(self,outFile):
                 f = open(outFile, 'a')
 
                 try:
@@ -77,27 +75,29 @@ class convergencePatterns(object):
                         f.close()
 
 
-        def writeQuartetResults(self):
-                outFile = os.path.join(self.outputPath + '_quartetConvergenceResults.csv')
+        def writeQuartetResults(self, outFile):
                 f = open(outFile, 'a')
 
                 try:
                         writer = csv.writer(f)
-                        k = lambda perms: self.quartetDict[perms[0]][perms[1]][perms[2]][perms[3]]
                         writer.writerow(self.writeHeader(4))
+                        k = lambda perms: self.quartetDict[perms[0]][perms[1]][perms[2]][perms[3]]
                         writer.writerow(map(k,permutations(range(1,14),4)))
                 finally:
                         f.close()
 
 
-	def writeResults(self, outputFileName):
-		self.writePairResults()
+	def writeResults(self):
+                pairOutFile = os.path.join(self.outputPath + '_PairConvergenceResults.csv')
+		self.writePairResults(pairOutFile)
 		print 'Pair results written to file'
 
-                self.writeTrioResults()
+                trioOutFile = os.path.join(self.outputPath + '_TrioConvergenceResults.csv')
+                self.writeTrioResults(trioOutFile)
 		print 'Trio results written to file'
 
-                self.writeQuartetResults()
+                quartetOutFile = os.path.join(self.outputPath + '_QuartetConvergenceResults.csv')
+                self.writeQuartetResults(quartetOutFile)
 		print 'Quartet results written to file'
 
 
@@ -172,6 +172,4 @@ class convergencePatterns(object):
 			assert(len(sortedTCV) == 13)
 
 			self.findQuartetConvergencePatterns(sortedTCV)
-                        self.writePairResults()
-                        self.writeTrioResults()
-                        self.writeQuartetResults()
+                self.writeResults()

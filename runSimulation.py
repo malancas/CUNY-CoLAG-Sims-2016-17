@@ -119,7 +119,7 @@ class runSimulation(object):
 		# If convergenceFlag is set to true, make a convergencePatterns instance 
 		# and find resulting convergence patterns
 		if convergenceFlag:
-			patterns = convergencePatterns(baseName)
+			patterns = convergencePatterns(self.outputFile[:-16])
 			patterns.findConvergencePatterns(tcvList)
 
 		# If plotFlag is set to true, corresponding plots are produced and saved
