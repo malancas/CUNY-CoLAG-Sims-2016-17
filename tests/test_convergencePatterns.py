@@ -179,3 +179,21 @@ def test_writeQuartetResults():
 	assert os.path.isfile(outputFilePath)
 	shutil.rmtree('./results')
 	assert not os.path.isfile(outputFilePath)
+
+
+def test_writeTrioResults():
+        patterns.writeTrioResults()
+        patterns.outputPath = './results/test_path3'
+        outputFilePath = os.path.join(patterns.outputPath+'_TrioConvergenceResults.csv')
+	assert os.path.isfile(outputFilePath)
+	shutil.rmtree('./results')
+	assert not os.path.isfile(outputFilePath)
+
+
+def test_writePairResults():
+        patterns.writePairResults()
+        patterns.outputPath = './results/test_path2'
+        outputFilePath = os.path.join(patterns.outputPath+'_PairConvergenceResults.csv')
+	assert os.path.isfile(outputFilePath)
+	shutil.rmtree('./results')
+	assert not os.path.isfile(outputFilePath)

@@ -15,19 +15,6 @@ class convergencePatterns(object):
 		self.trioDict = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: 0)))
 		self.quartetDict = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: 0))))
 
-
-        def writePairResults(self):
-		f = open(self.outputPath[:-4] + '_pairConvergenceResults.csv', 'a')
-		try:
-                        # Make csv writer and lambda function to write the 
-                        # row headers and corresponding pairs to a new output file
-			writer = csv.writer(f)
-                        f = lambda x,y: 'p{}<p{}'.format(x,y)
-
-			print 'Hello'
-		finally:
-			f.close()
-
         
         # Creates column headers for each output file
         # Will print every possible permutation for the
@@ -38,22 +25,59 @@ class convergencePatterns(object):
                 f = lambda perms: columnHeader.format(*perms)
                 return map(f, perms)
 
+        
+        def parametersAreDifferent(self,p1,p2,p3,p4):
+                return  p3 != p1 and p3 != p2 and p4 != p1 and p4 != p2
+
+
+        def getPairDictTotal(self, permList):
+                p1, p2 = permList[0], permList[1]
+                total = 0
+                perms = (list(permutations(range(1,14),2)))
+                for perm in perms:
+                        if self.parametersAreDifferent(p1,p2,perm[0],perm[1]):
+                                total += self.quartetDict[p1][p2][perm[0]][perm[1]]
+                return total
+
+
+        def writePairResults(self):
+                outFile = os.path.join(self.outputPath + '_pairConvergenceResults.csv')
+                f = open(outFile, 'a')
+
+                try:
+                        writer = csv.writer(f)
+                        # For each possible pair permutation, add the sum of the fourth dict elements and feed them into writerow with an auxiliary function
+                        writer.writerow(self.writeHeader(2))
+                        permList = list(permutations(range(1,14),2))
+                        writer.writerow(map(self.getPairDictTotal,permList))
+                finally:
+                        f.close()
+
+
+        def getTrioDictTotal(self, permList):
+                p1, p2, p3 = permList[0], permList[1], permList[2]
+                total = 0
+                for i in range(1,14):
+                        if i != p1 and i != p2 and i != p3:
+                                total += self.quartetDict[p1][p2][p3][i]
+                return total
+
 
         def writeTrioResults(self):
-                os.makedirs(self.outputPath)
-                outFile = os.path.join(self.outputPath + '_quartetConvergenceResults.csv')
+                outFile = os.path.join(self.outputPath + '_trioConvergenceResults.csv')
                 f = open(outFile, 'a')
 
                 try:
                         writer = csv.writer(f)
                         # For each possible trio permutation, add the sum of the fourth dict elements and feed them into writerow with an auxiliary function
                         writer.writerow(self.writeHeader(3))
+                        permList = list(permutations(range(1,14),3))
+                        writer.writerow(map(self.getTrioDictTotal,permList))
                 finally:
                         f.close()
 
 
         def writeQuartetResults(self):
-                os.makedirs(self.outputPath)
                 outFile = os.path.join(self.outputPath + '_quartetConvergenceResults.csv')
                 f = open(outFile, 'a')
 
@@ -67,12 +91,14 @@ class convergencePatterns(object):
 
 
 	def writeResults(self, outputFileName):
-		#The function will write to files using a default name format
-		self.trioOutputFile = outputFileName[:-4] + '_TrioConvergenceResults.csv'
-		self.quartetOutputFile = outputFileName[:-4] + '_QuartetConvergenceResults.csv'
-
 		self.writePairResults()
 		print 'Pair results written to file'
+
+                self.writeTrioResults()
+		print 'Trio results written to file'
+
+                self.writeQuartetResults()
+		print 'Quartet results written to file'
 
 
 	def percentage(self, num, total):
@@ -145,6 +171,7 @@ class convergencePatterns(object):
 			sortedTCV = sorted(tcv, key=lambda parameter: parameter[0])
 			assert(len(sortedTCV) == 13)
 
-			self.findConvergencePairs(sortedTCV)
-			self.findTrioConvergencePatterns(sortedTCV)
 			self.findQuartetConvergencePatterns(sortedTCV)
+                        self.writePairResults()
+                        self.writeTrioResults()
+                        self.writeQuartetResults()

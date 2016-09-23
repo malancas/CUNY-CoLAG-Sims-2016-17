@@ -32,17 +32,16 @@ class runSimulation(object):
 
         # Write the header columns to the output file
         def writeOutputHeader(self):
-		outFile = open(self.outputFile, 'a')
-                writer = csv.writer(outFile)
-                writer.writerow(('TCV', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'Grammar'))
-                writer.writerow(['p{}'.format(i) for i in range(1,14)] * 2)
+                with open(self.outputFile,"a+") as outFile:
+                        writer = csv.writer(outFile)
+                        writer.writerow(('TCV', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'Grammar'))
+                        writer.writerow(['p{}'.format(i) for i in range(1,14)] * 2)
 
 
 	# Writes the time (particular sentence) that each parameter of each eChild converged on
         # as well as writing the final grammar of the learner to the output file
 	def writeResults(self, eChild):
-                outFile = open(self.outputFile, 'a')
-		try:
+                with open(self.outputFile,"a+") as outFile:
                         writer = csv.writer(outFile)
 
                         tcv = eChild.timeCourseVector
@@ -51,8 +50,6 @@ class runSimulation(object):
 				tcv[6][0], tcv[7][0], tcv[8][0], tcv[9][0], tcv[10][0], tcv[11][0], tcv[12][0],
                                 grammar[0], grammar[1], grammar[2], grammar[3], grammar[4], grammar[5], grammar[6],
                                 grammar[7], grammar[8], grammar[9], grammar[10], grammar[11], grammar[12]) )
-		finally:
-			outFile.close()
 
 
 	# Fills runSimulation object's selectedSentences array with sentences who
@@ -104,9 +101,11 @@ class runSimulation(object):
 	# sentences with the chosen constraints
 	def runLearners(self, maxSentences, maxLearners, convergenceFlag, plotFlag):
 		# Create the name and path of the output file
-		tempPathName = self.getLanguage() + '_' + str(maxLearners) + datetime.datetime.now().isoformat().replace(':','.')
-                os.makedirs('results/{}'.format(tempPathName))
-		self.outputFile = os.path.join('./results/{}'.format(tempPathName), tempPathName + '_output_.csv')
+                baseName = self.getLanguage() + '_' + str(maxLearners) + datetime.datetime.now().isoformat().replace(':','.')
+		tempPathName = './results/{}'.format(baseName)
+                tempFileName = baseName + '_grammar_tcv.csv'
+                os.makedirs(tempPathName)
+		self.outputFile = os.path.join(tempPathName, tempFileName)
                 self.writeOutputHeader()
 
 		# Stores the time course vectors of each learner after processing the specified number
@@ -120,7 +119,7 @@ class runSimulation(object):
 		# If convergenceFlag is set to true, make a convergencePatterns instance 
 		# and find resulting convergence patterns
 		if convergenceFlag:
-			patterns = convergencePatterns()
+			patterns = convergencePatterns(baseName)
 			patterns.findConvergencePatterns(tcvList)
 
 		# If plotFlag is set to true, corresponding plots are produced and saved
