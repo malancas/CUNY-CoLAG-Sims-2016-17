@@ -19,7 +19,7 @@ class convergencePatterns(object):
         # Creates column headers for each output file
         # Will print every possible permutation for the
         # chosen number of parameters for comparison
-        def writeHeader(self, n):
+        def getHeader(self, n):
                 columnHeader = 'p{}' + ' < p{}' * (n-1)
                 perms = (list(permutations(range(1,14), n)))
                 f = lambda perms: columnHeader.format(*perms)
@@ -41,16 +41,12 @@ class convergencePatterns(object):
 
 
         def writePairResults(self,outFile):
-                f = open(outFile, 'a')
-
-                try:
+                with open(outFile, 'a') as f:
                         writer = csv.writer(f)
                         # For each possible pair permutation, add the sum of the fourth dict elements and feed them into writerow with an auxiliary function
-                        writer.writerow(self.writeHeader(2))
+                        writer.writerow(self.getHeader(2))
                         permList = list(permutations(range(1,14),2))
                         writer.writerow(map(self.getPairDictTotal,permList))
-                finally:
-                        f.close()
 
 
         def getTrioDictTotal(self, permList):
@@ -63,28 +59,20 @@ class convergencePatterns(object):
 
 
         def writeTrioResults(self,outFile):
-                f = open(outFile, 'a')
-
-                try:
+                with open(outFile, 'a') as f:
                         writer = csv.writer(f)
                         # For each possible trio permutation, add the sum of the fourth dict elements and feed them into writerow with an auxiliary function
-                        writer.writerow(self.writeHeader(3))
+                        writer.writerow(self.getHeader(3))
                         permList = list(permutations(range(1,14),3))
                         writer.writerow(map(self.getTrioDictTotal,permList))
-                finally:
-                        f.close()
 
 
         def writeQuartetResults(self, outFile):
-                f = open(outFile, 'a')
-
-                try:
+                with open(outFile, 'a') as f:
                         writer = csv.writer(f)
-                        writer.writerow(self.writeHeader(4))
+                        writer.writerow(self.getHeader(4))
                         k = lambda perms: self.quartetDict[perms[0]][perms[1]][perms[2]][perms[3]]
                         writer.writerow(map(k,permutations(range(1,14),4)))
-                finally:
-                        f.close()
 
 
 	def writeResults(self):
