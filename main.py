@@ -34,6 +34,9 @@ from runSimulation import runSimulation
 
 
 def main(argv):
+    # The first argument keeps track of the mandatory arguments, number of learners, max number of sentences, and target grammar
+    # The second argument is flag that will produce plots for the results
+    # The third argument is a flag that will produce csv files for the result's convergence patterns
     parser = argparse.ArgumentParser(prog='CUNY Sims', description='Set simulation parameters for learners')
     parser.add_argument('integers', metavar='N', type=int, nargs=3,
                         help='(1) The number of learners (2) The number of sentences consumed (3) The target grammar\'s code')
@@ -43,19 +46,19 @@ def main(argv):
                         help='Find convergence patterns of the results')
     
     args = parser.parse_args()
-    maxLearners = 0
+    numLearners = 0
     maxSentences = 0
 
 
     # Test whether certain command line arguments
     # can be converted to positive integers
-    maxLearners = args.integers[0]
-    if maxLearners < 0:
+    numLearners = args.integers[0]
+    if numLearners < 1:
         print 'Argument must be a positive integer'
         sys.exit(2)    
 
     maxSentences = args.integers[1]
-    if maxSentences < 0:
+    if maxSentences < 1:
         print 'Argument must be a positive integer'
         sys.exit(2)
 
@@ -73,7 +76,7 @@ def main(argv):
     runSim1.makeSelectedSentenceList()
 
     # Runs a simulation over maxLearners number of eChild learners
-    runSim1.runLearners(maxSentences, maxLearners, args.convergenceFlag, args.plotFlag)
+    runSim1.runLearners(maxSentences, numLearners, args.convergenceFlag, args.plotFlag)
 
 if __name__ == '__main__':
     start = time.time() 

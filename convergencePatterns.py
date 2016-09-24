@@ -88,6 +88,7 @@ class convergencePatterns(object):
 
 
 	def writeResults(self):
+                # 1024 is the maximum number of cells in a row. Divide all results in multiple files
                 pairOutFile = os.path.join(self.outputPath + '_PairConvergenceResults.csv')
 		self.writePairResults(pairOutFile)
 		print 'Pair results written to file'
