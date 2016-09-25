@@ -39,11 +39,11 @@ class convergencePatterns(object):
                                 total += self.quartetDict[p1][p2][perm[0]][perm[1]]
                 return total
 
-
-        def writePairResults(self,outFile):
+        # 156 total permutations
+        def writePairResults(self):
+                outFile = os.path.join(self.outputPath + '_PairConvergenceResults.csv')
                 with open(outFile, 'a') as f:
                         writer = csv.writer(f)
-                        # For each possible pair permutation, add the sum of the fourth dict elements and feed them into writerow with an auxiliary function
                         writer.writerow(self.getHeader(2))
                         permList = list(permutations(range(1,14),2))
                         writer.writerow(map(self.getPairDictTotal,permList))
@@ -58,35 +58,53 @@ class convergencePatterns(object):
                 return total
 
 
-        def writeTrioResults(self,outFile):
+        '''
+        Will record the number of times each threesome permutation of parameters 1-13
+        occurs. Since the total number of permutations exceed the cell limit of a row,
+        the header and results will be printed to multiple rows
+        '''
+        def writeTrioResults(self):
+                outFile = os.path.join(self.outputPath + '_TrioConvergenceResults.csv')
                 with open(outFile, 'a') as f:
                         writer = csv.writer(f)
-                        # For each possible trio permutation, add the sum of the fourth dict elements and feed them into writerow with an auxiliary function
-                        writer.writerow(self.getHeader(3))
-                        permList = list(permutations(range(1,14),3))
-                        writer.writerow(map(self.getTrioDictTotal,permList))
+                        header = self.getHeader(3)
+                        perms = list(permutations(range(1,14),3))
+                        writer.writerow(header[:1024])
+                        writer.writerow(map(self.getTrioDictTotal,perms[:1024]))
+                        writer.writerow(header[1024:])
+                        writer.writerow(map(self.getTrioDictTotal,perms[1024:]))
 
 
-        def writeQuartetResults(self, outFile):
+        '''
+        Will record the number of times each foursome permutation of parameters 1-13
+        occurs. Since the total number of permutations exceed the cell limit of a row,
+        the header and results will be printed to multiple rows
+        '''
+        def writeQuartetResults(self):
+                outFile = os.path.join(self.outputPath + '_QuartetConvergenceResults.csv')
                 with open(outFile, 'a') as f:
                         writer = csv.writer(f)
-                        writer.writerow(self.getHeader(4))
+                        header = self.getHeader(4)
+                        perms = list(permutations(range(1,14),4))
+                        numberOfRows = len(perms) / 1024
+                        startIndex = 0
+                        endIndex = 1024
                         k = lambda perms: self.quartetDict[perms[0]][perms[1]][perms[2]][perms[3]]
-                        writer.writerow(map(k,permutations(range(1,14),4)))
+                        for i in range(numberOfRows):
+                                writer.writerow(header[startIndex:endIndex])
+                                writer.writerow(map(k,perms[startIndex:endIndex]))
+                                startIndex = endIndex + 1
+                                endIndex = startIndex + 1024
 
 
 	def writeResults(self):
-                # 1024 is the maximum number of cells in a row. Divide all results in multiple files
-                pairOutFile = os.path.join(self.outputPath + '_PairConvergenceResults.csv')
-		self.writePairResults(pairOutFile)
+		self.writePairResults()
 		print 'Pair results written to file'
 
-                trioOutFile = os.path.join(self.outputPath + '_TrioConvergenceResults.csv')
-                self.writeTrioResults(trioOutFile)
+                self.writeTrioResults()
 		print 'Trio results written to file'
 
-                quartetOutFile = os.path.join(self.outputPath + '_QuartetConvergenceResults.csv')
-                self.writeQuartetResults(quartetOutFile)
+                self.writeQuartetResults()
 		print 'Quartet results written to file'
 
 
