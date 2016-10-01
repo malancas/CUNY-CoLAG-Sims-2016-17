@@ -112,5 +112,5 @@ plt.ylim(1, 13)
 plt.yticks(np.linspace(1, 13, 13, endpoint=True))
 
 # Save the resulting graph as a pdf
-figure = plt.figure()
+figure = plt.gcf()
 figure.savefig(inputFile[:-4] + '_pset.pdf')
