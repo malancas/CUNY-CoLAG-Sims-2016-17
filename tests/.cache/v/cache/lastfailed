@@ -1,4 +1,3 @@
 {
-  "test_convergencePatterns.py::test_writePairResults": true, 
-  "test_convergencePatterns.py::test_writeTrioResults": true
+  "test_convergencePatterns.py::test_getPairDictTotal": true
 }

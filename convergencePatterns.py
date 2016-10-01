@@ -108,10 +108,6 @@ class convergencePatterns(object):
 		print 'Quartet results written to file'
 
 
-	def percentage(self, num, total):
-  		return 100 * float(num)/float(total)
-
-
 	def printConvergencePairs(self):
 		for m in range(0, 13):
 			for n in range(0, 13):
@@ -121,7 +117,7 @@ class convergencePatterns(object):
 						print self.pairDict[m][n]
 						print '\n'
 					except KeyError:
-						print ""
+						pass
 
 
 	# Will check for different sentence convergence foursome
@@ -139,6 +135,8 @@ class convergencePatterns(object):
 						fourthParm = sortedTCV[l][1]
 
 						self.quartetDict[firstParm][secondParm][thirdParm][fourthParm] += 1
+                                                self.trioDict[firstParm][secondParm][thirdParm] += 1
+                                                self.pairDict[firstParm][secondParm] += 1
 
 
 	# Will check for different sentence convergence threesome

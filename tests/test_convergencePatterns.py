@@ -5,6 +5,7 @@ import pytest
 from collections import defaultdict
 import os.path
 import shutil
+from itertools import permutations
 
 # Make a convergencePatterns object instance
 # for use in the test functions
@@ -167,12 +168,36 @@ def test_inOrderTCV():
 		checkForKeyPairs(i, c1.timeCourseVector, patterns.pairDict)
 
 
-def test_writeHeader():
+def test_getHeader():
 	c = convergencePatterns.convergencePatterns('test_output.csv')
-        x= c.writeHeader(2)
+        x= c.getHeader(2)
         print x
 
 
+def makeQuartetDict():
+        quartetDict = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: 0))))
+        permList = list(permutations(range(1,14),4))
+        for index, perm in enumerate(permList):
+                quartetDict[perm[0]][perm[1]][perm[2]][perm[3]] = index
+        return quartetDict
+
+
+def makePairDict():
+        pairDict = defaultdict(lambda: defaultdict(lambda: 0))
+        permList = list(permutations(range(1,14),2))
+        for index, perm in enumerate(permList):
+                pairDict[perm[0]][perm[1]] = index
+        return pairDict
+
+def test_getPairDictTotal():
+        patterns.pairDict = makePairDict()
+        permList = list(permutations(range(1,14),2))
+        for index, perm in enumerate(permList):
+                print patterns.getPairTotal2(perm)
+                assert index == patterns.getPairDictTotal(perm)
+
+
+'''
 def test_writeQuartetResults():
         patterns.writeQuartetResults()
         outputFilePath = os.path.join(patterns.outputPath+'_quartetConvergenceResults.csv')
@@ -197,3 +222,4 @@ def test_writePairResults():
 	assert os.path.isfile(outputFilePath)
 	shutil.rmtree('./results')
 	assert not os.path.isfile(outputFilePath)
+'''
