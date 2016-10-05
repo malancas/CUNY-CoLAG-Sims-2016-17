@@ -67,46 +67,6 @@ def checkForKeyQuartets(currKeyIndex, secondKeyIndex, thirdKeyIndex, timeCourseV
 
 
 '''
-Runs findConvergencePatterns with a sample dictionarie and time course vector.
-Afterwords, checkForKeyPairs will test the contents of sampleDict to see if 
-appropriate key pairs and values were added. py.test should be used to run these
-tests
-'''
-def test_convergencePairDictEntries():
-	c1 = Child.Child()
-	c1.timeCourseVector = [[3, 5], [4, 1], [10, 12], [11, 11], [14, 2], [14, 8], [24, 3], [26, 6], [30, 4], [31, 9], [56, 7], [60, 13], [61, 10]]
-	sampleChildList = [c1]
-
-	patterns.findConvergencePairs(c1.timeCourseVector)
-	
-	''' 
-	After running findConvergencePatterns, sampleDict should contain a number of key
-	and inner key pairs. The outer key should always appear before the inner key in the
-	sample time course vector
-	Every parameter is checked in the for loop 
-	'''
-	for i in range(0, 13):
-		checkForKeyPairs(i, c1.timeCourseVector, patterns.pairDict)
-
-
-'''
-Create a time course vector for testing.
-The first element of each inner list represents the
-time at which the parameter converged. The second 
-element indicates the specific parameter by number
-'''
-def test_convergenceTriosDictEntries():
-	# Make a sample dictionary, that will contain a number of dictionaries
-	# of varying levels, and a sample time course vector
-	sampleTCV = [[3, 5], [4, 1], [10, 12], [11, 11], [14, 2], [14, 8], [24, 3], [26, 6], [30, 4], [31, 9], [56, 7], [60, 13], [61, 10]]
-
-	patterns.findTrioConvergencePatterns(sampleTCV)
-	for i in range(0, 12):
-		for j in range(i+1, 13):
-			checkForKeyTrios(i, j, sampleTCV, patterns.trioDict)
-
-
-'''
 Create a time course vector for testing.
 The first element of each inner list represents the
 time at which the parameter converged. The second 
@@ -197,7 +157,6 @@ def test_getPairDictTotal():
                 assert index == patterns.getPairDictTotal(perm)
 
 
-'''
 def test_writeQuartetResults():
         patterns.writeQuartetResults()
         outputFilePath = os.path.join(patterns.outputPath+'_quartetConvergenceResults.csv')
@@ -222,4 +181,4 @@ def test_writePairResults():
 	assert os.path.isfile(outputFilePath)
 	shutil.rmtree('./results')
 	assert not os.path.isfile(outputFilePath)
-'''
+
