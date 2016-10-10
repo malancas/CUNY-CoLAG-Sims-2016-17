@@ -69,13 +69,19 @@ for i in range(0, numLearners):
     # and y axis data of each learner
     xData = []
     yData = []
+    # Stores the lastest time at which a paramaeter converges
+    # Used to set the x-axis ticks
+    maxTime = 1
     
     # The appropiate data is added,
     # xData stores the sentence number on which
     # each parameter converged
     # yData stores the corresponding parameter number
     for j in range(0, 13):
-        xData.append(rowList[i][j][0])
+        currTime = rowList[i][j][0]
+        if currTime > maxTime:
+                maxTime = currTime
+        xData.append(currTime)
         yData.append(rowList[i][j][1])
     
     # Every three elements of data will represent one line on the graph
@@ -96,7 +102,7 @@ for i in range(0, numLearners, 3):
     plt.plot(data[i], data[i+1], color=data[i+2], linewidth=1.0, marker='.', linestyle="-")
 
 # Set x limits
-plt.xlim(0, 13)
+plt.xlim(1, maxTime)
 
 # Set x ticks
 plt.xticks(np.linspace(0, 13, 14, endpoint=True))
