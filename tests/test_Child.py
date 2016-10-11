@@ -109,63 +109,63 @@ def test_setSubjPos():
 	# grammar[0] will remain '0'
 	c.infoList = [584, "DEC", 'Adv S Aux Never Verb']
 	c.sentence = c.infoList[2].split()
-	c.grammar = "0 1 0 0 0 0 1 0 0 0 1 0 1".split()
-	assert c.grammar[0] == '0'
+	c.grammar = [0,0,0,0,0,0,1,0,0,0,1,0,1]
+	assert c.grammar[0] == 0
 	c.setSubjPos()
-	assert c.grammar[0] == '0'
+	assert c.grammar[0] == 0
 
 	# '01' and 'S' are both in infoList[2] but since
 	# '01' is in the initial position, grammar[0]
 	# won't change
 	c.infoList = [584, "DEC", '01 S Aux Never Verb']
 	c.sentence = c.infoList[2].split()
-	assert c.grammar[0] == '0'
+	assert c.grammar[0] == 0
 	c.setSubjPos()
-	assert c.grammar[0] == '0'
+	assert c.grammar[0] == 0
 
 	# grammar[0] will change since both are present
 	# and 01 isn't in the initial spot but appears
 	# before S
 	c.infoList = [584, "DEC", 'Aux O1 S Never Verb']
         c.infoList[2] = c.infoList[2].split()
-	assert c.grammar[0] == '0'
+	assert c.grammar[0] == 0
 	c.setSubjPos()
-	assert c.grammar[0] == '1'
+	assert c.grammar[0] == 1
 
 	# S and 01 are in the wrong order, therefore
 	# grammar[0] won't change
-	c.grammar[0] = '0'
+	c.grammar[0] = 0
 	c.infoList = [584, "DEC", 'Aux S O1 Never Verb']
 	c.infoList[2] = c.infoList[2].split()
-	assert c.grammar[0] == '0'
+	assert c.grammar[0] == 0
 	c.setSubjPos()
-	assert c.grammar[0] == '0'
+	assert c.grammar[0] == 0
 
 	# Neither S or 01 appear in infoList[2]
 	c.infoList = [584, "DEC", 'Aux Never Verb']
 	c.infoList[2] = c.infoList[2].split()
-	assert c.grammar[0] == '0'
+	assert c.grammar[0] == 0
 	c.setSubjPos()
-	assert c.grammar[0] == '0'
+	assert c.grammar[0] == 0
 
 	# Only 01 appears in infoList[2]
 	c.infoList = [584, "DEC", 'Aux O1 Never Verb']
 	c.infoList[2] = c.infoList[2].split()
-	assert c.grammar[0] == '0'
+	assert c.grammar[0] == 0
 	c.setSubjPos()
-	assert c.grammar[0] == '0'
+	assert c.grammar[0] == 0
 
 	c.infoList = [584, "DEC", 'Aux O1 Never S Verb']
 	c.infoList[2] = c.infoList[2].split()
-	assert c.grammar[0] == '0'
+	assert c.grammar[0] == 0
 	c.setSubjPos()
-	assert c.grammar[0] == '1'
+	assert c.grammar[0] == 1
 
 	c.infoList = [584, "DEC", 'Aux Never Verb O1 S']
         c.infoList[2] = c.infoList[2].split()
-	c.grammar[0] = '0'
+	c.grammar[0] = 0
 	c.setSubjPos()
-	assert c.grammar[0] == '1'
+	assert c.grammar[0] == 1
 
 
 # c.grammar[0] will be set to '0'
@@ -175,27 +175,27 @@ def test_noSubjPos():
 	# grammar[0] won't change since 
 	# S appears after O1
 	c.infoList[2] = 'Aux Never Verb O1 S'.split()
-	c.grammar[0] = '1'
+	c.grammar[0] = 1
 	c.noSubjPos()
-	assert c.grammar[0] == '1'
+	assert c.grammar[0] == 1
 
 	c.infoList[2] = 'S Aux Never Verb O1'.split()
 	c.noSubjPos()
-	assert c.grammar[0] == '0'
+	assert c.grammar[0] == 0
 
-	c.grammar[0] = '1'
+	c.grammar[0] = 1
 	c.infoList[2] = 'Aux Never Verb S O1'.split()
 	c.noSubjPos()
-	assert c.grammar[0] == '0'
+	assert c.grammar[0] == 0
 
-	c.grammar[0] = '1'
+	c.grammar[0] = 1
 	c.infoList[2] = 'Aux Never Verb S'.split()
 	c.noSubjPos()
-	assert c.grammar[0] == '1'
+	assert c.grammar[0] == 1
 
 	c.infoList[2] = 'Aux Never Verb O1'.split()
 	c.noSubjPos()
-	assert c.grammar[0] == '1'
+	assert c.grammar[0] == 1
 
 
 '''
@@ -209,22 +209,22 @@ by O1 appear in c.sentence
 def test_setHead():
         # Testing for scenario one
 	c.infoList[2] = 'Aux Never Verb O3 P'.split()
-	c.grammar[1] = '0'
+	c.grammar[1] = 0
 	c.setHead()
-	assert c.grammar[1] == '1'
+	assert c.grammar[1] == 1
 
 	c.infoList[2] = 'Aux Never O3 Verb P'.split()
-	c.grammar[1] = '0'
+	c.grammar[1] = 0
 	c.setHead()
-	assert c.grammar[1] == '0'
+	assert c.grammar[1] == 0
 
 	c.infoList[2] = 'O3 P Aux Never Verb'.split()
 	c.setHead()
-	assert c.grammar[1] == '0'
+	assert c.grammar[1] == 0
 
 	c.infoList[2] = 'O3 Aux P Never Verb'.split()
 	c.setHead()
-	assert c.grammar[1] == '0'
+	assert c.grammar[1] == 0
 
 
 '''
@@ -238,44 +238,44 @@ appear in c.infoList[2]. Verb must directly follow O1.
 def test_noHead():
         # Testing for scenario 1
         c.infoList[2] = 'Aux Never Verb O3 P'.split()
-	c.grammar[1] = '1'
+	c.grammar[1] = 1
 	c.noHead()
-	assert c.grammar[1] == '1'
+	assert c.grammar[1] == 1
 
         c.infoList[2] = 'Aux Never Verb P O3'.split()
-	c.grammar[1] = '1'
+	c.grammar[1] = 1
 	c.noHead()
-	assert c.grammar[1] == '0'
+	assert c.grammar[1] == 0
 
 	c.infoList[2] = 'P O3 Aux Never Verb'.split()
-	c.grammar[1] = '1'
+	c.grammar[1] = 1
 	c.noHead()
-	assert c.grammar[1] == '1'
+	assert c.grammar[1] == 1
 
 	c.infoList[2] = 'Aux P Never Verb O3'.split()
 	c.noHead()
-	assert c.grammar[1] == '1'
+	assert c.grammar[1] == 1
 
 	c.infoList[2] = 'Aux P O3 Never Verb'.split()
 	c.noHead()
-	assert c.grammar[1] == '0'
+	assert c.grammar[1] == 0
 
         # Testing for scenario 2
-        c.grammar[1] = '1'
+        c.grammar[1] = 1
         c.infoList[1] = 'IMP'
 	c.infoList[2] = 'Verb Aux O1 P'.split()
 	c.noHead()
-	assert c.grammar[1] == '1'
+	assert c.grammar[1] == 1
 
         c.infoList[1] = 'DEC'
 	c.infoList[2] = 'Aux Verb O1'.split()
 	c.noHead()
-	assert c.grammar[1] == '1'
+	assert c.grammar[1] == 1
 
         c.infoList[1] = 'IMP'
 	c.infoList[2] = 'Aux Verb O1 P'.split()
 	c.noHead()
-	assert c.grammar[1] == '0'
+	assert c.grammar[1] == 0
 
 
 # Tests whether S, O1, O2, O3, or Adv appears
@@ -310,31 +310,80 @@ If the sentence is a question check whether
 (2) 'ka' isn't in infoList[2] while 'Aux' is
 '''
 def test_setHeadCP():
-        c.grammar[2] = '0'
+        # Testing for scenario #1
+        c.grammar[2] = 0
         c.infoList[1] = 'Q'
         c.infoList[2] = 'O1 Adv Aux Verb P ka'.split()
         c.setHeadCP()
-        assert c.grammar[2] == '1'
+        assert c.grammar[2] == 1
 
-        c.grammar[2] = '0'
+        c.grammar[2] = 0
         c.infoList[2] = 'O1 Adv ka Verb P Aux'.split()
         c.setHeadCP()
-        assert c.grammar[2] == '0'
+        assert c.grammar[2] == 0
 
         c.infoList[2] = 'O1 Adv ka Verb P'.split()
         c.setHeadCP()
-        assert c.grammar[2] == '0'
+        assert c.grammar[2] == 0
 
+        # Testing for scenario #2
         c.infoList[2] = 'O1 Adv Verb P Aux'.split()
         c.setHeadCP()
-        assert c.grammar[2] == '1'
+        assert c.grammar[2] == 1
 
-        c.grammar[2] = '0'
+        c.grammar[2] = 0
         c.infoList[1] = 'IMP'
         c.infoList[2] = 'O1 Adv Verb P ka'.split()
         c.setHeadCP()
-        assert c.grammar[2] == '0'
+        assert c.grammar[2] == 0
 
         c.infoList[2] = 'O1 Adv Verb P Aux'.split()
         c.setHeadCP()
-        assert c.grammar[2] == '0'
+        assert c.grammar[2] == 0
+
+
+'''
+Grammar[1] is set to 0 if both O3 and P
+are in the sentence and P isn't the first element in the
+sentence but appears immediately before O3 in the sentence
+
+Grammar[1] is set to 1 if the sentence is imperative
+and 01 and Verb are in the sentence. Additionally,
+Verb must appear immediately before O1
+'''
+def test_noHead():
+        # Testing for scenario #1
+        c.grammar[1] = 1
+        c.infoList[1] = 'Q'
+        c.infoList[2] = 'O3 Adv Verb P Aux'.split()
+        c.noHead()
+        assert c.grammar[1] == 1
+
+        c.infoList[2] = 'P O3 Adv Verb Aux'.split()
+        c.noHead()
+        assert c.grammar[1] == 1
+
+        c.infoList[2] = 'Adv P O3 Verb Aux'.split()
+        c.noHead()
+        assert c.grammar[1] == 0
+
+        c.grammar[1] = 1
+        c.infoList[2] = 'Adv P Verb O3 Aux'.split()
+        c.noHead()
+        assert c.grammar[1] == 1
+
+        # Testing for scenario #2
+        c.grammar[1] = 0
+        c.infoList[1] = 'IMP'
+        c.infoList[2] = 'Adv P Verb O1 Aux'.split()
+        c.noHead()
+        assert c.grammar[1] == 1
+
+        c.grammar[1] = 0
+        c.infoList[2] = 'Adv P Verb Aux O1'.split()
+        c.noHead()
+        assert c.grammar[1] == 0
+
+        c.infoList[2] = 'Adv P O1 Verb Aux'.split()
+        c.noHead()
+        assert c.grammar[1] == 0
