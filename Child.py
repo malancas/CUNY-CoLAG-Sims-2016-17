@@ -130,7 +130,7 @@ class Child(object):
         if "O1" in self.infoList[2] and "S" in self.infoList[2]: #Check if O1 and S are in the sentence
             first = self.findIndex("O1") #Find index of O1
             if first > 0 and first < self.findIndex("S"): # Make sure O1 is non-sentence-initial and before S
-                self.grammar[0] = '1'
+                self.grammar[0] = 1
 
                 
     #set to 0 if the regex is met
@@ -139,7 +139,7 @@ class Child(object):
         if "O1" in self.infoList[2] and "S" in self.infoList[2]: #Check if O1 and S are in the sentence
             first = self.findIndex("S") #Find index of O1
             if first >= 0 and first < self.findIndex("O1"): # Make sure O1 is non-sentence-initial and before S
-                self.grammar[0] = '0'
+                self.grammar[0] = 0
 
     
     #2nd parameter
@@ -147,7 +147,7 @@ class Child(object):
         if "O3" in self.infoList[2] and "P" in self.infoList[2]:
             first = self.findIndex("O3")
             if first > 0 and self.findIndex("P") == first + 1: #O3 followed by P
-                self.grammar[1] = '1'
+                self.grammar[1] = 1
         #If imperative, make sure Verb directly follows O1
         if self.isImperative() and "O1" in self.infoList[2] and "Verb" in self.infoList[2]:
             if self.findIndex("O1") == self.findIndex("Verb") - 1:
@@ -296,7 +296,7 @@ class Child(object):
     #11th parameter
     def iToC(self):
         if self.grammar[0] == 0 and self.grammar[1] == 0 and self.grammar[2] == '0' and self.S_Aux():
-            self.grammar[10] = '0'
+            self.grammar[10] = 0
         if self.grammar[0] == 1 and self.grammar[1] == 1 and self.grammar[2] == '1' and self.Aux_S():
             self.grammar[10] = 0
         if self.grammar[0] == 1 and self.grammar[1] == 0 and self.grammar[2] == '1' and self.Aux_Verb():
