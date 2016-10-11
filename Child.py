@@ -180,13 +180,8 @@ class Child(object):
 
 
     def containsTopicalizable(self):
-        i = self.findIndex("S")
-        j = self.findIndex("O1")
-        k = self.findIndex("O2") 
-        l= self.findIndex("O3")
-        m = self.findIndex("Adv")
-        
-        return i == 0 or j == 0 or k == 0 or l == 0 or m == 0
+        firstElement = self.infoList[2][0]
+        return firstElement == 'S' or firstElement == 'O1' or firstElement == 'O2' or firstElement == 'O3' or firstElement == 'Adv'
 
 
     #4th parameter

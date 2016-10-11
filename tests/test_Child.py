@@ -387,3 +387,109 @@ def test_noHead():
         c.infoList[2] = 'Adv P O1 Verb Aux'.split()
         c.noHead()
         assert c.grammar[1] == 0
+
+
+'''
+If the sentence is a question and either
+ka is the first element of the sentence or
+ka isn't in the sentence and aux is the first
+element of the sentence, grammar[2] is set to 0
+'''
+def test_noHeadCP():
+        c.infoList[1] = 'Q'
+        c.grammar[2] = 1
+        c.infoList[2] = 'ka Adv P O1 Verb Aux'.split()
+        c.noHeadCP()
+        assert c.grammar[2] == 0
+
+        c.grammar[2] = 1
+        c.infoList[2] = 'Aux Adv P O1 Verb'.split()
+        c.noHeadCP()
+        assert c.grammar[2] == 0
+
+        c.grammar[2] = 1
+        c.infoList[2] = 'Aux Adv P O1 ka Verb'.split()
+        c.noHeadCP()
+        assert c.grammar[2] == 1
+
+        c.infoList[1] = 'DEC'
+        c.grammar[2] = 1
+        c.infoList[2] = 'ka Adv P O1 Verb Aux'.split()
+        c.noHeadCP()
+        assert c.grammar[2] == 1
+
+        c.grammar[2] = 1
+        c.infoList[2] = 'Aux Adv P O1 Verb'.split()
+        c.noHeadCP()
+        assert c.grammar[2] == 1
+
+        c.infoList[2] = 'Aux Adv P O1 ka Verb'.split()
+        c.noHeadCP()
+        assert c.grammar[2] == 1
+
+        c.infoList[1] = 'IMP'
+        c.grammar[2] = 1
+        c.infoList[2] = 'ka Adv P O1 Verb Aux'.split()
+        c.noHeadCP()
+        assert c.grammar[2] == 1
+
+        c.grammar[2] = 1
+        c.infoList[2] = 'Aux Adv P O1 Verb'.split()
+        c.noHeadCP()
+        assert c.grammar[2] == 1
+
+        c.infoList[2] = 'Aux Adv P O1 ka Verb'.split()
+        c.noHeadCP()
+        assert c.grammar[2] == 1
+
+
+'''
+If the sentence is declarative and either
+1. O2 is in the sentence while O1 isn't, 
+then grammar[5] is set to 1. If grammar[3]
+is equivalent to 1, then grammar[3] is set to 0
+
+2. If containsTopicalizable returns true,
+then grammar[3] is set to 1
+'''
+def test_setObligTopic():
+        # Testing for scenario #1
+        c.infoList[1] = 'DEC'
+        c.grammar[5] = 0
+        c.grammar[3] = 1
+        c.infoList[2] = 'Aux Adv P O2 ka Verb'.split()
+        c.setObligTopic()
+        assert c.grammar[3] == 0
+        assert c.grammar[5] == 1
+        c.setObligTopic()
+        assert c.grammar[3] == 0
+
+        # Testing for scenario #2
+        c.grammar[3] = 0
+        c.infoList[2] = 'Aux Adv P O2 ka Verb O1'.split()
+        c.setObligTopic()
+        assert c.grammar[3] == 0
+
+        c.infoList[2] = 'S Aux Adv P O2 ka Verb O1'.split()
+        c.setObligTopic()
+        assert c.grammar[3] == 1
+
+        c.grammar[0] = 0
+        c.infoList[2] = 'O1 Aux Adv P O2 ka Verb'.split()
+        c.setObligTopic()
+        assert c.grammar[3] == 1
+
+        c.grammar[0] = 0
+        c.infoList[2] = 'O2 Aux Adv P O1 ka Verb'.split()
+        c.setObligTopic()
+        assert c.grammar[3] == 1
+
+        c.grammar[0] = 0
+        c.infoList[2] = 'O3 Aux Adv P O2 ka O1 Verb'.split()
+        c.setObligTopic()
+        assert c.grammar[3] == 1
+
+        c.grammar[0] = 0
+        c.infoList[2] = 'Adv P ka Verb'.split()
+        c.setObligTopic()
+        assert c.grammar[3] == 1
