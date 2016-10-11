@@ -192,11 +192,11 @@ class Child(object):
                 if self.grammar[3] == 1:
                     self.grammar[3] = 0
             else:
-                if(self.containsTopicalizable()) :
+                if (self.containsTopicalizable()):
                     self.grammar[3] = 1
 
 
-    #out of obliqueness order
+    # Out of obliqueness order
     def outOblique(self):
         i = self.findIndex("O1")
         j = self.findIndex("O2") 
