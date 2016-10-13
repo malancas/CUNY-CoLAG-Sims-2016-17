@@ -623,3 +623,19 @@ def test_setPrepStrand():
         c.infoList[2] = '+WH Aux ka S'.split()
         c.setPrepStrand()
         assert c.grammar[7] == 0      
+
+
+def test_setTopicMark():
+        c.grammar[8] = 0
+        c.infoList[2] = 'WA +WH Aux ka S'.split()
+        c.setTopicMark()
+        assert c.grammar[8] == 1
+
+        c.grammar[8] = 0
+        c.infoList[2] = '+WA Aux ka S'.split()
+        c.setTopicMark()
+        assert c.grammar[8] == 0
+
+
+def test_vToI():
+        

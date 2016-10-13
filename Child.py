@@ -241,7 +241,7 @@ class Child(object):
     
     #9th parameter
     def setTopicMark(self):
-        if "WA" in self.infoList[2] :
+        if "WA" in self.infoList[2]:
             self.grammar[8] = 1
 
     
@@ -322,5 +322,4 @@ class Child(object):
     
     #13th parameter
     def questionInver(self):
-        if "ka" in self.infoList[2]:
-            self.grammar[12] = 0
+        self.grammar[12] = 0 if 'ka' in self.infoList[2]
