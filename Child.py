@@ -218,7 +218,7 @@ class Child(object):
             self.grammar[4] = 1
 
 
-    #6th parameter   
+    #6th parameter
     def setNullTopic(self):
         if 'O2' in self.infoList[2] and not 'O1' in self.infoList[2]:
             self.grammar[5] = 1
@@ -232,10 +232,10 @@ class Child(object):
                 
     #8th parameter
     def setPrepStrand(self):
-        if "P" in self.infoList[2] and "O3" in self.infoList[2] :
-            i = self.findIndex("P") #Get index of P
-            j = self.findIndex("O3")#Get index of O3
-            if i != -1 and j != -1 and abs(i - j) != 1 : #If they exist, make sure they aren't adjacent
+        i = self.findIndex('P') #Get index of P
+        j = self.findIndex('O3')#Get index of O3
+        # If P and O3 are in the sentence, confirm they aren't adjacent
+        if i != -1 and j != -1 and abs(i - j) != 1 :
                 self.grammar[7] = 1
     
     

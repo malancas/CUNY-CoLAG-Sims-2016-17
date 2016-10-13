@@ -554,3 +554,72 @@ def test_setNullSubj():
         c.infoList[2] = 'O3 O2 P O1 Aux ka S'.split()
         c.setNullSubj()
         assert c.grammar[4] == 0
+
+
+# c.grammar[5] is set to 1 if O2 is in the 
+# sentence and O1 isn't in the sentence
+def test_setNullTopic():
+        c.grammar[5] = 0
+        c.infoList[2] = 'O3 O2 P Aux ka S'.split()
+        c.setNullTopic()
+        assert c.grammar[5] == 1
+        
+        c.grammar[5] = 0
+        c.infoList[2] = 'O3 O2 O1 P Aux ka S'.split()
+        c.setNullTopic()
+        assert c.grammar[5] == 0
+
+        c.infoList[2] = 'O3 P O1 Aux ka S'.split()
+        c.setNullTopic()
+        assert c.grammar[5] == 0
+
+        c.infoList[2] = 'O3 P Aux ka S'.split()
+        c.setNullTopic()
+        assert c.grammar[5] == 0
+
+
+def test_setWHMovement():
+        c.grammar[6] = 1
+        c.infoList[2] = 'O3 +WH P Aux ka S'.split()
+        c.setWHMovement()
+        assert c.grammar[6] == 0
+
+        c.grammar[6] = 1
+        c.infoList[2] = 'O3 +WH P Aux O3[+WH] ka S'.split()
+        c.setWHMovement()
+        assert c.grammar[6] == 1
+
+        c.grammar[6] = 1
+        c.infoList[2] = 'O3 +WH O3 P Aux ka S'.split()
+        c.setWHMovement()
+        assert c.grammar[6] == 0
+
+        c.grammar[6] = 1
+        c.infoList[2] = 'O3[+WH] P Aux ka S'.split()
+        c.setWHMovement()
+        assert c.grammar[6] == 1
+
+        c.grammar[6] = 1
+        c.infoList[2] = 'O3 P Aux ka S'.split()
+        c.setWHMovement()
+        assert c.grammar[6] == 1
+
+
+def test_setPrepStrand():
+        c.grammar[7] = 0
+        c.infoList[2] = 'O3 +WH P Aux ka S'.split()
+        c.setPrepStrand()
+        assert c.grammar[7] == 1
+
+        c.grammar[7] = 0
+        c.infoList[2] = 'O3 P Aux ka S'.split()
+        c.setPrepStrand()
+        assert c.grammar[7] == 0
+
+        c.infoList[2] = 'O3 Aux ka S'.split()
+        c.setPrepStrand()
+        assert c.grammar[7] == 0
+
+        c.infoList[2] = '+WH Aux ka S'.split()
+        c.setPrepStrand()
+        assert c.grammar[7] == 0      
