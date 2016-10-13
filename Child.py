@@ -203,18 +203,18 @@ class Child(object):
         k = self.findIndex("P")
         l = self.findIndex("O3")
 
-        if i != -1 and j != -1 and k != -1 and (i < j < k and l == k+1):  
+        if (i < j < k and l == k+1):  
             return False
-        elif i != -1 and j != -1 and k != -1 and ( l < j < i and k == l+1):
+        elif (l < j < i and k == l+1):
             return False
-        elif (i != -1 and j != -1 and k != -1 and l != -1):
+        elif (l != -1):
             return True
 
                 
     #5th parameter
     #Only works for full, not necessarily with CHILDES distribution
     def setNullSubj(self):
-        if self.isDeclarative() and "S" not in self.infoList[2] and self.outOblique():
+        if self.isDeclarative() and 'S' not in self.infoList[2] and self.outOblique():
             self.grammar[4] = 1
 
 

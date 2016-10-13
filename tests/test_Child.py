@@ -493,3 +493,64 @@ def test_setObligTopic():
         c.infoList[2] = 'Adv P ka Verb'.split()
         c.setObligTopic()
         assert c.grammar[3] == 1
+
+
+'''
+Determine if any of the specified positioning
+and appearance of O1, O2, O3, and P correspond to 
+the contents of the sentence. If so, the function 
+return either true or false depending on which 
+combination appears
+'''
+def test_outOblique():
+        # Testing for scenario #1
+        c.infoList[2] = 'O1 O2 P O3 Aux Verb'.split()
+        assert not c.outOblique()
+
+        c.infoList[2] = 'O1 Aux O2 Verb P O3 ka'.split()
+        assert not c.outOblique()
+
+        c.infoList[2] = 'O1 Aux O2 Verb P ka O3'.split()
+        assert c.outOblique()
+
+        c.infoList[2] = 'Aux O2 O1 Verb P O3 ka'.split()
+        assert c.outOblique()
+
+        # Testing for scenario #2
+        c.infoList[2] = 'O3 P O2 O1 Aux ka'.split()
+        assert not c.outOblique()
+
+        c.infoList[2] = 'O3 O2 P O1 Aux ka'.split()
+        assert c.outOblique()
+
+        c.infoList[2] = 'O3 P Aux O2 ka O1 Verb'.split()
+        assert not c.outOblique()
+
+        c.infoList[2] = 'O2 O3 P O1 Aux ka'.split()
+        assert c.outOblique()
+
+
+def test_setNullSubj():
+        c.grammar[4] = 0
+        c.infoList[1] = 'DEC'
+        c.infoList[2] = 'O3 O2 P O1 Aux ka'.split()
+        c.setNullSubj()
+        assert c.grammar[4] == 1
+
+        c.grammar[4] = 0
+        c.infoList[1] = 'Q'
+        c.setNullSubj()
+        assert c.grammar[4] == 0
+
+        c.infoList[1] = 'IMP'
+        c.setNullSubj()
+        assert c.grammar[4] == 0
+
+        c.infoList[1] = 'DEC'
+        c.infoList[2] = 'O3 O2 P O1 Aux ka S'.split()
+        c.setNullSubj()
+        assert c.grammar[4] == 0
+
+        c.infoList[2] = 'O3 O2 P O1 Aux ka S'.split()
+        c.setNullSubj()
+        assert c.grammar[4] == 0
