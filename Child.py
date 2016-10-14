@@ -241,17 +241,15 @@ class Child(object):
     
     #9th parameter
     def setTopicMark(self):
-        if "WA" in self.infoList[2]:
-            self.grammar[8] = 1
+        if "WA" in self.infoList[2]: self.grammar[8] = 1 
 
     
     #10th parameter
     def vToI(self):
-        if "O1" in self.infoList[2] and "Verb" in self.infoList[2] :
-            i = self.findIndex("O1")
-            j = self.findIndex("Verb")
-            if i > 0 and j != -1 and abs(i - j) != 1 :
-                self.grammar[9] = 1 
+        i = self.findIndex("O1")
+        j = self.findIndex("Verb")
+        if i > 0 and j != -1 and abs(i - j) != 1 :
+            self.grammar[9] = 1 
 
                
     def S_Aux(self):
@@ -322,4 +320,4 @@ class Child(object):
     
     #13th parameter
     def questionInver(self):
-        self.grammar[12] = 0 if 'ka' in self.infoList[2]
+        if 'ka' in self.infoList[2]: self.grammar[12] = 0

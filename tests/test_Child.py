@@ -637,5 +637,36 @@ def test_setTopicMark():
         assert c.grammar[8] == 0
 
 
+'''
+If O1 and Verb appear in the sentence,
+O1 appears after the first element, and
+there is at least one element between them,
+then grammar[9] is set to 1
+'''
 def test_vToI():
+        c.grammar[9] = 0
+        c.infoList[2] = 'Verb +WA O1 Aux ka S'.split()
+        c.vToI()
+        assert c.grammar[9] == 1
         
+        c.grammar[9] = 0
+        c.infoList[2] = '+WA O1 Aux Verb ka S'.split()
+        c.vToI()
+        assert c.grammar[9] == 1
+
+        c.grammar[9] = 0
+        c.infoList[2] = 'O1 Aux Verb ka S'.split()
+        c.vToI()
+        assert c.grammar[9] == 0
+
+        c.infoList[2] = '+WA O1 Verb Aux ka S'.split()
+        c.vToI()
+        assert c.grammar[9] == 0
+
+        c.infoList[2] = '+WA O1 Aux ka S'.split()
+        c.vToI()
+        assert c.grammar[9] == 0
+
+        c.infoList[2] = '+WA Aux Verb ka S'.split()
+        c.vToI()
+        assert c.grammar[9] == 0
