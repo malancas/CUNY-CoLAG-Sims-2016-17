@@ -670,3 +670,159 @@ def test_vToI():
         c.infoList[2] = '+WA Aux Verb ka S'.split()
         c.vToI()
         assert c.grammar[9] == 0
+
+
+'''
+If the sentence is declarative, S appears in the
+sentence but not in the first position and Aux
+appears immediately after, then return True
+'''
+def test_S_Aux():
+        c.infoList[1] = 'DEC'
+        c.infoList[2] = '+WA Verb ka S Aux'.split()
+        assert c.S_Aux()
+        
+        c.infoList[2] = '+WA S Aux Verb ka'.split()
+        assert c.S_Aux()
+
+        c.infoList[2] = 'S Aux +WA Verb ka'.split()
+        assert not c.S_Aux()
+
+        c.infoList[2] = '+WA ka S Verb Aux'.split()
+        assert not c.S_Aux()
+
+        c.infoList[2] = '+WA Verb ka Aux'.split()
+        assert not c.S_Aux()
+
+        c.infoList[2] = '+WA Verb ka Aux'.split()
+        assert not c.S_Aux()
+
+        c.infoList[1] = 'Q'
+        c.infoList[2] = '+WA Verb ka S Aux'.split()
+        assert not c.S_Aux()
+
+
+def test_Aux_S():
+        c.infoList[1] = 'DEC'
+        c.infoList[2] = '+WA Verb ka Aux S'.split()
+        assert c.Aux_S()
+
+        c.infoList[2] = '+WA Aux S Verb ka'.split()
+        assert c.Aux_S()
+
+        c.infoList[2] = 'Aux S +WA Verb ka'.split()
+        assert not c.Aux_S()
+
+        c.infoList[2] = '+WA Verb Aux ka S'.split()
+        assert not c.Aux_S()
+
+        c.infoList[2] = '+WA Verb ka S Aux'.split()
+        assert not c.Aux_S()
+
+        c.infoList[1] = 'Q'
+        c.infoList[2] = '+WA Verb ka Aux S'.split()
+        assert not c.Aux_S()
+
+
+def test_Aux_Verb():
+        c.infoList[1] = 'DEC'
+        c.infoList[2] = '+WA ka Aux Verb S'.split()
+        assert c.Aux_Verb()
+
+        c.infoList[1] = 'DEC'
+        c.infoList[2] = '+WA ka Verb S'.split()
+        assert not c.Aux_Verb()
+
+        c.infoList[1] = 'DEC'
+        c.infoList[2] = '+WA ka Verb Aux S'.split()
+        assert not c.Aux_Verb()
+
+        c.infoList[1] = 'Q'
+        c.infoList[2] = '+WA ka Aux Verb S'.split()
+        assert not c.Aux_Verb()
+
+
+def test_Verb_Aux():
+        c.infoList[1] = 'DEC'
+        c.infoList[2] = '+WA ka Verb Aux S'.split()
+        assert c.Verb_Aux()
+
+        c.infoList[1] = 'DEC'
+        c.infoList[2] = '+WA Verb ka Aux S'.split()
+        assert not c.Verb_Aux()
+
+        c.infoList[1] = 'Q'
+        c.infoList[2] = '+WA ka Verb Aux S'.split()
+        assert not c.Verb_Aux()
+
+
+def test_Never_Verb():
+        c.infoList[1] = 'DEC'
+        c.infoList[2] = '+WA ka Never Verb S'.split()
+        assert c.Never_Verb()
+
+        c.infoList[2] = '+WA ka Verb Never S'.split()
+        assert not c.Never_Verb()
+
+        c.infoList[2] = 'Aux +WA ka Never Verb S'.split()
+        assert not c.Never_Verb()
+
+        c.infoList[1] = 'Q'
+        c.infoList[2] = '+WA ka Never Verb S'.split()
+        assert not c.Never_Verb()
+
+
+def test_Verb_Never():
+        c.infoList[1] = 'DEC'
+        c.infoList[2] = '+WA ka Verb Never S'.split()
+        assert c.Verb_Never()
+
+        c.infoList[2] = '+WA ka Verb Never S Aux'.split()
+        assert not c.Verb_Never()
+
+        c.infoList[2] = '+WA Verb ka Never S'.split()
+        assert not c.Verb_Never()
+
+        c.infoList[1] = 'Q'
+        c.infoList[2] = '+WA ka Verb Never S'.split()
+        assert not c.Verb_Never()
+
+
+def test_hasKa():
+        c.infoList[2] = '+WA ka Verb Never S'.split()
+        assert c.hasKa()
+
+        c.infoList[2] = '+WA Verb Never S'.split()
+        assert not c.hasKa()
+
+# Test iToC
+
+def test_Verb_tensed():
+        c.infoList[1] = 'Q'
+        c.infoList[2] = '+WA ka Verb Never S'.split()
+        assert c.Verb_tensed()
+
+        c.infoList[2] = '+WA Aux ka Verb Never S'.split()
+        assert not c.Verb_tensed()
+
+        c.infoList[1] = 'DEC'
+        c.infoList[2] = '+WA ka Verb Never S'.split()
+        assert c.Verb_tensed()
+
+        c.infoList[2] = 'Aux +WA ka Verb Never S'.split()
+        assert not c.Verb_tensed()
+
+
+def test_affix_Hop():
+
+
+def test_questionInver():
+        c.grammar[12] = 1
+        c.infoList[2] = 'Aux +WA ka Verb Never S'.split()
+        c.questionInver()
+        assert c.grammar[12] == 0
+
+        c.grammar[12] = 1
+        c.infoList[2] = 'Aux +WA Verb Never S'.split()
+        c.questionInver()
+        assert not c.grammar[12] == 0
