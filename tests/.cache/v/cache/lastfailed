@@ -1,1 +1,7 @@
-{}
+{
+  "test_convergencePatterns.py::test_getPairDictTotal": true, 
+  "test_convergencePatterns.py::test_inOrderTCV": true, 
+  "test_convergencePatterns.py::test_writePairResults": true, 
+  "test_convergencePatterns.py::test_writeQuartetResults": true, 
+  "test_convergencePatterns.py::test_writeTrioResults": true
+}
