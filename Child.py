@@ -288,21 +288,25 @@ class Child(object):
 
     #11th parameter
     def iToC(self):
-        if self.grammar[0] == 0 and self.grammar[1] == 0 and self.grammar[2] == '0' and self.S_Aux():
+        p1 = self.grammar[0]
+        p2 = self.grammar[1]
+        p3 = self.grammar[2]
+
+        if p1 == 0 and p2 == 0 and p3 == 0 and self.S_Aux():
             self.grammar[10] = 0
-        if self.grammar[0] == 1 and self.grammar[1] == 1 and self.grammar[2] == '1' and self.Aux_S():
+        elif p1 == 1 and p2 == 1 and p3 == 1 and self.Aux_S():
             self.grammar[10] = 0
-        if self.grammar[0] == 1 and self.grammar[1] == 0 and self.grammar[2] == '1' and self.Aux_Verb():
+        elif p1 == 1 and p2 == 0 and p3 == 1 and self.Aux_Verb():
             self.grammar[10] = 0
-        if self.grammar[0] == 0 and self.grammar[1] == 1 and self.grammar[2] == 0 and self.Verb_Aux():
+        elif p1 == 0 and p2 == 1 and p3 == 0 and self.Verb_Aux():
             self.grammar[10] = 0
-        if self.grammar[0] == 0 and self.grammar[1] == 0 and self.grammar[2] == 1 and self.S_Aux():
+        elif p1 == 0 and p2 == 0 and p3 == 1 and self.S_Aux():
             self.grammar[10] = 0
-        if self.grammar[0] == 1 and self.grammar[1] == 1 and self.grammar[2] == 0 and self.Aux_S():
+        elif p1 == 1 and p2 == 1 and p3 == 0 and self.Aux_S():
             self.grammar[10] = 0
-        if self.grammar[0] == 1 and self.grammar[1] == 0 and self.grammar[2] == 0 and (self.Never_Verb() or self.hasKa()):
+        elif p1 == 1 and p2 == 0 and p3 == 0 and (self.Never_Verb() or self.hasKa()):
             self.grammar[10] = 0
-        if self.grammar[0] == 0 and self.grammar[1] == 1 and self.grammar[2] == 1 and (self.Verb_Never() or self.hasKa()):
+        elif p1 == 0 and p2 == 1 and p3 == 1 and (self.Verb_Never() or self.hasKa()):
             self.grammar[10] = 0
     
 

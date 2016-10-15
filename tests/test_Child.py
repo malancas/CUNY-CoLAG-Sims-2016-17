@@ -795,7 +795,28 @@ def test_hasKa():
         c.infoList[2] = '+WA Verb Never S'.split()
         assert not c.hasKa()
 
-# Test iToC
+
+def test_iToC():
+        c.infoList[1] = 'DEC'
+        c.grammar[0] = 0
+        c.grammar[1] = 0
+        c.grammar[2] = 0
+        c.grammar[10] = 1
+        c.infoList[2] = '+WA Verb Never S Aux'.split()
+        c.iToC()
+        assert c.grammar[10] == 0
+
+        c.grammar[10] = 1
+        c.grammar[0] = 1
+        c.iToC()
+        assert c.grammar[10] == 1
+
+        c.grammar[10] = 1
+        c.grammar[1] = 1
+        c.grammar[2] = 1
+        c.infoList[2] = '+WA Verb Never Aux S'.split()
+        c.iToC()
+        assert c.grammar[10] == 0
 
 def test_Verb_tensed():
         c.infoList[1] = 'Q'
