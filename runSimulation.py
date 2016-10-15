@@ -1,5 +1,5 @@
-from Child import Child
-from convergencePatterns import convergencePatterns
+from .Child import Child
+from .convergencePatterns import convergencePatterns
 import time
 import random
 import csv

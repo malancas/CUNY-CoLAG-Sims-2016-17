@@ -1,4 +1,4 @@
-from Child import Child
+from .Child import Child
 from collections import defaultdict
 import csv
 import datetime
