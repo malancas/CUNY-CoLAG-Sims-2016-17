@@ -312,10 +312,13 @@ class Child(object):
 
     #12th parameter                                          
     def affixHop(self):
-        if self.Verb_tensed() and "Never Verb O1" in self.infoList[2]:
-            self.grammar[11] = 1
-        if self.Verb_tensed() and self.findIndex("O1") > 0 and "O1 Verb Never" in self.infoList[2]:
-            self.grammar[11] = 1
+        if self.Verb_tensed():
+            i = self.findIndex('Never')
+            j = self.findIndex('Verb')
+            k = self.findIndex('O1')
+            
+            if (i > -1 and j == i+1 and k == j+1) or (k > -1 and j == k+1 and i == j + 1):
+                self.grammar[11] = 1
 
     
     #13th parameter

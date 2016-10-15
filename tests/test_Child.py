@@ -814,6 +814,39 @@ def test_Verb_tensed():
 
 
 def test_affix_Hop():
+        c.grammar[11] = 0
+        c.infoList[1] = 'DEC'
+        c.infoList[2] = '+WA ka Never Verb O1 S'.split()
+        c.affixHop()
+        assert c.Verb_tensed()
+        assert c.grammar[11] == 1
+
+        c.grammar[11] = 0
+        c.infoList[2] = '+WA ka O1 Verb Never S'.split()
+        c.affixHop()
+        assert c.grammar[11] == 1
+        
+        c.grammar[11] = 0
+        c.infoList[2] = 'O1 Verb Never S +WA ka Aux'.split()
+        c.affixHop()
+        assert c.grammar[11] == 0
+
+        c.grammar[11] = 0
+        c.infoList[1] = 'Q'
+        c.infoList[2] = '+WA ka Never Verb O1 S'.split()
+        c.affixHop()
+        assert c.Verb_tensed()
+        assert c.grammar[11] == 1
+
+        c.grammar[11] = 0
+        c.infoList[2] = '+WA ka O1 Verb Never S'.split()
+        c.affixHop()
+        assert c.grammar[11] == 1
+        
+        c.grammar[11] = 0
+        c.infoList[2] = 'O1 Verb Never S +WA ka Aux'.split()
+        c.affixHop()
+        assert c.grammar[11] == 0
 
 
 def test_questionInver():
@@ -825,4 +858,4 @@ def test_questionInver():
         c.grammar[12] = 1
         c.infoList[2] = 'Aux +WA Verb Never S'.split()
         c.questionInver()
-        assert not c.grammar[12] == 0
+        assert c.grammar[12] == 1
