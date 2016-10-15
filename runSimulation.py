@@ -7,28 +7,28 @@ import datetime
 import os
 
 class runSimulation(object):
-	def __init__(self, si, lc):
-		self.totalSentenceCount = 0.0
-		self.totalConvergentChildren = 0.0
-		self.sentenceInfo = si
-		self.targetGrammar = lc
-		self.selectedSentences = []
-                self.outputFile = ''
-                self.outputFile2 = ''
+    def __init__(self, si, lc):
+        self.totalSentenceCount = 0.0
+        self.totalConvergentChildren = 0.0
+        self.sentenceInfo = si
+        self.targetGrammar = lc
+        self.selectedSentences = []
+        self.outputFile = ''
+        self.outputFile2 = ''
 
 
-	# Prints the percentage of converged children
-	# and the average sentence count of converged children
-	def printResults(self, maxChildren):
-		try:
-			print 'Percentage of converged children: ', (self.totalConvergentChildren / maxChildren) * 100, '%'
-		except ZeroDivisionError:
-			print "Zero error"
+        # Prints the percentage of converged children
+        # and the average sentence count of converged children
+        def printResults(self, maxChildren):
+            try:
+                print('Percentage of converged children: '), (self.totalConvergentChildren / maxChildren) * 100, '%'
+            except ZeroDivisionError:
+                print('Zero Error')
 
-		try:
-			print 'Average sentence count of converged children: ', (self.totalSentenceCount / self.totalConvergentChildren)
-		except ZeroDivisionError:
-			print "Average sentence count of converged children: 0"               
+            try:
+                print('Average sentence count of converged children: '), (self.totalSentenceCount / self.totalConvergentChildren)
+            except ZeroDivisionError:
+                print('Average sentence count of converged children: 0')               
 
 
         # Write the header columns to the output file

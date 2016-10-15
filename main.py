@@ -54,12 +54,12 @@ def main(argv):
     # can be converted to positive integers
     numLearners = args.integers[0]
     if numLearners < 1:
-        print 'Argument must be a positive integer'
+        print('Argument must be a positive integer')
         sys.exit(2)    
 
     maxSentences = args.integers[1]
     if maxSentences < 1:
-        print 'Argument must be a positive integer'
+        print('Argument must be a positive integer')
         sys.exit(2)
 
 
@@ -82,4 +82,4 @@ if __name__ == '__main__':
     start = time.time() 
     main(sys.argv[1:])
     end = time.time() - start
-    print "Time to complete:", end
+    print("Time to complete:"), end
