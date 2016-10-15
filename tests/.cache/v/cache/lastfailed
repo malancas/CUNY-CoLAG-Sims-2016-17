@@ -1,1 +1,4 @@
-{}
+{
+  "test_convergencePatterns.py": true,
+  "test_runSimulation.py": true
+}

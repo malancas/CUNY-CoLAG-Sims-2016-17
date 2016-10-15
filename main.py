@@ -82,4 +82,4 @@ if __name__ == '__main__':
     start = time.time() 
     main(sys.argv[1:])
     end = time.time() - start
-    print("Time to complete:"), end
+    print('Time to complete: {}'.format(end))
