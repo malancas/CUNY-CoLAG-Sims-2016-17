@@ -1,5 +1,5 @@
-from .. import convergencePatterns
-from .. import Child
+from ..convergencePatterns import convergencePatterns
+from ..Child import Child
 import random
 import pytest
 from collections import defaultdict
@@ -18,15 +18,15 @@ The function will check for pairings with currKey and
 any paired key must appear after it in timeCourseVector
 '''
 def checkForKeyPairs(currKeyIndex, timeCourseVector, dict):
-        currKey = timeCourseVector[currKeyIndex][1]
+    currKey = timeCourseVector[currKeyIndex][1]
 
-        for i in range(1, 13):
-                secondKey = timeCourseVector[i][1]
-                if i > currKeyIndex:
-                        assert dict[currKey][secondKey] > 0
-                else:
-                        print('Ahoy')
-                        #assert not secondKey in dict[currKey]
+    for i in range(1, 13):
+        secondKey = timeCourseVector[i][1]
+        if i > currKeyIndex:
+            assert dict[currKey][secondKey] > 0
+        else:
+            print('Ahoy')
+            #assert not secondKey in dict[currKey]
 
 
 '''

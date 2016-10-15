@@ -1,9 +1,10 @@
-from .Child import Child
+from Child import Child
 from collections import defaultdict
 import csv
 import datetime
 from itertools import chain, permutations
 import os
+from math import floor
 
 
 class convergencePatterns(object):
@@ -23,7 +24,7 @@ class convergencePatterns(object):
                 columnHeader = 'p{}' + ' < p{}' * (n-1)
                 perms = (list(permutations(range(1,14), n)))
                 f = lambda perms: columnHeader.format(*perms)
-                return map(f, perms)
+                return list(map(f, perms))
 
 
         # 156 total permutations
@@ -34,7 +35,7 @@ class convergencePatterns(object):
                         writer.writerow(self.getHeader(2))
                         perms = list(permutations(range(1,14),2))
                         k = lambda perm: self.pairDict[perm[0]][perm[1]]
-                        writer.writerow(map(k,perms))
+                        writer.writerow(list(map(k,perms)))
 
 
         '''
@@ -50,9 +51,9 @@ class convergencePatterns(object):
                         perms = list(permutations(range(1,14),3))
                         k = lambda perm: self.trioDict[perm[0]][perm[1]][perm[2]]
                         writer.writerow(header[:1024])
-                        writer.writerow(map(k, perms[:1024]))
+                        writer.writerow(list(map(k, perms[:1024])))
                         writer.writerow(header[1024:])
-                        writer.writerow(map(k, perms[1024:]))
+                        writer.writerow((map(k, perms[1024:])))
 
 
         '''
@@ -66,13 +67,13 @@ class convergencePatterns(object):
                         writer = csv.writer(f)
                         header = self.getHeader(4)
                         perms = list(permutations(range(1,14),4))
-                        numberOfRows = len(perms) / 1024
+                        numberOfRows = floor(len(perms) / 1024)
                         startIndex = 0
                         endIndex = 1024
                         k = lambda perm: self.quartetDict[perm[0]][perm[1]][perm[2]][perm[3]]
                         for i in range(numberOfRows):
                                 writer.writerow(header[startIndex:endIndex])
-                                writer.writerow(map(k,perms[startIndex:endIndex]))
+                                writer.writerow(list(map(k,perms[startIndex:endIndex])))
                                 startIndex = endIndex + 1
                                 endIndex = startIndex + 1024
 

@@ -1,4 +1,4 @@
-#!/opt/anaconda2/bin/python
+#!/opt/anaconda/bin/python
 
 '''
 The following will produce a line graph representing
@@ -18,7 +18,7 @@ inputFile = ''
 if sys.argv[1].endswith('csv'):
         inputFile = sys.argv[1]
 else:
-    print 'The name of the input file must end with the .csv extension'
+    print('The name of the input file must end with the .csv extension')
     sys.exit(2)
 
 

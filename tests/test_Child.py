@@ -1,7 +1,7 @@
-from .. import Child
+from ..Child import Child
 
 
-c = Child.Child()
+c = Child()
 
 def test_haveParametersChanged():
         # Set up initial, relevant data in Child instance
