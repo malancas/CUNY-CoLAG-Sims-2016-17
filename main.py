@@ -38,7 +38,7 @@ def main(argv):
     # The second argument is flag that will produce plots for the results
     # The third argument is a flag that will produce csv files for the result's convergence patterns
     parser = argparse.ArgumentParser(prog='CUNY Sims', description='Set simulation parameters for learners')
-    parser.add_argument('integers', metavar='N', type=int, nargs=3,
+    parser.add_argument('integers', metavar='int', type=int, nargs=3,
                         help='(1) The number of learners (2) The number of sentences consumed (3) The target grammar\'s code')
     parser.add_argument('-p', '--plots', dest='plotFlag', action='store_true',
                         help='Produce pset and convergence time plots for the results')
