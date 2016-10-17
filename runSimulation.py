@@ -126,13 +126,13 @@ class runSimulation(object):
             tcvList.append(self.doesChildLearnGrammar(Child(), maxSentences))
             print('Finished #{}'.format(i+1))
 
-            # If convergenceFlag is set to true, make a convergencePatterns instance 
-            # and find resulting convergence patterns
-            if convergenceFlag:
-                patterns = convergencePatterns(self.outputFile[:-7])
-                patterns.findConvergencePatterns(tcvList)
+        # If convergenceFlag is set to true, make a convergencePatterns instance 
+        # and find resulting convergence patterns
+        if convergenceFlag:
+            patterns = convergencePatterns(self.outputFile[:-7])
+            patterns.findConvergencePatterns(tcvList)
 
-            # If plotFlag is set to true, corresponding plots are produced and saved
-            if plotFlag:
-                os.system("./pset_plot.py {}".format(self.outputFile))
-                os.system("./convergenceTime_plot.py {}".format(self.outputFile))
+        # If plotFlag is set to true, corresponding plots are produced and saved
+        if plotFlag:
+            os.system("./pset_plot.py {}".format(self.outputFile))
+            os.system("./convergenceTime_plot.py {}".format(self.outputFile))
