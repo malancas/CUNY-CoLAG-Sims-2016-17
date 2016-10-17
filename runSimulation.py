@@ -98,9 +98,9 @@ class runSimulation(object):
 
             eChild.totalTime = time.clock() - start
 
-            self.writeResults(eChild)
-
+        # Write the grammar and time course vector to an output file
         # Return the time course vector so it can be used to find convergence patterns
+        self.writeResults(eChild)
         return eChild.timeCourseVector
 
 
@@ -122,6 +122,7 @@ class runSimulation(object):
         # of sentences
         tcvList = []
 
+        print("MAX LEARNERS: ", maxLearners)
         for i in range(0, maxLearners):
             tcvList.append(self.doesChildLearnGrammar(Child(), maxSentences))
             print('Finished #{}'.format(i+1))
