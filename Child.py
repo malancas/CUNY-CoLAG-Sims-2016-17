@@ -149,7 +149,7 @@ class Child(object):
             if first > 0 and self.findIndex("P") == first + 1: #O3 followed by P
                 self.grammar[1] = 1
         #If imperative, make sure Verb directly follows O1
-        if self.isImperative() and "O1" in self.infoList[2] and "Verb" in self.infoList[2]:
+        elif self.isImperative() and "O1" in self.infoList[2] and "Verb" in self.infoList[2]:
             if self.findIndex("O1") == self.findIndex("Verb") - 1:
                 self.grammar[1] = 1
 
@@ -163,6 +163,7 @@ class Child(object):
         # If imperative, make sure Verb is directly followed by O1
         if self.isImperative() and "O1" in self.infoList[2] and "Verb" in self.infoList[2]:
             if self.findIndex("Verb") == self.findIndex("O1") - 1:
+                # Possible bug?
                 self.grammar[1] = 1    
 
                 
@@ -203,11 +204,11 @@ class Child(object):
         k = self.findIndex("P")
         l = self.findIndex("O3")
 
-        if (i < j < k and l == k+1):  
+        if (i != -1 and i < j < k and l == k+1):  
             return False
-        elif (l < j < i and k == l+1):
+        elif (l != -1 and l < j < i and k == l+1):
             return False
-        elif (l != -1):
+        elif (i != -1 and j != -1 and k != -1 and l != -1):
             return True
 
                 

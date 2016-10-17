@@ -34,8 +34,8 @@ The file EngFrJapGerm.txt contains 3522 sentences, corresponding to fake languag
 French=584, English=611, German=2253, and Japanese=3856
 
 ###Output
-The program will write simulation results to a .csv file starting with the language being learned followed by a timestamp. For example:
-English_32016-06-09T14.17.54.747187
+The program will write simulation results to several csv and png files to a folder whose name starts with the used language followed by the number of learners, and a timestamp. For example:
+English_100_32016-06-09T14.17.54.747187
 
 ####Optional Arguments
 There are two optional arguments represented by the -c/--c and -p/--plot flags. Using these flags will cause the program to produce additional results

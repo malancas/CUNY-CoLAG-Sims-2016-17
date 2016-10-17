@@ -100,8 +100,8 @@ class runSimulation(object):
 
             self.writeResults(eChild)
 
-            # Return the time course vector so it can be used to find convergence patterns
-            return eChild.timeCourseVector
+        # Return the time course vector so it can be used to find convergence patterns
+        return eChild.timeCourseVector
 
 
     # Runs a simulation containing maxLearners number of learners
