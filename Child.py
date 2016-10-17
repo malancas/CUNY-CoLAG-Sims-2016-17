@@ -163,7 +163,6 @@ class Child(object):
         # If imperative, make sure Verb is directly followed by O1
         if self.isImperative() and "O1" in self.infoList[2] and "Verb" in self.infoList[2]:
             if self.findIndex("Verb") == self.findIndex("O1") - 1:
-                # Possible bug?
                 self.grammar[1] = 1    
 
                 
