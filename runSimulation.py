@@ -122,9 +122,9 @@ class runSimulation(object):
         # of sentences
         tcvList = []
 
-        for i in range(0, maxLearners):
+        for i in range(1, maxLearners+1):
             tcvList.append(self.doesChildLearnGrammar(Child(), maxSentences))
-            print('Finished #{}'.format(i+1))
+            print('Finished #{}'.format(i))
 
         # If convergenceFlag is set to true, make a convergencePatterns instance 
         # and find resulting convergence patterns
