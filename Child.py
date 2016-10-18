@@ -39,10 +39,10 @@ class Child(object):
     how many sentences have passed when the parameter
     was changed
     '''
-    def haveParametersChanged(self, count):
+    def haveParametersChanged(self):
         for i in range (0,13):
             if self.oldGrammar[i] != self.grammar[i]:
-                self.timeCourseVector[i][0] = count
+                self.timeCourseVector[i][0] = self.sentenceCount
                 self.oldGrammar[i] = self.grammar[i]
 
 
@@ -76,7 +76,7 @@ class Child(object):
     
     
     #Running current sentence through regex filters and other stuff
-    def setParameters(self, count):
+    def setParameters(self):
         
         if self.grammar[0] == 0:
             self.setSubjPos();     #Parameter 1
@@ -122,7 +122,7 @@ class Child(object):
         if(self.grammar == self.expectedGrammar):
             self.grammarLearned = True
 
-        self.haveParametersChanged(count+1)
+        self.haveParametersChanged()
 
                
     #1st parameter

@@ -93,7 +93,7 @@ class runSimulation(object):
 
         while not eChild.grammarLearned and eChild.sentenceCount < maxSentences:
             eChild.consumeSentence(random.choice(self.selectedSentences))
-            eChild.setParameters(eChild.sentenceCount)
+            eChild.setParameters()
             eChild.sentenceCount += 1
 
             eChild.totalTime = time.clock() - start
