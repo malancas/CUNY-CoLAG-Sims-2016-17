@@ -21,10 +21,10 @@ class convergencePatterns(object):
         # Will print every possible permutation for the
         # chosen number of parameters for comparison
         def getHeader(self, n):
-                columnHeader = 'p{}' + ' < p{}' * (n-1)
-                perms = (list(permutations(range(1,14), n)))
-                f = lambda perms: columnHeader.format(*perms)
-                return list(map(f, perms))
+            columnHeader = 'p{}' + ' < p{}' * (n-1)
+            perms = (list(permutations(range(1,14), n)))
+            f = lambda perms: columnHeader.format(*perms)
+            return list(map(f, perms))
 
 
         # 156 total permutations
