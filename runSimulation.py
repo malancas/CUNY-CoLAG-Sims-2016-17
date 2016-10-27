@@ -43,7 +43,11 @@ class runSimulation(object):
 
     # Writes the time (particular sentence) that each parameter of each eChild converged on
     # as well as writing the final grammar of the learner to the output file
-    def writeResults(self, eChild):
+    def writeResults(self, eChild, totalTime):
+        totalTime_filename = self.outputFile2[:-15] + 'totalTime.txt'
+        with open(totalTime_filename,"a+") as outFile:
+            outFile.write(str(totalTime))
+
         with open(self.outputFile2,"a+") as outFile:
             writer = csv.writer(outFile)
 
@@ -96,11 +100,11 @@ class runSimulation(object):
             eChild.setParameters()
             eChild.sentenceCount += 1
 
-            eChild.totalTime = time.clock() - start
+        totalTime = time.clock() - start
 
         # Write the grammar and time course vector to an output file
         # Return the time course vector so it can be used to find convergence patterns
-        self.writeResults(eChild)
+        self.writeResults(eChild, totalTime)
         return eChild.timeCourseVector
 
 
