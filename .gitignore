@@ -10,3 +10,5 @@ sample-sales.csv
 sample-plots.py
 *.ipynb
 out.csv
+COLAG_2011_flat.txt
+new_COLAG_2011.txt
