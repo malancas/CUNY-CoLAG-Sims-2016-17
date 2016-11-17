@@ -71,7 +71,7 @@ class runSimulation(object):
         lc = str(self.targetGrammar)
         for i in range(0, len(self.sentenceInfo)):
             # Get the code from the current sentence and compare it to lc
-            if self.sentenceInfo[i].split('\t',1)[0] == lc:
+            if self.sentenceInfo[i].split('\t', 1)[0] == lc:
                 self.selectedSentences.append(self.sentenceInfo[i])
 
 
@@ -86,6 +86,8 @@ class runSimulation(object):
             return 'German'
         elif self.targetGrammar == 3856:
             return 'Japanese'
+        elif self.targetGrammar == 547 or self.targetGrammar == 227 or self.targetGrammar == 867 or self.targetGrammar == 35 or self.targetGrammar == 163 or self.targetGrammar == 803:
+            return 'English_Superset_{}'.format(self.targetGrammar)
 
 
     # The child, or learner, processes sentences belonging to the chosen language

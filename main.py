@@ -67,7 +67,7 @@ def main(argv):
     # English, French, German, and Japanese and read
     # them in a runSimulation class variable along with
     # the chosen target grammar (represented by args.integers[2])
-    infoFile = open('EngFrJapGerm.txt','rU')
+    infoFile = open('new_COLAG_2011.txt','rU')
     runSim1 = runSimulation(infoFile.readlines(), args.integers[2])
     infoFile.close()
 
