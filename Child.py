@@ -79,45 +79,44 @@ class Child(object):
     def setParameters(self):
         
         if self.grammar[0] == 0:
-            self.setSubjPos();     #Parameter 1
+            self.setSubjPos();   # Parameter 1
         
         if self.grammar[1] == 0:
-            self.setHead()       #Parameter 2
+            self.setHead()       # Parameter 2
 
         if self.grammar[2] == 0:
-            self.setHeadCP()    #Parameter 3
+            self.setHeadCP()     # Parameter 3
             
         if not (self.grammar[3] == 0 and self.grammar[5] == 1):
-            self.setObligTopic() #Parameter 4 - Obligatory Topic : Problem parameter
+            self.setObligTopic() # Parameter 4 - Obligatory Topic : Problem parameter
 
         if self.grammar[4] == 0:
-            self.setNullSubj()   #Parameter 5
+            self.setNullSubj()   # Parameter 5
 
         if self.grammar[5] == 0:
-            self.setNullTopic()  #Parameter 6
+            self.setNullTopic()  # Parameter 6
 
         if self.grammar[6] == 1:
-            self.setWHMovement() #Parameter 7
+            self.setWHMovement() # Parameter 7
 
         if self.grammar[7] == 0:
-            self.setPrepStrand() #Parameter 8
+            self.setPrepStrand() # Parameter 8
 
         if self.grammar[8] == 0:
-            self.setTopicMark()  #Parameter 9
+            self.setTopicMark()  # Parameter 9
 
         if self.grammar[9] == 0:
-            self.vToI()          #Parameter 10
-        #Parameter 11 - I to C movement : Problem parameter
+            self.vToI()          # Parameter 10
 
         if self.grammar[10] == 1:
-            self.iToC()
+            self.iToC()          # Parameter 11 - I to C movement : Problem parameter
 
         if self.grammar[11] == 0:
-            self.affixHop()      #Parameter 12
+            self.affixHop()      # Parameter 12
 
-        #Parameter 13 - Question Inversion : Problem parameter
+
         if self.grammar[12] == 1:
-            self.questionInver()
+            self.questionInver() # Parameter 13 - Question Inversion : Problem parameter
         
         if(self.grammar == self.expectedGrammar):
             self.grammarLearned = True
@@ -184,7 +183,7 @@ class Child(object):
         return firstElement == 'S' or firstElement == 'O1' or firstElement == 'O2' or firstElement == 'O3' or firstElement == 'Adv'
 
 
-    #4th parameter
+    # 4th parameter
     def setObligTopic(self):
         if self.isDeclarative():
             if "O2" in self.infoList[2] and "O1" not in self.infoList[2] :
