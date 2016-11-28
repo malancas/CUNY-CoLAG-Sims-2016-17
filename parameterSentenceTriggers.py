@@ -69,9 +69,9 @@ for sentence in selectedSentences:
     sampleLearner.consumeSentence(sentence)
     sampleLearner.setParameters()
     for i, parameter in enumerate(oldGrammar):
-        if parameter != sampleLearner.grammar[i]:
+        if parameter != sampleLearner.grammar[i] and (not 'p{}'.format(i+1) in sentenceParameterTriggers[sentenceStr]):
             sentenceParameterTriggers[sentenceStr].append('p{}'.format(i+1))
-    oldGrammar = sampleLearner.grammar
+    oldGrammar = [0,0,0,0,0,0,1,0,0,0,1,0,1]
 
 # The output file will opened and the corresponding
 # sentences and parameters added line by line
