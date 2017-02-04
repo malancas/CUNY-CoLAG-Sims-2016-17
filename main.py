@@ -53,14 +53,10 @@ def main(argv):
     # Test whether certain command line arguments
     # can be converted to positive integers
     numLearners = args.integers[0]
-    if numLearners < 1:
-        print('Argument must be a positive integer')
-        sys.exit(2)    
-
     maxSentences = args.integers[1]
-    if maxSentences < 1:
-        print('Argument must be a positive integer')
-        sys.exit(2)
+    if numLearners < 1 or maxSentences < 1:
+        print('Arguments must be positive integers')
+        sys.exit(2)    
 
 
     # Open the file containing sample sentences for 
@@ -83,3 +79,4 @@ if __name__ == '__main__':
     main(sys.argv[1:])
     end = time.time() - start
     print('Time to complete: {}'.format(end))
+    maxSentences = args.integers[1]

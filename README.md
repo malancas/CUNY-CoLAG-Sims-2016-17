@@ -1,24 +1,24 @@
 This program was written by Jonathon Galsurkar and Meredith Lancaster under the supervision of Prof. William Sakas
-at Hunter College, Computer Science and the Graduate Center, Linguistics and Computer Science of the City University 
+at Hunter College, Computer Science and the Graduate Center, Linguistics and Computer Science of the City University
 of New York. It is written in Python 3.5.1.
 
 sakas@hunter.cuny.edu
 
 The program implements a learner that learns multiple abstract, human-like languages grounded in Chomsky's principles
 and parameters framework. The learning model is one of first language acquisition, i.e., acquisition by a child of approximately
-2 years of age. 
+2 years of age.
 
 The learner and the abstract domain over which it operates is described in detail in:
 
 Sakas, W.G. & Fodor, J.D. (2012) Disambiguating Syntactic Triggers, Language Acquisition (19) pp 83-143.
 
-The paper and domain and other relevant information are downloadable here: 
+The paper and domain and other relevant information are downloadable here:
 
 http://www.colag.cs.hunter.cuny.edu/downloadables.html
 
 -----
 
-8/9/2016: The program is currently being maintained by Meredith Lancaster 
+8/9/2016: The program is currently being maintained by Meredith Lancaster
 
 Meredith.Lancaster88@myhunter.cuny.edu
 
@@ -45,3 +45,6 @@ French=584, English=611, German=2253, and Japanese=3856
 ###Output
 The program will write simulation results to several csv and png files to a folder whose name starts with the used language followed by the number of learners, and a timestamp. For example:
 English_100_32016-06-09T14.17.54.747187 will contain the results of simulation using 100 learners with English.
+
+###Port
+I wrote a port of this program in Clojure as introduction to functional programming and concurrency, which can be found [here](https://github.com/malancas/Language-Acquisition)
