@@ -14,7 +14,6 @@ class runSimulation(object):
         self.targetGrammar = lc
         self.selectedSentences = []
         self.outputFile = ''
-        self.outputFile2 = ''
 
     # Prints the percentage of converged children
     # and the average sentence count of converged children
@@ -27,42 +26,28 @@ class runSimulation(object):
         try:
             print('Average sentence count of converged children: '), (self.totalSentenceCount / self.totalConvergentChildren)
         except ZeroDivisionError:
-            print('Average sentence count of converged children: 0')               
+            print('Average sentence count of converged children: 0')
 
 
     # Write the header columns to the output file
     def writeOutputHeader(self):
-        with open(self.outputFile2,"a+") as outFile:
+        with open(self.outputFile,"a+") as outFile:
             writer = csv.writer(outFile)
             writer.writerow(('TCV', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'Grammar'))
             writer.writerow(['p{}'.format(i) for i in range(1,14)] * 2)
+
+
+    # Writes the final grammar and time (particular sentence) that each
+    # parameter of each eChild converged on to the output file
+    def writeResults(self, grammarList, tcvList):
         with open(self.outputFile,"a+") as outFile:
             writer = csv.writer(outFile)
-            writer.writerow(['p{}'.format(i) for i in range(1,14)])
 
-
-    # Writes the time (particular sentence) that each parameter of each eChild converged on
-    # as well as writing the final grammar of the learner to the output file
-    def writeResults(self, eChild, totalTime):
-        totalTime_filename = self.outputFile2[:-15] + 'totalTime.txt'
-        with open(totalTime_filename,"a+") as outFile:
-            outFile.write(str(totalTime))
-
-        with open(self.outputFile2,"a+") as outFile:
-            writer = csv.writer(outFile)
-
-            tcv = eChild.timeCourseVector
-            grammar = eChild.grammar
-            writer.writerow( (tcv[0][0], tcv[1][0], tcv[2][0], tcv[3][0], tcv[4][0], tcv[5][0], 
-            tcv[6][0], tcv[7][0], tcv[8][0], tcv[9][0], tcv[10][0], tcv[11][0], tcv[12][0],
-            grammar[0], grammar[1], grammar[2], grammar[3], grammar[4], grammar[5], grammar[6],
-            grammar[7], grammar[8], grammar[9], grammar[10], grammar[11], grammar[12]) )
-
-        with open(self.outputFile,"a+") as outFile:
-            writer = csv.writer(outFile)
-            tcv = eChild.timeCourseVector
-            writer.writerow( (tcv[0][0], tcv[1][0], tcv[2][0], tcv[3][0], tcv[4][0], tcv[5][0], 
-                tcv[6][0], tcv[7][0], tcv[8][0], tcv[9][0], tcv[10][0], tcv[11][0], tcv[12][0]) )
+            for i in range(len(grammarList)):
+                writer.writerow( (tcvList[i][0][0], tcvList[i][1][0], tcvList[i][2][0], tcvList[i][3][0], tcvList[i][4][0], tcvList[i][5][0],
+                tcvList[i][6][0], tcvList[i][7][0], tcvList[i][8][0], tcvList[i][9][0], tcvList[i][10][0], tcvList[i][11][0], tcvList[i][12][0],
+                grammarList[i][0], grammarList[i][1], grammarList[i][2], grammarList[i][3], grammarList[i][4], grammarList[i][5], grammarList[i][6],
+                grammarList[i][7], grammarList[i][8], grammarList[i][9], grammarList[i][10], grammarList[i][11], grammarList[i][12]) )
 
 
     # Fills runSimulation object's selectedSentences array with sentences who
@@ -106,9 +91,7 @@ class runSimulation(object):
 
         # Write the grammar and time course vector to an output file
         # Return the time course vector so it can be used to find convergence patterns
-        self.writeResults(eChild, totalTime)
-        return eChild.timeCourseVector
-
+        return [eChild.grammar, eChild.timeCourseVector]
 
     # Runs a simulation containing maxLearners number of learners
     # Each learner runs the doesChildLearnGrammar function and processes
@@ -117,22 +100,25 @@ class runSimulation(object):
         # Create the name and path of the output file
         baseName = self.getLanguage() + '_' + str(maxLearners)  + '_' + str(maxLearners) + datetime.datetime.now().isoformat().replace(':','.')
         tempPathName = './results/{}'.format(baseName)
-        tempFileName = baseName + '_tcv.csv'
-        tempFileName2 = baseName + '_grammar_tcv.csv'
+        tempFileName = baseName + '_grammar_tcv.csv'
         os.makedirs(tempPathName)
         self.outputFile = os.path.join(tempPathName, tempFileName)
-        self.outputFile2 = os.path.join(tempPathName, tempFileName2)
         self.writeOutputHeader()
 
-        # Stores the time course vectors of each learner after processing the specified number
-        # of sentences
+        # Stores the grammars and time course vectors of each learner after
+        # processing the specified number of sentences
+        grammarList = []
         tcvList = []
 
         for i in range(1, maxLearners+1):
-            tcvList.append(self.doesChildLearnGrammar(Child(), maxSentences))
+            childResults = self.doesChildLearnGrammar(Child(), maxSentences)
+            #tcvList.append(self.doesChildLearnGrammar(Child(), maxSentences))
+            grammarList.append(childResults[0])
+            tcvList.append(childResults[1])
             print('Finished #{}'.format(i))
+        self.writeResults(grammarList, tcvList)
 
-        # If convergenceFlag is set to true, make a convergencePatterns instance 
+        # If convergenceFlag is set to true, make a convergencePatterns instance
         # and find resulting convergence patterns
         if convergenceFlag:
             print('Making convergence pattern files...')
