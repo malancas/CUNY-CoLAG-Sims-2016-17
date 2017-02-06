@@ -98,7 +98,9 @@ class runSimulation(object):
     # sentences with the chosen constraints
     def runLearners(self, maxSentences, maxLearners, convergenceFlag, plotFlag):
         # Create the name and path of the output file
-        baseName = self.getLanguage() + '_' + str(maxLearners)  + '_' + str(maxLearners) + datetime.datetime.now().isoformat().replace(':','.')
+        baseName = self.getLanguage() + '_' + str(maxLearners)  + '_' + datetime.datetime.now().isoformat().replace(':','.')
+        print(baseName)
+
         tempPathName = './results/{}'.format(baseName)
         tempFileName = baseName + '_grammar_tcv.csv'
         os.makedirs(tempPathName)
