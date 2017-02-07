@@ -27,7 +27,7 @@ class Child(object):
 
     #Returns the index of value in the list, in this case it can find the value as a substring in the index of the list    
     def findIndex(self, value):
-        return next((i for i, string in enumerate(self.infoList[2]) if value in string),-1)    
+        return next((i for i, string in enumerate(self.infoList[3]) if value in string),-1)    
 
 
     '''
@@ -57,7 +57,7 @@ class Child(object):
         info = info.replace('\n','')
         info = info.replace('\"','')
         self.infoList =  info.rsplit("\t",3)
-        self.infoList[2] = self.infoList[2].split()
+        self.infoList.append(list(self.infoList[2].split()))
         if self.currentGrammarID != self.infoList[0]:
             self.expectedGrammar = " ".join(get_bin(int(self.infoList[0]),13)).split()
             self.currentGrammarID = self.infoList[0]
@@ -127,8 +127,8 @@ class Child(object):
     #1st parameter
     def setSubjPos(self):
         if "O1" in self.infoList[2] and "S" in self.infoList[2]: #Check if O1 and S are in the sentence
-            first = self.findIndex("O1") #Find index of O1
-            if first > 0 and first < self.findIndex("S"): # Make sure O1 is non-sentence-initial and before S
+            index = self.findIndex("O1") #Find index of O1
+            if index > 0 and index < self.findIndex("S"): # Make sure O1 is non-sentence-initial and before S
                 self.grammar[0] = 1
 
                 
@@ -136,16 +136,16 @@ class Child(object):
     #try to set subject position to 0
     def noSubjPos(self):
         if "O1" in self.infoList[2] and "S" in self.infoList[2]: #Check if O1 and S are in the sentence
-            first = self.findIndex("S") #Find index of O1
-            if first >= 0 and first < self.findIndex("O1"): # Make sure O1 is non-sentence-initial and before S
+            index = self.findIndex("S") #Find index of O1
+            if index >= 0 and index < self.findIndex("O1"): # Make sure O1 is non-sentence-initial and before S
                 self.grammar[0] = 0
 
     
     #2nd parameter
     def setHead(self):
         if "O3" in self.infoList[2] and "P" in self.infoList[2]:
-            first = self.findIndex("O3")
-            if first > 0 and self.findIndex("P") == first + 1: #O3 followed by P
+            index = self.findIndex("O3")
+            if index > 0 and self.findIndex("P") == index + 1: #O3 followed by P
                 self.grammar[1] = 1
         #If imperative, make sure Verb directly follows O1
         elif self.isImperative() and "O1" in self.infoList[2] and "Verb" in self.infoList[2]:
@@ -155,9 +155,9 @@ class Child(object):
     
     def noHead(self):
         if "O3" in self.infoList[2] and "P" in self.infoList[2]:
-            first = self.findIndex("P")
+            index = self.findIndex("P")
             # If P followed by O3
-            if first > 0 and self.findIndex("O3") == first + 1:
+            if index > 0 and self.findIndex("O3") == index + 1:
                 self.grammar[1] = 0
         # If imperative, make sure Verb is directly followed by O1
         if self.isImperative() and "O1" in self.infoList[2] and "Verb" in self.infoList[2]:
@@ -168,18 +168,18 @@ class Child(object):
     #3rd parameter 
     def setHeadCP(self):
         if self.isQuestion():
-            if self.infoList[2][-1] == 'ka' or ("ka" not in self.infoList[2] and self.infoList[2][-1] == "Aux"):
+            if self.infoList[3][-1] == 'ka' or ("ka" not in self.infoList[2] and self.infoList[3][-1] == "Aux"):
                 self.grammar[2] = 1
 
     
     def noHeadCP(self):
         if self.isQuestion():
-            if self.infoList[2][0] == "ka" or ("ka" not in self.infoList[2] and self.infoList[2][0] == "Aux"):
+            if self.infoList[3][0] == "ka" or ("ka" not in self.infoList[2] and self.infoList[3][0] == "Aux"):
                 self.grammar[2] = 0
 
 
     def containsTopicalizable(self):
-        firstElement = self.infoList[2][0]
+        firstElement = self.infoList[3][0]
         return firstElement == 'S' or firstElement == 'O1' or firstElement == 'O2' or firstElement == 'O3' or firstElement == 'Adv'
 
 
