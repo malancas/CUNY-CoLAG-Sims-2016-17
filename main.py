@@ -71,6 +71,7 @@ def main(argv):
     # available: French=584, English=611, German=2253, Japanese=3856
     runSim1.makeSelectedSentenceList()
 
+
     # Runs a simulation over maxLearners number of eChild learners
     runSim1.runLearners(maxSentences, numLearners, args.convergenceFlag, args.plotFlag)
 
