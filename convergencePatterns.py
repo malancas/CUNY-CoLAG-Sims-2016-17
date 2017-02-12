@@ -1,9 +1,8 @@
 from Child import Child
 from collections import defaultdict
 import csv
-import datetime
 from itertools import chain, permutations
-import os
+from os import path
 from math import floor
 
 
@@ -29,7 +28,7 @@ class convergencePatterns(object):
 
         # 156 total permutations
         def writePairResults(self):
-                outFile = os.path.join(self.outputPath + '_PairConvergenceResults.csv')
+                outFile = path.join(self.outputPath + '_PairConvergenceResults.csv')
                 with open(outFile, 'a') as f:
                         writer = csv.writer(f)
                         writer.writerow(self.getHeader(2))
@@ -44,7 +43,7 @@ class convergencePatterns(object):
         the header and results will be printed to multiple rows
         '''
         def writeTrioResults(self):
-                outFile = os.path.join(self.outputPath + '_TrioConvergenceResults.csv')
+                outFile = path.join(self.outputPath + '_TrioConvergenceResults.csv')
                 with open(outFile, 'a') as f:
                         writer = csv.writer(f)
                         header = self.getHeader(3)
@@ -62,7 +61,7 @@ class convergencePatterns(object):
         the header and results will be printed to multiple rows
         '''
         def writeQuartetResults(self):
-                outFile = os.path.join(self.outputPath + '_QuartetConvergenceResults.csv')
+                outFile = path.join(self.outputPath + '_QuartetConvergenceResults.csv')
                 with open(outFile, 'a') as f:
                         writer = csv.writer(f)
                         header = self.getHeader(4)

@@ -1,14 +1,21 @@
 #!/opt/anaconda/bin/python
-import sys
-import csv
-import os
-import datetime
+from sys import argv, exit
+from csv import writer
+from argparse import ArgumentParser
+from os import path, makedirs
+from datetime import datetime
 from collections import defaultdict
 from Child import Child
 
+parser = ArgumentParser(prog='Sentence Triggers', description='Record which pieces of a sentence trigger a parameter')
+
+parser.add_argument('integers', metavar='int', type=int, nargs=1,
+                        help='The chosen language\'s grammar id is the only argument (English = 611, French = 584, German = 2253, Japanese = 3856)')
+
 # The only argument is the decimal representation
 # of a target grammar
-targetGrammar = sys.argv[1]
+args = parser.parse_args()
+targetGrammar = args.integers[0]
 languageName = ''
 if targetGrammar == '611':
     languageName = 'English'
@@ -20,16 +27,12 @@ elif targetGrammar == '3856':
     languageName = 'Japanese'
 
 # Create the path and filename of the results file
-tempFileName = languageName + '_sentenceParameterTrigger_' + datetime.datetime.now().isoformat().replace(':','.') + '.csv'
+tempFileName = languageName + '_sentenceParameterTrigger_' + datetime.now().isoformat().replace(':','.') + '.csv'
 tempPathName = './results/sentenceParameterTriggers'
-if not os.path.isdir(tempPathName):
-    os.makedirs(tempPathName)
-outputFile = os.path.join(tempPathName, tempFileName)
-if os.path.isfile(outputFile):
-    answer = input('File already exists. Overwrite? Y/N: ')
-    if answer == 'N' or answer == 'n':
-        print("Script quitting")
-        sys.exit(0)
+if not path.isdir(tempPathName):
+    makedirs(tempPathName)
+outputFile = path.join(tempPathName, tempFileName)
+
 
 # Open the sentence file and read in the lines
 infoFile = open('EngFrJapGerm.txt', 'rU')
@@ -77,6 +80,6 @@ for sentence in selectedSentences:
 # The output file will opened and the corresponding
 # sentences and parameters added line by line
 with open(outputFile, 'a+') as outFile:
-    writer = csv.writer(outFile)
+    writer = writer(outFile)
     for key in sentenceParameterTriggers:
         writer.writerow((key, sentenceParameterTriggers[key]))

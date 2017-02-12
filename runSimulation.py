@@ -1,9 +1,9 @@
 from Child import Child
 from convergencePatterns import convergencePatterns
-import time
-import random
+from time import clock
+from random import choice
 import csv
-import datetime
+from datetime import datetime
 import os
 
 class runSimulation(object):
@@ -80,14 +80,14 @@ class runSimulation(object):
     # chosen number of sentences (maxSentences). The timeCourseVector data of the
     # learner is then written to the output file
     def doesChildLearnGrammar(self, eChild, maxSentences):
-        start = time.clock()
+        start = clock()
 
         while not eChild.grammarLearned and eChild.sentenceCount < maxSentences:
-            eChild.consumeSentence(random.choice(self.selectedSentences))
+            eChild.consumeSentence(choice(self.selectedSentences))
             eChild.setParameters()
             eChild.sentenceCount += 1
 
-        totalTime = time.clock() - start
+        totalTime = clock() - start
 
         # Write the grammar and time course vector to an output file
         # Return the time course vector so it can be used to find convergence patterns
@@ -98,7 +98,7 @@ class runSimulation(object):
     # sentences with the chosen constraints
     def runLearners(self, maxSentences, maxLearners, convergenceFlag, plotFlag):
         # Create the name and path of the output file
-        baseName = self.getLanguage() + '_' + str(maxLearners)  + '_' + datetime.datetime.now().isoformat().replace(':','.')
+        baseName = self.getLanguage() + '_' + str(maxLearners)  + '_' + datetime.now().isoformat().replace(':','.')
 
         tempPathName = './results/{}'.format(baseName)
         tempFileName = baseName + '_grammar_tcv.csv'

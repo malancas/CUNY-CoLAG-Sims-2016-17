@@ -1,7 +1,3 @@
-import time
-
-get_bin = lambda x, n: x >= 0 and str(bin(x))[2:].zfill(n) or "-" + str(bin(x))[3:].zfill(n)
-    
 class Child(object):
     def __init__(self):
         #This boolean is False unless the function checkIfLearned sets it to True (which happens when the grammar is acquired). The main program will while-loop until
@@ -54,6 +50,8 @@ class Child(object):
     Infolist[2] contains sentences
     '''
     def consumeSentence(self, info):
+        get_bin = lambda x, n: x >= 0 and str(bin(x))[2:].zfill(n) or "-" + str(bin(x))[3:].zfill(n)
+
         info = info.replace('\n','')
         info = info.replace('\"','')
         self.infoList =  info.rsplit("\t",3)
