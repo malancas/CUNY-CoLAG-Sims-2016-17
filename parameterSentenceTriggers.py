@@ -2,6 +2,7 @@
 import sys
 import csv
 import os
+import datetime
 from collections import defaultdict
 from Child import Child
 
@@ -19,7 +20,7 @@ elif targetGrammar == '3856':
     languageName = 'Japanese'
 
 # Create the path and filename of the results file
-tempFileName = languageName + '_sentenceParameterTrigger_results.csv'
+tempFileName = languageName + '_sentenceParameterTrigger_' + datetime.datetime.now().isoformat().replace(':','.') + '.csv'
 tempPathName = './results/sentenceParameterTriggers'
 if not os.path.isdir(tempPathName):
     os.makedirs(tempPathName)
