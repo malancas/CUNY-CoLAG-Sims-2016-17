@@ -1,4 +1,6 @@
 import scala.io.Source
+import scala.util.Random
+import modelfunctions.ModelFunctions
 
 object MainModel {
   val usage = """
@@ -10,9 +12,17 @@ object MainModel {
       return
     }
 
-    println("Hello, world!")
     // Read target language sentences from EngFrJapGerm.txt
     val targetSentences = io.Source.fromFile("../EngFrJapGerm.txt").getLines.map(x => x.split('\t')).filter(line =>line(0) == args(1)).toArray
-    println(targetSentences.deep.mkString("\n"))
+    //println(targetSentences.deep.mkString("\n"))
+
+    // Set up initial weights
+    val weights = List.fill(13)(0.5)
+
+    val grammar = new ModelFunctions makeGrammar(weights)
+    println(grammar)
+
+    val newWeights = new ModelFunctions updateWeights(weights, grammar, true, List())
+    println(newWeights)
   }
 }
