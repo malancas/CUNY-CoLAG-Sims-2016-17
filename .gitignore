@@ -4,3 +4,4 @@ Fodor-Sakas-model/tasks.txt
 Fodor-Sakas-model/*.ipynb
 runGouda.sh
 resources/
+Yang-weighted-model/*.class*

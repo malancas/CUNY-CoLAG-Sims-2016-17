@@ -11,13 +11,8 @@ object MainModel {
     }
 
     println("Hello, world!")
-    // Read in language file
-    val colagFile = "../EngFrJapGerm.txt"
-    
-    // Choose target language and number of input sentences to parse
-    val targetSentences = List()
-    for (line <- Source.fromFile(colagFile).getLines.filter(line => line(0) != args(1)).split('\t')) {
-      println(line)
-    }
+    // Read target language sentences from EngFrJapGerm.txt
+    val targetSentences = io.Source.fromFile("../EngFrJapGerm.txt").getLines.map(x => x.split('\t')).filter(line =>line(0) == args(1)).toArray
+    println(targetSentences.deep.mkString("\n"))
   }
 }
