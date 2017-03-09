@@ -2,6 +2,8 @@ Fodor-Sakas-model/eChild_original.py
 Fodor-Sakas-model/notes.txt
 Fodor-Sakas-model/tasks.txt
 Fodor-Sakas-model/*.ipynb
-runGouda.sh
+Fodor-Sakas-model/*.pyc
+Yang-weighted-model/*.class
+Yang-weighted-model/'*.class'
 resources/
-Yang-weighted-model/*.class*
+runGouda.sh
