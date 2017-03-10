@@ -16,13 +16,13 @@ object MainModel {
     val targetSentences = io.Source.fromFile("../EngFrJapGerm.txt").getLines.map(x => x.split('\t')).filter(line =>line(0) == args(1)).toArray
     //println(targetSentences.deep.mkString("\n"))
 
-    // Set up initial weights
+    // Create initial weights and grammar lists
     val weights = List.fill(13)(0.5)
+    val grammar = List(0,0,0,0,0,0,1,0,0,0,1,0,1)
 
-    val grammar = new ModelFunctions makeGrammar(weights)
-    println(grammar)
-
-    val newWeights = new ModelFunctions updateWeights(weights, grammar, true, List())
+    val newWeights = new ModelFunctions updateWeights(weights, grammar, false, List())
     println(newWeights)
+    val newGrammar = new ModelFunctions makeGrammar(newWeights)
+    println(newGrammar)
   }
 }
