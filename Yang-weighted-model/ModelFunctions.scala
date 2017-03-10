@@ -29,6 +29,7 @@ class ModelFunctions {
       case nil => newWeights
     }
 
+  // Implementing LRP-scheme: https://books.google.com/books?id=-zdWJ9Adp1wC&pg=PA110&lpg=PA110&dq=linear+reward+penalty+scheme+bush&source=bl&ots=u6IsuDpd5y&sig=CVtmdd6SYgtni3nQj2yDx-phZoI&hl=en&sa=X&ved=0ahUKEwiO8sHb0MrSAhVEzIMKHRPCDZMQ6AEIKzAD#v=onepage&q=linear%20reward%20penalty%20scheme%20bush&f=false
 
 
   /*
