@@ -14,15 +14,14 @@ object MainModel {
 
     // Read target language sentences from EngFrJapGerm.txt
     val targetSentences = io.Source.fromFile("../EngFrJapGerm.txt").getLines.map(x => x.split('\t')).filter(line =>line(0) == args(1)).toArray
-    //println(targetSentences.deep.mkString("\n"))
-
-    // Create initial weights and grammar lists
+    val targetGrammar = args(1).toInt.toBinaryString.toList
     val weights = List.fill(13)(0.5)
-    val grammar = List(0,0,0,0,0,0,1,0,0,0,1,0,1)
 
-    val newWeights = new ModelFunctions updateWeights(weights, grammar, false, List())
-    println(newWeights)
-    val newGrammar = new ModelFunctions makeGrammar(newWeights)
-    println(newGrammar)
+    val r = new scala.util.Random
+    val grammar = (List.fill(13)(48 + r.nextInt((1 - 0) + 1))).map(_.toChar)
+
+    val finalGrammar = new ModelFunctions parseSentences(0, args(0).toInt, targetGrammar, grammar, weights, 0.5)
+
+    println(finalGrammar)
   }
 }
