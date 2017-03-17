@@ -14,6 +14,9 @@ object MainModel {
 
     // Read target language sentences from EngFrJapGerm.txt
     val targetSentences = io.Source.fromFile("../EngFrJapGerm.txt").getLines.map(x => x.split('\t')).filter(line =>line(0) == args(1)).toArray
+
+    // Create the target grammar, weights, and grammar lists
+    // to use during parseSentences
     val targetGrammar = args(1).toInt.toBinaryString.toList
     val weights = List.fill(13)(0.5)
 
