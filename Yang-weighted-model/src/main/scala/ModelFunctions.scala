@@ -28,7 +28,7 @@ class ModelFunctions {
 
   // Updates individual weights when the grammar is "rewarded"
   def reward(weight: Double, w: Double): Double = {
-    (weight + w * (1-weight))
+    (weight + w * (1 - weight))
   }
 
   // Updates individual weights when the grammar is "punished"
