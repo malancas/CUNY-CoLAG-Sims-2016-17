@@ -70,37 +70,4 @@ class ModelFunctions {
       parseSentences(i + 1, max, targetGrammar, newGrammar, newWeights, wNew)
     }
   }
-}
-/*
-
-  def linearRewardSchemeGo(i: Int, targetIndex: Int, weights: List[Double], grammar: List[Double], newWeights: List[Double], weightParameter: Double): List[Double] =
-    weights match {
-      case h :: t =>
-        if (i == targetIndex) linearRewardSchemeGo(i+1, targetIndex, weights.tail, grammar.tail, newWeights :+ (h + weightParameter * (1 - h)))
-        else linearRewardSchemeGo(i+1, targetIndex, weights.tail, grammar.tail, newWeights :+ ((1 - weight) * h))
-    }
-
-  def updateWeights(weights: List[Double], grammar: List[Int], parsed: Boolean, newWeights: List[Double]): List[Double] =
-    weights match {
-      case h :: t =>
-        // Reward
-        if ((parsed && grammar.head == 1) || (!parsed && grammar.head == 0)){
-          updateWeights(t, grammar.tail, parsed, newWeights :+ reward(h, grammar.head))
-        }
-        // Penalty
-        else if ((parsed && grammar.head == 0) || (!parsed && grammar.head == 1)){ updateWeights(t, grammar.tail, parsed, newWeights :+ punish(h, grammar))
-        }
-        else {
-          println("Should never reach here")
-          List()
-        }
-      case nil => newWeights
-    }
-
-  // Assumes that only each weight is only updated once, when it's corresponding parameter is reached
-  def scenario1(grammar: Seq[Double], weights: List[Double]): Seq[Double] = {
-    updateWeights(weights, grammar, parsed, List[])
-  }
-
-  // Implementing LRP-scheme: https://books.google.com/books?id=-zdWJ9Adp1wC&pg=PA110&lpg=PA110&dq=linear+reward+penalty+scheme+bush&source=bl&ots=u6IsuDpd5y&sig=CVtmdd6SYgtni3nQj2yDx-phZoI&hl=en&sa=X&ved=0ahUKEwiO8sHb0MrSAhVEzIMKHRPCDZMQ6AEIKzAD#v=onepage&q=linear%20reward%20penalty%20scheme%20bush&f=false
- */   
+}   
