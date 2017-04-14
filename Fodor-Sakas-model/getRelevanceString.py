@@ -45,6 +45,3 @@ def getRelevanceString(gSet, n):
         diffIndices = []
 
     return refStr
-
-if __name__ == '__main__':
-    getRelevanceString(n, argv[1:])
