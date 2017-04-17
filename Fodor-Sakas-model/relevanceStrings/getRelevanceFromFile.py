@@ -24,8 +24,19 @@ Run your function getRelevanceString using the first dictionary, and save the re
 
 Then finally use the second dictionary to create the output file by appending the relevance string assigned to each structID to the original COLAG_2011_ids.txt data.
 '''
+from .. import getRelevanceString
 idDict = {}
 with open('COLAG_2011_ids.txt', "r") as infile:
     content = infile.readlines()
     for line in content:
-        line.split('\t')
+        grammId, sentId, structId = line.split('\t')
+        bitstring = format(grammId, '08b')
+        if structId in idDict:
+            idDict[structId].append(bitstring) if not bitstring in idDict[structId]
+        else:
+            idDict[structId] = [bitstring]
+
+grs = getRelevanceString.getRelevanceString
+relevanceDict = {}
+for key, value in idDict:
+    relevanceDict[key] = []
