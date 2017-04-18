@@ -30,7 +30,7 @@ newLines = []
 with open('COLAG_2011_ids.txt', 'r') as f:
     for line in f.readlines():
         grammId, sentId, structId = line.split('\t')
-        newLines.append(''.join([line, '\t' + relevanceDict[structId], '\n']))
+        newLines.append(' '.join([line, relevanceDict[structId]]))
 
 with open('COLAG_2011_ids_relevance.txt', 'w') as f:
     f.writelines(newLines) 
