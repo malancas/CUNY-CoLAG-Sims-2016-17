@@ -3,6 +3,7 @@ Fodor-Sakas-model/notes.txt
 Fodor-Sakas-model/tasks.txt
 Fodor-Sakas-model/*.ipynb
 Fodor-Sakas-model/*.pyc
+Fodor-Sakas-model/relevanceStrings/COLAG_2011_ids*
 Yang-weighted-model/*.class
 Yang-weighted-model/'*.class'
 resources/
