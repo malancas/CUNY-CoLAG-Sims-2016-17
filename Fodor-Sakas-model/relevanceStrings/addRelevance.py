@@ -8,8 +8,6 @@ with open('COLAG_2011_ids.txt', 'r') as infile:
     for line in content:
         grammId, sentId, structId = line.split('\t')
         bitstring = format(int(grammId), '16b')
-        # print(bitstring)
-        # print(len(bitstring))
 
         if n == -1:
             n = len(bitstring)
@@ -22,15 +20,14 @@ with open('COLAG_2011_ids.txt', 'r') as infile:
 
 relevanceDict = {}
 for key, value in idDict.items():
-    #relevanceDict[key] = getRelevanceString(value, n)
-    relevanceDict.update({key: getRelevanceString(value, n)})
+    relevanceDict[key] = getRelevanceString(value, n)
 
 newLines = []
 
 with open('COLAG_2011_ids.txt', 'r') as f:
     for line in f.readlines():
         grammId, sentId, structId = line.split('\t')
-        newLines.append(' '.join([line, relevanceDict[structId]]))
+        newLines.append(' '.join([line.rstrip('\n'), '\t', relevanceDict[structId], '\n']))
 
 with open('COLAG_2011_ids_relevance.txt', 'w') as f:
     f.writelines(newLines) 
