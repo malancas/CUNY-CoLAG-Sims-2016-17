@@ -29,6 +29,10 @@ with open('COLAG_2011_ids.txt', 'r') as f:
         grammId, sentId, structId = line.split('\t')
         newLines.append(' '.join([line.rstrip('\n'), '\t', relevanceDict[structId], '\n']))
 
+        rev = relevanceDict[structId]
+        if ('0' and ('*' or '~')) in rev or ('1' and ('*' or '~')) in rev:
+            print(rev)
+
 with open('COLAG_2011_ids_relevance.txt', 'w') as f:
     f.writelines(newLines) 
 
