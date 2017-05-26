@@ -3,6 +3,11 @@ from getRelevanceString import getRelevanceString
 
 idDict = {}
 n = -1
+
+# StructIds may appear in multiple times throughout the file
+# Create a dictionary in which the key corresponds to a unique
+# structId and the value is a list of differing bitstrings that
+# all align with that structId
 with open('COLAG_2011_ids.txt', 'r') as infile:
     content = infile.readlines()
     for line in content:
@@ -20,6 +25,8 @@ with open('COLAG_2011_ids.txt', 'r') as infile:
 
 relevanceDict = {}
 for key, value in idDict.items():
+    # Process all the bitstrings in each iDict value to
+    # produce a relevanceString for that structId
     relevanceDict[key] = getRelevanceString(value, n)
 
 newLines = []
@@ -29,11 +36,7 @@ with open('COLAG_2011_ids.txt', 'r') as f:
         grammId, sentId, structId = line.split('\t')
         newLines.append(' '.join([line.rstrip('\n'), '\t', relevanceDict[structId], '\n']))
 
-        rev = relevanceDict[structId]
-        if ('0' and ('*' or '~')) in rev or ('1' and ('*' or '~')) in rev:
-            print(rev)
-
 with open('COLAG_2011_ids_relevance.txt', 'w') as f:
-    f.writelines(newLines) 
+    f.writelines(newLines)
 
 print('New file created!')
