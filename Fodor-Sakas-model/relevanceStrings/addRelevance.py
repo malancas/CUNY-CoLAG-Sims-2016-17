@@ -36,6 +36,11 @@ with open('COLAG_2011_ids.txt', 'r') as f:
         grammId, sentId, structId = line.split('\t')
         newLines.append(' '.join([line.rstrip('\n'), '\t', relevanceDict[structId], '\n']))
 
+for nline in newLines:
+    for t in nline:
+        if t == '1' or t == '0':
+            print(nline)
+
 with open('COLAG_2011_ids_relevance.txt', 'w') as f:
     f.writelines(newLines)
 

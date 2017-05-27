@@ -5,8 +5,10 @@ def getRelevanceString(gSet, n):
     # index and value of each element in the first element of gSet
     strDict = []
 
-    for bit in enumerate(gSet[0]):
+    for bit in gSet[0]:
         strDict.append({bit: 1})
+    #print("STR Dict: ", strDict)
+
 
     # Refstr is set to the first string and will change
     # after processing each string
@@ -29,8 +31,6 @@ def getRelevanceString(gSet, n):
             if not b in strDict[index]:
                 strDict[index][b] = 1
                 diffIndices.append(index)
-            else:
-                strDict[index][b] += 1
 
         lengthOfDiffIndices = len(diffIndices)
         # If the number of differing indices is one,
