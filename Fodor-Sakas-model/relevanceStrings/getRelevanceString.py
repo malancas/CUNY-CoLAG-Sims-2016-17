@@ -7,8 +7,6 @@ def getRelevanceString(gSet, n):
 
     for bit in gSet[0]:
         strDict.append({bit: 1})
-    #print("STR Dict: ", strDict)
-
 
     # Refstr is set to the first string and will change
     # after processing each string
