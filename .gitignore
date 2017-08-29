@@ -8,3 +8,4 @@ Yang-weighted-model/*.class
 Yang-weighted-model/'*.class'
 resources/
 runGouda.sh
+COLAG_2011_flat.txt
